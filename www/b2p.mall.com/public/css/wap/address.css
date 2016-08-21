@@ -1,0 +1,49 @@
+@charset "UTF-8";
+/**
+ * 添加地址页面样式
+ * @authors CK-Joey (zhangjie.tk)
+ * @date    2016-08-21 13:36:35
+ * @version 1.0
+ */
+.address_titile {
+  text-align: left;
+  color: #888;
+  background: #fff;
+  margin-bottom: 5px; }
+  .address_titile span {
+    padding: 10px;
+    border-bottom: 1px solid #ff5555; }
+
+.address_box {
+  background: #fff;
+  padding: 15px 10px;
+  font-size: 12px;
+  color: #888; }
+  .address_box ul li {
+    position: relative;
+    padding-left: 80px;
+    margin-bottom: 10px; }
+    .address_box ul li label {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 80px;
+      padding: 10px;
+      text-align: right; }
+    .address_box ul li input, .address_box ul li select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      outline: none;
+      border-radius: 3px; }
+  .address_box input[type=submit] {
+    width: 100%;
+    padding: 10px;
+    background: #ff5555;
+    border: 0;
+    outline: none;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 14px; }
+
+/*# sourceMappingURL=address.css.map */
