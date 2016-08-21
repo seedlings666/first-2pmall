@@ -17,6 +17,7 @@ elixir(function(mix) {
 
         // 处理js
         .scripts('jquery.js', 'public/js/jquery.js')
+        .scripts('wap/swipeSlide.min.js', 'public/js/wap/swipeSlide.js')
         .scripts('wap/order.js', 'public/js/wap/order.js')
         .scripts('wap/userInfo.js', 'public/js/wap/userInfo.js')
         .scripts('wap/orderList.js', 'public/js/wap/orderList.js')
