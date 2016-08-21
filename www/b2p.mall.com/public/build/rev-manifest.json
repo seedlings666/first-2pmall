@@ -1,8 +1,7 @@
 {
-  "css/admin/base.css": "css/admin/base-cc0e68872f.css",
-  "css/wap/base.css": "css/wap/base-cabec1d2c7.css",
+  "css/admin/base.css": "css/admin/base-a887b622a5.css",
+  "css/wap/base.css": "css/wap/base-5566b961c3.css",
   "css/wap/index.css": "css/wap/index-22dc16623a.css",
-  "js/jquery.js": "js/jquery-ae3357c0c1.js",
-  "js/wap/base.js": "js/wap/base-d41d8cd98f.js",
+  "js/jquery.js": "js/jquery-a008d33964.js",
   "js/wap/swipeSlide.js": "js/wap/swipeSlide-fd765bac95.js"
 }
