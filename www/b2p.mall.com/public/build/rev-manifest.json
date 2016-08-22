@@ -1,8 +1,13 @@
 {
-  "css/admin/base.css": "css/admin/base-cc0e68872f.css",
-  "css/wap/base.css": "css/wap/base-cabec1d2c7.css",
-  "css/wap/index.css": "css/wap/index-22dc16623a.css",
+  "css/admin/base.css": "css/admin/base-4ddc607d5d.css",
+  "css/wap/base.css": "css/wap/base-50e6b01b0a.css",
+  "css/wap/index.css": "css/wap/index-9cd0306db8.css",
+  "css/wap/order.css": "css/wap/order-a55fa3e7b6.css",
+  "css/wap/orderList.css": "css/wap/orderList-687f59da04.css",
+  "css/wap/userInfo.css": "css/wap/userInfo-687f59da04.css",
   "js/jquery.js": "js/jquery-ae3357c0c1.js",
-  "js/wap/base.js": "js/wap/base-d41d8cd98f.js",
-  "js/wap/swipeSlide.js": "js/wap/swipeSlide-fd765bac95.js"
+  "js/wap/order.js": "js/wap/order-3109e2c97e.js",
+  "js/wap/orderList.js": "js/wap/orderList-8971778a9c.js",
+  "js/wap/swipeSlide.js": "js/wap/swipeSlide-fd765bac95.js",
+  "js/wap/userInfo.js": "js/wap/userInfo-8971778a9c.js"
 }
