@@ -1,0 +1,36 @@
+@charset "UTF-8";
+/**
+ * 添加地址页面样式
+ * @authors CK-Joey (zhangjie.tk)
+ * @date    2016-08-21 13:36:35
+ * @version 1.0
+ */
+.user_info_box {
+  height: 200px;
+  background: url("../../../images/bg.jpg") no-repeat center center;
+  background-size: cover;
+  text-align: center;
+  padding-top: 30px;
+  color: #fff; }
+  .user_info_box .user_photo {
+    margin: 0 auto;
+    overflow: hidden; }
+    .user_info_box .user_photo img {
+      width: 80px;
+      height: 80px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      box-shadow: 10px 10px 0 #000 inset; }
+
+.user_tool ul {
+  background: #fff; }
+
+.user_tool li {
+  padding: 10px 0 10px 35px; }
+  .user_tool li a {
+    display: block; }
+  .user_tool li.my_order {
+    background: url("../../../images/my_order.png") no-repeat 10px center;
+    background-size: auto 60%; }
+
+/*# sourceMappingURL=userInfo.css.map */
