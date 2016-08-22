@@ -1,1 +1,93 @@
-.user_info_box{height:200px;background:url(../../../images/bg.jpg) no-repeat 50%;background-size:cover;text-align:center;padding-top:30px;color:#fff}.user_info_box .user_photo{margin:0 auto;overflow:hidden}.user_info_box .user_photo img{width:80px;height:80px;border:2px solid #fff;border-radius:50%;box-shadow:inset 10px 10px 0 #000}.user_tool ul{background:#fff}.user_tool li{padding:10px 0 10px 35px}.user_tool li a{display:block}.user_tool li.my_order{background:url(../../../images/my_order.png) no-repeat 10px;background-size:auto 60%}
+@charset "UTF-8";
+/**
+ * 添加地址页面样式
+ * @authors CK-Joey (zhangjie.tk)
+ * @date    2016-08-21 13:36:35
+ * @version 1.0
+ */
+.order_tab_box ul {
+  background: #fff;
+  color: #777;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  margin-bottom: 10px; }
+  .order_tab_box ul li {
+    padding: 10px 0;
+    font-size: 14px;
+    text-align: center;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+    border-bottom: 2px solid transparent;
+    border-right: 1px solid #dedede; }
+    .order_tab_box ul li.on {
+      color: #ff5555;
+      border-bottom: 2px solid #ff5555; }
+    .order_tab_box ul li:last-child {
+      border-right: 0; }
+
+.order_content_box {
+  background: #fff;
+  font-size: 12px;
+  color: #525252; }
+  .order_content_box .order_time {
+    padding: 10px;
+    background: #f8f8f8;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc; }
+  .order_content_box .goods_info {
+    position: relative;
+    padding: 10px 75px 10px 75px; }
+    .order_content_box .goods_info .goods_img {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 60px;
+      height: 60px;
+      border: 1px solid #bbb; }
+      .order_content_box .goods_info .goods_img img {
+        width: 100%; }
+    .order_content_box .goods_info .goods_name {
+      line-height: 16px; }
+      .order_content_box .goods_info .goods_name p:first-child {
+        height: 32px;
+        overflow: hidden; }
+    .order_content_box .goods_info .goods_price {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      text-align: right;
+      color: #ff5555; }
+      .order_content_box .goods_info .goods_price span {
+        color: #fff55; }
+      .order_content_box .goods_info .goods_price big {
+        font-size: 16px; }
+  .order_content_box .goods_sum {
+    overflow: hidden;
+    padding: 0 10px; }
+    .order_content_box .goods_sum span {
+      float: right; }
+      .order_content_box .goods_sum span big {
+        color: #ff5555;
+        font-size: 16px; }
+  .order_content_box .order_status {
+    color: #ff5555;
+    overflow: hidden;
+    padding: 10px;
+    text-align: right;
+    border-bottom: 1px solid #ccc; }
+    .order_content_box .order_status span {
+      float: left; }
+    .order_content_box .order_status a {
+      background: #666;
+      color: #fff;
+      padding: 5px;
+      margin-right: 5px; }
+      .order_content_box .order_status a:last-child {
+        margin-right: 0; }
+
+/*# sourceMappingURL=orderList.css.map */
