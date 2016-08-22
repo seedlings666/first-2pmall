@@ -21,8 +21,9 @@ Route::group(['prefix' => 'admin'], function () {
     });
 });
 
-Route::group(['prefix' => 'wap'], function () {
+Route::group(['prefix' => 'wap','namespace'=>'Wap'], function () {
     Route::get('/', function () {
         return view('wap.index');
     });
+    Route::controller('/goods','GoodsController');
 });
