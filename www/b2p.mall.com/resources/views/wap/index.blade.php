@@ -22,17 +22,17 @@
             <ul>
                 <li>
                     <a href="###">
-                        <img src="./images/pic1.jpg" alt="">
+                        <img src="{{asset('images/pic1.jpg')}}" alt="">
                     </a>
                 </li>
                 <li>
                     <a href="###">
-                        <img src="./images/pic2.jpg" alt="">
+                        <img src="{{asset('images/pic2.jpg')}}" alt="">
                     </a>
                 </li>
                 <li>
                     <a href="###">
-                        <img src="./images/pic3.jpg" alt="">
+                        <img src="{{asset('images/pic3.jpg')}}" alt="">
                     </a>
                 </li>
             </ul>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="pd_detail">
                     <p>这里是图片文字文字说明</p>
-                    <img src="./images/goods_img.jpg">
+                    <img src="{{asset('images/goods_img.jpg')}}">
                 </div>
             </div>
         </div>

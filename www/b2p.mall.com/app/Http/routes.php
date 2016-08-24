@@ -25,5 +25,18 @@ Route::group(['prefix' => 'wap','namespace'=>'Wap'], function () {
     Route::get('/', function () {
         return view('wap.index');
     });
+
     Route::controller('/goods','GoodsController');
+
+    Route::get('/user', function () {
+        return view('wap.userInfo');
+    });
+
+    Route::get('/order', function () {
+        return view('wap.order');
+    });
+
+    Route::get('/order/list', function () {
+        return view('wap.orderList');
+    });
 });

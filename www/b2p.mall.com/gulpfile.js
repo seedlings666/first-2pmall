@@ -12,32 +12,35 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    // 复制css
-    mix.copy('node_modules/islider.js/build/iSlider.min.css', 'resources/assets/css/wap/iSlider.css')
-
-        // 复制js
-        .copy('node_modules/jquery/dist/jquery.min.js', 'resources/assets/js/jquery.js')
-        .copy('node_modules/islider.js/build/iSlider.min.js', 'resources/assets/js/wap/iSlider.min.js')
-        .copy('node_modules/islider.js/build/iSlider.plugin.dot.min.js', 'resources/assets/js/wap/iSlider.plugin.dot.min.js')
-        .copy('node_modules/islider.js/build/iSlider.plugin.button.min.js', 'resources/assets/js/wap/iSlider.plugin.button.min.js')
+    // 复制js
+    mix.copy('node_modules/jquery/dist/jquery.min.js', 'resources/assets/js/jquery.js')
 
         // 处理js
         .scripts('jquery.js', 'public/js/jquery.js')
-        .scripts('wap/base.js', 'public/js/wap/base.js')
         .scripts('wap/swipeSlide.min.js', 'public/js/wap/swipeSlide.js')
+        .scripts('wap/order.js', 'public/js/wap/order.js')
+        .scripts('wap/userInfo.js', 'public/js/wap/userInfo.js')
+        .scripts('wap/orderList.js', 'public/js/wap/orderList.js')
 
         // 处理css、sass
         .styles('wap/base.css', 'public/css/wap')
-        .styles('wap/iSlider.css', 'public/css/wap')
         .styles('admin/base.css', 'public/css/admin')
         .sass('wap/index.scss', 'public/css/wap')
+        .sass('wap/order.scss', 'public/css/wap')
+        .sass('wap/userInfo.scss', 'public/css/wap')
+        .sass('wap/orderList.scss', 'public/css/wap')
 
         // 添加版本号
         .version([
             'js/jquery.js',
             'js/wap/swipeSlide.js',
-            'js/wap/base.js',
+            'js/wap/userInfo.js',
+            'js/wap/order.js',
+            'js/wap/orderList.js',
             'css/wap/base.css',
+            'css/wap/userInfo.css',
+            'css/wap/order.css',
+            'css/wap/orderList.css',
             'css/wap/index.css',
             'css/admin/base.css'
         ]);
