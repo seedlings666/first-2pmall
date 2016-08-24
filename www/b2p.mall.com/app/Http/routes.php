@@ -26,6 +26,7 @@ Route::group(['prefix' => 'wap','namespace'=>'Wap'], function () {
         return view('wap.index');
     });
 
+    //商品模块控制器
     Route::controller('/goods','GoodsController');
 
     Route::get('/user', function () {
