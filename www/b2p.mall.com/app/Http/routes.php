@@ -15,11 +15,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 // 移动端
-Route::group(['prefix' => 'wap'], function () {
+Route::group(['prefix' => 'wap','namespace'=>'Wap'], function () {
     Route::get('/', function () {
         return view('wap.index');
     });
+
+    //商品模块控制器
+    Route::controller('/goods','GoodsController');
 
     Route::get('/user', function () {
         return view('wap.userInfo');
