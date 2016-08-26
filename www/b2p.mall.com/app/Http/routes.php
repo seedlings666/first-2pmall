@@ -39,6 +39,12 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/', function() {
         return view('admin.index');
     });
+    Route::get('/goods/add', function() {
+        return view('admin.add_goods');
+    });
+    Route::get('/login', function() {
+        return view('admin.login');
+    });
     Route::get('/order', function() {
         return view('admin.order');
     });

@@ -9332,7 +9332,7 @@ input[type=checkbox].ace.ace-switch + .lbl {
 }
 input[type=checkbox].ace.ace-switch + .lbl::before {
   font-family: 'Open Sans';
-  content: "ON\a0\a0\a0\a0\a0\a0\a0\a0\a0OFF";
+  content: "是\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0否";
   color: #999;
   text-shadow: 0 0 0 #999;
   font-weight: normal;
@@ -12654,7 +12654,7 @@ tr.detail-row > td {
 }
 .login-container {
   width: 375px;
-  margin: 0 auto;
+  margin: 10% auto 0 auto;
 }
 .login-layout {
   background-color: #1D2024;
@@ -12817,7 +12817,7 @@ tr.detail-row > td {
   }
 }
 .light-login {
-  background: #DFE0E2 url('images/pattern.jpg') repeat;
+  background: #DFE0E2 url('../../../images/pattern.jpg') repeat;
 }
 .light-login .widget-box {
   padding: 1px 1px 0;
@@ -20426,4 +20426,9 @@ input.typeahead.scrollable ~ .tt-menu {
   .label[class*=arrowed]:after {
     display: none !important;
   }
+}
+.pull-right .btn{
+  height: 38px;
+  line-height: 18px;
+  margin-top: -2px ;
 }

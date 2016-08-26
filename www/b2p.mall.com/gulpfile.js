@@ -35,6 +35,8 @@ elixir(function(mix) {
         .scripts('admin/jquery.easypiechart.js', 'public/js/admin/jquery.easypiechart.js')
         .scripts('admin/jquery.ui.touch-punch.js', 'public/js/admin/jquery.ui.touch-punch.js')
         .scripts('admin/jquery.sparkline/index.js', 'public/js/admin/sparkline.js')
+        .scripts('admin/jquery-validation/jquery.validate.js', 'public/js/admin/jquery.validate.js')
+        .scripts('admin/jquery-validation/additional-methods.js', 'public/js/admin/additional-methods.js')
         .scripts('admin/jquery.flot.js', 'public/js/admin/jquery.flot.js')
         .scripts('admin/jquery.flot.pie.js', 'public/js/admin/jquery.flot.pie.js')
         .scripts('admin/jquery.flot.time.js', 'public/js/admin/jquery.flot.time.js')
@@ -70,6 +72,10 @@ elixir(function(mix) {
         .scripts('admin/css.js', 'public/js/admin/css.js')
         .scripts('admin/generic.js', 'public/js/admin/generic.js')
         .scripts('admin/javascript.js', 'public/js/admin/javascript.js')
+        .scripts('admin/bootstrap-wysiwyg/bootstrap-wysiwyg.js', 'public/js/admin/bootstrap-wysiwyg.js')
+        .scripts('admin/jquery.hotkeys/index.js', 'public/js/admin/jquery.hotkeys.js')
+        .scripts('admin/bootbox/bootbox.js', 'public/js/admin/bootbox.js')
+        .scripts('admin/jqueryui-touch-punch/jquery.ui.touch-punch.js', 'public/js/admin/jquery.ui.touch-punch.js')
 
         // 处理css、sass
         .styles('wap/base.css', 'public/css/wap')
@@ -107,6 +113,7 @@ elixir(function(mix) {
             'js/admin/jquery.mobile.custom.js',
             'js/admin/bootstrap.js',
             'js/admin/jquery-ui.custom.js',
+            'js/admin/jquery.ui.touch-punch.js',
             'js/admin/jquery.easypiechart.js',
             'js/admin/jquery.ui.touch-punch.js',
             'js/admin/sparkline.js',
@@ -115,6 +122,8 @@ elixir(function(mix) {
             'js/admin/jquery.flot.time.js',
             'js/admin/jquery.flot.resize.js',
             'js/admin/jquery.flot.axislabels.js',
+            'js/admin/jquery.validate.js',
+            'js/admin/additional-methods.js',
             'js/admin/elements.scroller.js',
             'js/admin/elements.colorpicker.js',
             'js/admin/elements.fileinput.js',
@@ -147,6 +156,9 @@ elixir(function(mix) {
             'js/admin/generic.js',
             'js/admin/ace-elements.js',
             'js/admin/tree.js',
+            'js/admin/bootstrap-wysiwyg.js',
+            'js/admin/jquery.hotkeys.js',
+            'js/admin/bootbox.js',
 
             // wap css
             'css/wap/base.css',
