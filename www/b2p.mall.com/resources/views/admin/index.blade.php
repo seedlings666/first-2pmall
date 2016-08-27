@@ -19,21 +19,24 @@
             <div class="table-header">
                 商品列表
                 <div class="navbar-buttons navbar-header pull-right">
-                    <a href="{{ url('/admin/goods/add') }}" class="btn btn-pink">新增商品</a>
+                    <a href="{{ url('/admin/goods/create') }}" class="btn btn-pink">新增商品</a>
                 </div>
             </div>
             <div class="dataTables_wrapper form-inline no-footer">
                 <table id="simple-table" class="table table-bordered table-hover dataTable">
                     <thead>
                         <tr>
+                            <!--
                             <th class="center">
                                 <label class="pos-rel">
                                     <input type="checkbox" class="ace" />
                                     <span class="lbl"></span>
                                 </label>
                             </th>
+                            -->
                             <th class="center">商品编号</th>
                             <th class="center">商品名称</th>
+                            <th class="center">多规格</th>
                             <th class="center">价格</th>
                             <th class="center">市场价格</th>
                             <th class="center">状态</th>
@@ -46,27 +49,31 @@
                     </thead>
 
                     <tbody>
+                    @if(count($goods_list))
+                    @foreach($goods_list as $lk=>$lv)
                         <tr>
+                            <!--
                             <td class="center">
                                 <label class="pos-rel">
                                     <input type="checkbox" class="ace" />
                                     <span class="lbl"></span>
                                 </label>
                             </td>
-
+                            -->
                             <td class="center">
-                                10025
+                                {{ $lv->id }}
                             </td>
-                            <td>测试商品</td>
-                            <td class="center">&yen;330.00</td>
-                            <td class="center">&yen;830.00</td>
+                            <td>{{ $lv->goods_name }}</td>
+                            <td> {{ $lv->is_sku_str }}</td>
+                            <td class="center">&yen;{{ $lv->shop_price }}</td>
+                            <td class="center">&yen;{{ $lv->market_price }}</td>
 
                             <td class="center">
-                                <span class="label label-sm label-warning">下架</span>
+                                <span class="label label-sm {{ $lv->is_on_sale == 1 ? 'label-info' : 'label-warning' }}">{{ $lv->is_on_sale_str }}</span>
                             </td>
 
                             <td class="center">
-                                2016-08-24 01:11:59
+                                {{ $lv->updated_at }}
                             </td>
 
                             <td class="center">
@@ -89,6 +96,8 @@
                                 </div>
                             </td>
                         </tr>
+                    @endforeach
+                    @endif
                     </tbody>
                 </table>
 

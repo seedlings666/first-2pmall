@@ -39,13 +39,23 @@ Route::group(['prefix' => 'wap','namespace'=>'Wap'], function () {
 });
 
 // 管理后台
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
+    
+    //后台商品模块
+    Route::controller('/goods','GoodsController');
+    
+    
     Route::get('/', function() {
         return view('admin.index');
     });
+    
+    /**
     Route::get('/goods/add', function() {
         return view('admin.add_goods');
     });
+     */
+    
+    
     Route::get('/login', function() {
         return view('admin.login');
     });
