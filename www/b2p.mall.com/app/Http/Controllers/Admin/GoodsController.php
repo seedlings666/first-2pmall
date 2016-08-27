@@ -7,6 +7,7 @@ use App\Providers\Goods\GoodsModule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 class GoodsController extends Controller
@@ -63,7 +64,8 @@ class GoodsController extends Controller
         
         //测试数据
         $data = array();
-        $data['goods_name'] = '测试商品名称-'.mt_rand();
+        //$data['goods_name'] = '测试商品名称-'.mt_rand();
+        $data['goods_name'] = '测试商品名称-';
         $data['goods_desc'] = '商品描述';
         $data['shop_price'] = '10.00';
         $data['market_price'] = '20.20';
@@ -72,9 +74,27 @@ class GoodsController extends Controller
         $data['content'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
         $data['test'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
         $data['images'] = 'a,1,2,3,10,11,12,13';
+        $data['is_sku'] = 1;
+        $sku_list_tmp = array();
+        $sku_list_tmp[1]['sku_name'] = 'sku名称';
+        $sku_list_tmp[1]['shop_price'] = '10.10';
+        $sku_list_tmp[1]['market_price'] = '20.20';
+        $sku_list_tmp[1]['sku_number'] = '10';
+        $sku_list_tmp[1]['color'] = 'red';
+        $sku_list_tmp[1]['size'] = '10寸';
+    
+        $sku_list_tmp[2]['sku_name'] = 'sku名称2';
+        $sku_list_tmp[2]['shop_price'] = '0.50';
+        $sku_list_tmp[2]['market_price'] = '0.60';
+        $sku_list_tmp[2]['sku_number'] = '100';
+        $sku_list_tmp[2]['color'] = 'blue';
+        $sku_list_tmp[2]['size'] = '20寸';
+        $data['sku_list'] = $sku_list_tmp;
         
         $data = json_encode($data);
         $goods_content = (array)json_decode($data,true);
+        $goods_content['shop_id'] = Session::get('shop_id');
+        $goods_content['shop_id'] = 10;
         
         //开启事务
         DB::beginTransaction();
@@ -85,8 +105,8 @@ class GoodsController extends Controller
             DB::rollBack();
         }
         
-        DB::rollBack();
-        //DB::commit();
+        //DB::rollBack();
+        DB::commit();
         
         return Response::json($add_response);
     }
