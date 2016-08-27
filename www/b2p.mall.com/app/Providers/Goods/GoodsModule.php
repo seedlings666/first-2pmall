@@ -53,6 +53,7 @@ class GoodsModule
             'goods_number'  =>  ['required','integer','min:0'],
             'is_on_sale'    =>  ['required','in:0,1'],
             'content'   =>  ['required','min:0'],
+            'images'    =>  ['required','string',],
         );
         
         $validate = Validator::make($goods_content,$rule);
@@ -62,6 +63,25 @@ class GoodsModule
             return Helper::ErrorMessage(10000,'参数错误!',$validate->messages()->toArray());
         }
     
+        $goods_images = $goods_content['images'];
+    
+        $goods_images_id = explode(',',$goods_images);
+    
+        $goods_images_id = array_filter($goods_images_id,function($value){
+            return is_numeric($value) ? true : false;
+        });
+        
+        //查询商品图片是否存在
+        $goods_images_condition = array();
+        $goods_images_condition['goods_id'] = 0;
+        $goods_images_list = $this->getImagesByIds($goods_images_id,$goods_images_condition);
+        if(is_array($goods_images_list) && isset($goods_images_list['err_code'])){
+            return $goods_images_list;
+        }
+    
+        //存储此图片的 id
+        $goods_images_id_arr = array_column($goods_images_list->toArray(),'id','id');
+        
         //检查是否已经有同样的商品名称
         $check_goods = $this->getGoodsByName($goods_content['goods_name'],['id','goods_name']);
         
@@ -80,6 +100,17 @@ class GoodsModule
             return Helper::ErrorMessage(50001,'商品创建失败!');
         }
         
+        //图片处理
+        //修改图片的 goods_id
+        $update_goods_images_condition = array();
+        $update_goods_images_condition['goods_id'] = 0;
+        $update_goods_images_update = array();
+        $update_goods_images_update['goods_id'] = $goods_info->id;
+        //暂时不判断是否可用
+        $update_goods_images_response = $this->updateGoodsImages($goods_images_id_arr,$update_goods_images_condition,$update_goods_images_update);
+        
+        
+        //处理 sku
         
     }
     
@@ -115,7 +146,9 @@ class GoodsModule
             }
         }
     
-        return $GoodsModel->save();
+        $GoodsModel->save();
+        
+        return $GoodsModel;
     }
     
     /**
@@ -138,7 +171,69 @@ class GoodsModule
         
         $goods_info = $goods_obj->first();
         
+        if(!empty($goods_info) && !empty($relatives)){
+            $goods_info->load($relatives);
+        }
+        
         return $goods_info;
     }
     
+    /**
+     * 通过 images_id 获取一组图片
+     * @author  jianwei
+     * @param   $images_id array 查询的图片 id
+     * @param   $condition  array   额外的查询字段
+     * @param   $select_columns array 查询字段
+     * @param   $relatives  array   关系
+     */
+    public function getImagesByIds(array $images_id = [],array $condition = [],array $select_columns = ['*'],array $relatives = [])
+    {
+        $images_id = array_filter($images_id);
+        
+        if(empty($images_id)){
+            return Helper::ErrorMessage(10001,'请上传商品图片!',[]);
+        }
+        
+        $GoodsImagesModel = App::make('GoodsImagesModel');
+    
+        //查询字段
+        $goods_images_obj = $GoodsImagesModel->select($select_columns);
+        
+        //查询 id
+        $goods_images_obj->whereIn('id',$images_id);
+        
+        //额外的查询字段
+        $goods_images_obj->where($condition);
+    
+        $goods_images_list = $goods_images_obj->get();
+        
+        if(count($goods_images_list) < 1){
+            return Helper::ErrorMessage(50002,'找不到任何商品图片!');
+        }
+        
+        return $goods_images_list;
+    }
+    
+    /**
+     * 修改图片的 goods_id 字段
+     * @author  jianwei
+     * @
+     */
+    public function updateGoodsImages(array $images_id = [],array $condition = [],array $update_arr = [])
+    {
+        $update_arr = array_filter($update_arr);
+    
+        $condition = array_filter($condition);
+    
+        $images_id = array_filter($images_id);
+        
+        if(empty($update_arr) || empty($condition) || empty($images_id)){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+        
+        //修改
+        $update_response = $GoodsImagesModel = App::make('GoodsImagesModel')->whereIn('id',$images_id)->where($condition)->update($update_arr);
+        
+        return $update_response;
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Providers\Goods\GoodsModule;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
@@ -46,7 +47,7 @@ class GoodsController extends Controller
         
         //测试数据
         $data = array();
-        $data['goods_name'] = '测试商品名称';
+        $data['goods_name'] = '测试商品名称-'.mt_rand();
         $data['goods_desc'] = '商品描述';
         $data['shop_price'] = '10.00';
         $data['market_price'] = '20.20';
@@ -54,11 +55,22 @@ class GoodsController extends Controller
         $data['is_on_sale'] = 1;
         $data['content'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
         $data['test'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
+        $data['images'] = 'a,1,2,3,10,11,12,13';
         
         $data = json_encode($data);
         $goods_content = (array)json_decode($data,true);
         
+        //开启事务
+        DB::beginTransaction();
         $add_response = (new GoodsModule())->addGoods($goods_content);
+        
+        if(isset($add_response['err_code'])){
+            //事务回滚
+            DB::rollBack();
+        }
+        
+        DB::rollBack();
+        //DB::commit();
         
         return Response::json($add_response);
     }

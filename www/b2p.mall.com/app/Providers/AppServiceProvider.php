@@ -23,7 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        //商品模型
         $this->app->bind('GoodsModel','App\Goods');
+        //图片模型,仅仅用于商品图片
+        $this->app->bind('GoodsImagesModel','App\GoodsImages');
     }
 }
