@@ -3,6 +3,13 @@
 */
 (function($ , undefined) {
 
+	// 防止csrf攻击
+	$.ajaxSetup({
+	    headers: {
+	        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	    }
+	});
+
  $('#ace-settings-btn').on(ace.click_event, function(e){
 	e.preventDefault();
 
