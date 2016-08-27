@@ -520,7 +520,7 @@ $(function(){
     // 图片上传
     Dropzone.autoDiscover = false;
     var myDropzone = new Dropzone('#goods_images_box', {
-        url: './index.php',
+        url: '{{ url('admin/goods/upload') }}',
         previewTemplate: $('#preview-template').html(),
         thumbnailHeight: 120,
         thumbnailWidth: 120,

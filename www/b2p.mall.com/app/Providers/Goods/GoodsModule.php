@@ -5,6 +5,7 @@ use App\Goods;
 use App\Http\Common\Helper;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
  * Class GoodsModule
@@ -236,4 +237,84 @@ class GoodsModule
         
         return $update_response;
     }
+    
+    /**
+     * 图片文件上传
+     * @author  jianwei
+     */
+    public function goodsImageUpload($goods_id,$image_file)
+    {
+        if(!$image_file->isValid()){
+            return Helper::ErrorMessage(10002,'上传文件无效!');
+        }
+        
+        //扩展名称
+        $ext_name = $image_file->getClientOriginalExtension();
+    
+        //mime 类型
+        $mime_type = $image_file->getMimeType();
+        
+        //允许的 mime 类型
+        $allow_mime_arr = array('image/gif','image/jpeg','image/png');
+        
+        if(!in_array($mime_type,$allow_mime_arr)){
+            return Helper::ErrorMessage(10003,'上传的图片类型不正确!');
+        }
+        
+        //客户端名字
+        $client_name = $image_file->getClientOriginalName();
+        
+        //在缓存中的名字
+        $tmp_name = $image_file->getFileName();
+    
+        //缓存目录的绝对路径
+        $tmp_real_path = $image_file->getRealPath();
+        
+        //迁移到public 目录,规则,public/file/images/goods/YYYY/MM/YYYYMMDDHHIISS.ext_name
+    
+        list($year,$month) = explode('-',date('Y-m'));
+        
+        $file_relative_path = '/file/images/goods/%d/%d/';
+    
+        $path_name_format = public_path().$file_relative_path;
+    
+        $path_name = sprintf($path_name_format,$year,$month);
+        
+        $file_name = date('YmdHis').'.'.$ext_name;
+        
+        $file_full_name = $path_name.$file_name;
+        
+        try {
+            $file_obj = $image_file->move($path_name, $file_name);
+        }catch(FileException $e){
+            return Helper::ErrorMessage(10005,'图片上传失败!');
+        }
+        
+        //获取图片相关信息,如长宽高大小
+        //Image
+        
+        //保存图片
+        $GoodsImagesModel = App::make('GoodsImagesModel');
+    
+        //图片 id
+        $GoodsImagesModel->goods_id = $goods_id;
+        //扩展名称
+        $GoodsImagesModel->ext_name = $ext_name;
+        //mime 类型
+        $GoodsImagesModel->mime = $mime_type;
+        //文件原名
+        $GoodsImagesModel->origin_name = $client_name;
+        //文件路径
+        $GoodsImagesModel->file_path = $path_name;
+        //文件名称
+        $GoodsImagesModel->file_name = $file_name;
+        //url 访问的相对路径
+        $GoodsImagesModel->url_links = $file_relative_path.$file_name;
+        //base64码
+        //$GoodsImagesModel->base_code =
+    }
+    
+    
+    
+    
 }

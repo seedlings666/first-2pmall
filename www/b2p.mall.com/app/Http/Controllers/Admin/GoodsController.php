@@ -25,6 +25,22 @@ class GoodsController extends Controller
         return View::make('admin.index')->with('goods_list',$goods_list);
     }
     
+    /**
+     * 图片上传
+     * @author  jianwei
+     */
+    public function postUpload()
+    {
+        $file = Input::file('file');
+        //检验文件是否有效
+    
+        $goods_id = Input::get('goods_id');
+        
+        $upload_response = (new GoodsModule())->goodsImageUpload($goods_id,$file);
+        
+        return $upload_response;
+    }
+    
     
     /**
      * 新增商品页面
