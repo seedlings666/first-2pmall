@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers\Goods;
+
 use App\Goods;
 use App\Http\Common\Helper;
 use Illuminate\Support\Facades\App;
