@@ -89,6 +89,7 @@
         <!-- basic scripts -->
 
         <script src="{{ elixir('js/jquery.js') }}"></script>
+
         <script src="{{ elixir('js/admin/bootstrap.js') }}"></script>
 
         <!-- ace scripts -->

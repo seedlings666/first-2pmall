@@ -119,7 +119,7 @@
 				title : 'View Source'
 			}
 		}
-		
+
 		var toolbar_buttons =
 		options.toolbar ||
 		[
