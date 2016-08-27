@@ -18,6 +18,9 @@
             <!-- PAGE CONTENT BEGINS -->
             <div class="table-header">
                 用户列表
+                <div class="navbar-buttons navbar-header pull-right">
+                    <a href="{{ url('/admin/user/add') }}" class="btn btn-pink">新增用户</a>
+                </div>
             </div>
             <div class="dataTables_wrapper form-inline no-footer">
                 <table id="simple-table" class="table table-bordered table-hover dataTable">
