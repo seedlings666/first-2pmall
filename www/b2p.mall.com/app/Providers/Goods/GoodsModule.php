@@ -245,6 +245,10 @@ class GoodsModule
      */
     public function goodsImageUpload($goods_id,$image_file)
     {
+        if(!is_numeric($goods_id) || $goods_id < 1){
+           return Helper::ErrorMessage(10000,'参数错误!');
+        }
+        
         if(!$image_file->isValid()){
             return Helper::ErrorMessage(10002,'上传文件无效!');
         }
@@ -275,11 +279,11 @@ class GoodsModule
     
         list($year,$month) = explode('-',date('Y-m'));
         
-        $file_relative_path = '/file/images/goods/%d/%d/';
+        $file_relative_path_format = '/file/images/goods/%d/%d/';
     
-        $path_name_format = public_path().$file_relative_path;
+        $file_relative_path = sprintf($file_relative_path_format,$year,$month);
     
-        $path_name = sprintf($path_name_format,$year,$month);
+        $path_name = public_path().$file_relative_path;
         
         $file_name = date('YmdHis').'.'.$ext_name;
         
@@ -294,8 +298,15 @@ class GoodsModule
         //获取图片相关信息,如长宽高大小
         $img_obj = Image::make($file_full_name);
         
-        var_dump($img_obj);
-        exit();
+        //文件宽度
+        $file_width = $img_obj->width();
+        
+        //文件高度
+        $file_height = $img_obj->height();
+        
+        //文件大小
+        //$file_size = $img_obj->size();        //GD 库无法使用
+        $file_size = $image_file->getClientSize();
         
         //保存图片
         $GoodsImagesModel = App::make('GoodsImagesModel');
@@ -323,7 +334,17 @@ class GoodsModule
         //图片的高
         $GoodsImagesModel->height = $file_height;
     
+        //保存数据
         $GoodsImagesModel->save();
+    
+        $return_arr = array();
+        $return_arr['id'] = $GoodsImagesModel->id;
+        $return_arr['goods_id'] = $GoodsImagesModel->goods_id;
+        $return_arr['file_name'] = $GoodsImagesModel->file_name;
+        $return_arr['origin_name'] = $GoodsImagesModel->origin_name;
+        $return_arr['url_links'] = config('site.image_domain').$GoodsImagesModel->url_links;
+        
+        return $return_arr;
     }
     
     

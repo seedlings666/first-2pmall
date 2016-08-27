@@ -34,7 +34,7 @@ class GoodsController extends Controller
         $file = Input::file('file');
         //检验文件是否有效
     
-        $goods_id = Input::get('goods_id');
+        $goods_id = Input::get('goods_id',10);
         
         $upload_response = (new GoodsModule())->goodsImageUpload($goods_id,$file);
         
