@@ -244,6 +244,7 @@ $(function(){
             null,
             'foreColor',
             null,
+            'viewSource',
             {name:'undo', className:'btn-grey'},
             {name:'redo', className:'btn-grey'}
         ],
