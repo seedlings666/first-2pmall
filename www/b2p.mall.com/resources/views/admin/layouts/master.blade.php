@@ -40,6 +40,7 @@
             <script src="{{ elixir('js/admin/html5shiv.min.js') }}"></script>
             <script src="{{ elixir('js/admin/respond.min.js') }}"></script>
         <![endif]-->
+        @yield('header-style')
     </head>
 
     <body class="no-skin">
