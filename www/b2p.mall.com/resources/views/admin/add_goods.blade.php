@@ -354,7 +354,7 @@ $(function(){
             }
 
             // 图片id赋值
-            goods_content['images'] = images_id;
+            goods_content['images'] = images_id.toString();
 
             // 获取富文本内容
             goods_content['content'] = goods_detail;
