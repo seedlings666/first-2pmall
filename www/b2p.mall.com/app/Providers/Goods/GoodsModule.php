@@ -5,6 +5,7 @@ use App\Goods;
 use App\Http\Common\Helper;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
@@ -291,7 +292,10 @@ class GoodsModule
         }
         
         //获取图片相关信息,如长宽高大小
-        //Image
+        $img_obj = Image::make($file_full_name);
+        
+        var_dump($img_obj);
+        exit();
         
         //保存图片
         $GoodsImagesModel = App::make('GoodsImagesModel');
@@ -312,6 +316,14 @@ class GoodsModule
         $GoodsImagesModel->url_links = $file_relative_path.$file_name;
         //base64码
         //$GoodsImagesModel->base_code =
+        //图片大小
+        $GoodsImagesModel->size = $file_size;
+        //图片的宽
+        $GoodsImagesModel->width = $file_width;
+        //图片的高
+        $GoodsImagesModel->height = $file_height;
+    
+        $GoodsImagesModel->save();
     }
     
     
