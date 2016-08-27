@@ -82,6 +82,73 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right"> 单品 </label>
+                    <div class="col-sm-2">
+                        <div class="clearfix">
+                            <label class="radio">
+                                <input name="is_single_sku" type="radio" checked class="ace">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 control-label no-padding-right"> 多规格商品 </label>
+                    <div class="col-sm-2">
+                        <div class="clearfix">
+                            <label class="radio">
+                                <input name="is_single_sku" type="radio" class="ace" id="multi_sku">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="multi_sku_box" style="display: none;">
+                    <label class="col-sm-2 control-label no-padding-right"></label>
+                    <div class="col-sm-10">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="center" width="100">sku名称</th>
+                                    <th class="center" width="100">颜色</th>
+                                    <th class="center" width="100">大小</th>
+                                    <th class="center" width="100">商城价格</th>
+                                    <th class="center" width="100">市场价格</th>
+                                    <th class="center" width="100">库存</th>
+                                    <th class="center" width="100">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input class="col-xs-12" type="text" name="sku_name" placeholder="sku名称">
+                                    </td>
+                                    <td>
+                                        <input class="col-xs-12" type="text" name="sku_color" placeholder="颜色">
+                                    </td>
+                                    <td>
+                                        <input class="col-xs-12" type="text" name="sku_size" placeholder="大小">
+                                    </td>
+                                    <td>
+                                        <input class="col-xs-12" type="text" name="sku_price" placeholder="商城价格">
+                                    </td>
+                                    <td>
+                                        <input class="col-xs-12" type="text" name="sku_market_price" placeholder="市场价格">
+                                    </td>
+                                    <td>
+                                        <input class="col-xs-12" type="text" name="sku_stock" placeholder="库存">
+                                    </td>
+                                    <td class="center">
+                                        <a title="新增" class="btn btn-xs btn-success" href="javascript:void(0);" id="add_sku">
+                                            <i class="ace-icon fa fa-plus bigger-120"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right"> 商品图片 </label>
                     <div class="col-sm-10" id="goods_images_box">
                         <div class="form-group col-xs-5">
@@ -135,6 +202,7 @@
 <script src="{{ elixir('js/admin/elements.wysiwyg.js') }}"></script>
 <script>
 $(function(){
+    var goods_content = {};
     $('#validation-form').validate({
         errorElement: 'div',
         errorClass: 'help-block',
@@ -292,6 +360,35 @@ $(function(){
     //     {type: 'image', name: 'name of image', path: 'http://path/to/image/for/preview'},
     //     {type: 'file', name: 'hello.txt'}
     // ]);
+
+    // 多sku
+    $('[name=is_single_sku]').on('change', function(){
+        var status = $(this).prop('checked');
+        var thisId = $(this).attr('id');
+        if(status && thisId == 'multi_sku'){
+            $('#multi_sku_box').show();
+        }else{
+            $('#multi_sku_box').hide();
+        }
+    });
+
+    // 增加sku
+    $('#add_sku').on('click', function(){
+        var sku_name         = $('[name=sku_name]').val();
+        var sku_color        = $('[name=sku_color]').val();
+        var sku_size         = $('[name=sku_size]').val();
+        var sku_price        = $('[name=sku_price]').val();
+        var sku_stock        = $('[name=sku_stock]').val();
+        var sku_market_price = $('[name=sku_market_price]').val();
+
+        var appHt = '<tr><td>'+ sku_name +'</td><td>'+ sku_color +'</td><td>'+ sku_size +'</td><td>'+ sku_price +'</td><td>'+ sku_market_price +'</td><td>'+ sku_stock +'</td><td class="center"><button class="btn btn-xs btn-danger" name="del_sku"><i class="ace-icon fa fa-trash-o bigger-120"></i></button></td></tr>';
+
+        $(this).parents('tr').after(appHt);
+    });
+
+    $('body').on('click', '[name=del_sku]', function(){
+        $(this).parents('tr').remove();
+    });
 });
 </script>
 @stop

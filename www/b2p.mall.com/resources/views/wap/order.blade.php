@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>确认订单</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
         <meta name="format-detection" content="telephone=no" />
         <!-- iphone的私有标签 它指定的iphone中safari顶端的状态条的样式 默认值为default（白色），可以定为black（黑色）和black-translucent（灰色半透明） -->
@@ -72,6 +73,7 @@
         </div>
 
         <script src="{{ elixir('js/jquery.js') }}"></script>
+        <script src="{{ elixir('js/wap/base.js') }}"></script>
         <script src="{{ elixir('js/wap/order.js') }}"></script>
     </body>
 </html>
