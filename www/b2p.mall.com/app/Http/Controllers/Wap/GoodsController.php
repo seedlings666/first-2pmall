@@ -21,6 +21,11 @@ class GoodsController extends Controller
             exit('error!');
         }
         
+        //获取属性跟属性值
+        if(isset($goods_details->goodsSkuList)){
+            
+        }
+        
         return View::make('wap.index')->with($goods_details);
     }
     
