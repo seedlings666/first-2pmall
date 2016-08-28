@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\Goods\GoodsModule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
@@ -285,6 +286,10 @@ class GoodsController extends Controller
         $is_system = Session::get('is_system',0);
         
         $goods_details = (new GoodsModule())->getGoodsDetails($goods_id,$shop_id,$is_system);
+        
+        if(is_array($goods_details) && isset($goods_details['err_code'])){
+            return Redirect::back();
+        }
         
         return View::make('admin.edit_goods')->with($goods_details);
     }
