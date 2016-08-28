@@ -77,39 +77,41 @@ class GoodsController extends Controller
         $data = Input::get('goods_content');
         
         //测试数据
-        $data = array();
-        //$data['goods_name'] = '测试商品名称-'.mt_rand();
-        $data['goods_name'] = '测试商品名称-';
-        $data['goods_desc'] = '商品描述';
-        $data['shop_price'] = '10.00';
-        $data['market_price'] = '20.20';
-        $data['goods_number'] = 100;
-        $data['is_on_sale'] = 1;
-        $data['content'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
-        $data['test'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
-        $data['images'] = 'a,1,2,3,10,11,12,13,21';
-        $data['is_sku'] = 1;
-        $sku_list_tmp = array();
-        $sku_list_tmp[1]['sku_name'] = 'sku名称';
-        $sku_list_tmp[1]['shop_price'] = '10.10';
-        $sku_list_tmp[1]['market_price'] = '20.20';
-        $sku_list_tmp[1]['sku_number'] = '10';
-        $sku_list_tmp[1]['color'] = 'red';
-        $sku_list_tmp[1]['size'] = '10寸';
+//        $data = array();
+//        //$data['goods_name'] = '测试商品名称-'.mt_rand();
+//        $data['goods_name'] = '测试商品名称-';
+//        $data['goods_desc'] = '商品描述';
+//        $data['shop_price'] = '10.00';
+//        $data['market_price'] = '20.20';
+//        $data['goods_number'] = 100;
+//        $data['is_on_sale'] = 1;
+//        $data['content'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
+//        $data['images'] = 'a,1,2,3,10,11,12,13,21';
+//        $data['is_sku'] = 1;
+//        $sku_list_tmp = array();
+//        $sku_list_tmp[1]['sku_name'] = 'sku名称';
+//        $sku_list_tmp[1]['shop_price'] = '10.10';
+//        $sku_list_tmp[1]['market_price'] = '20.20';
+//        $sku_list_tmp[1]['sku_number'] = '10';
+//        $sku_list_tmp[1]['color'] = 'red';
+//        $sku_list_tmp[1]['size'] = '10寸';
+//
+//        $sku_list_tmp[2]['sku_name'] = 'sku名称2';
+//        $sku_list_tmp[2]['shop_price'] = '0.50';
+//        $sku_list_tmp[2]['market_price'] = '0.60';
+//        $sku_list_tmp[2]['sku_number'] = '100';
+//        $sku_list_tmp[2]['color'] = 'blue';
+//        $sku_list_tmp[2]['size'] = '20寸';
+//        $data['sku_list'] = $sku_list_tmp;
 
-        $sku_list_tmp[2]['sku_name'] = 'sku名称2';
-        $sku_list_tmp[2]['shop_price'] = '0.50';
-        $sku_list_tmp[2]['market_price'] = '0.60';
-        $sku_list_tmp[2]['sku_number'] = '100';
-        $sku_list_tmp[2]['color'] = 'blue';
-        $sku_list_tmp[2]['size'] = '20寸';
-        $data['sku_list'] = $sku_list_tmp;
 
-        
         $data = json_encode($data);
         $goods_content = (array)json_decode($data,true);
         $goods_content['shop_id'] = Session::get('shop_id');
-        $goods_content['shop_id'] = 10;
+//        $goods_content['shop_id'] = 10;
+//
+//        echo json_encode($goods_content);
+//        exit();
         
         //开启事务
         DB::beginTransaction();
@@ -126,6 +128,24 @@ class GoodsController extends Controller
         return Response::json($add_response);
     }
     
+    
+    
+    /*
+     * 设置 session
+     * @author  jianwei
+     */
+    public function anySetSession()
+    {
+        $shop_id = Input::get('shop_id',0);
+        $is_system = Input::get('is_system',0);
+        Session::set('shop_id',$shop_id);
+        Session::set('is_system',$is_system);
+        
+        return Response::json([
+            'shop_id'   =>  $shop_id,
+            'is_system' =>  $is_system
+        ]);
+    }
     
     /**
      * 删除商品

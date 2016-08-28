@@ -64,7 +64,7 @@ class GoodsModule
             'content'   =>  ['required','min:0'],
             'is_sku'    =>  ['required','in:0,1'],
             'images'    =>  ['required','string',],
-            'sku_list'    =>  ['required',],
+            'sku_list'    =>  [],
         );
         
         $validate = Validator::make($goods_content,$rule);
@@ -120,7 +120,7 @@ class GoodsModule
         //暂时不判断是否可用
         $update_goods_images_response = $this->updateGoodsImages($goods_images_id_arr,$update_goods_images_condition,$update_goods_images_update);
     
-        $sku_list = $goods_content['sku_list'];
+        $sku_list = isset($goods_content['sku_list']) ? $goods_content['sku_list'] : array();
         
         //处理 sku
         //不为 sku 时,那么生成一条默认 sku 数据到 sku
@@ -150,6 +150,17 @@ class GoodsModule
             
             //循环存储 sku 数据
             foreach($sku_list as $lk=>$lv){
+                
+                if(!isset($lv['sku_name']) ||
+                    !isset($lv['shop_price']) ||
+                    !isset($lv['market_price']) ||
+                    !isset($lv['sku_number']) ||
+                    !isset($lv['color']) ||
+                    !isset($lv['size'])
+                ){
+                    continue;
+                }
+                
                 //创建属性
                 //颜色属性
                 $sku_attr_color = $this->saveGoodsAttrValue($goods_info->id,$goods_color_attr->id,$lv['color']);
