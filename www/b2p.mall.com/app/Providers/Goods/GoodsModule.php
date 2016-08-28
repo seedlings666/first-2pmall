@@ -426,9 +426,9 @@ class GoodsModule
             
             //删除 sku 数据
             if(!empty($new_goods_sku_id)){
-                App::make('GoodsSkuModel')->where('goods_id',$goods_content)->whereNotIn('id',$new_goods_sku_id)->delete();
+                App::make('GoodsSkuModel')->where('goods_id',$goods_info->id)->whereNotIn('id',$new_goods_sku_id)->delete();
             }else {
-                App::make('GoodsSkuModel')->where('goods_id', $goods_content)->delete();
+                App::make('GoodsSkuModel')->where('goods_id', $goods_info->id)->delete();
             }
         }else{
             return Helper::ErrorMessage(10000,'参数错误!');

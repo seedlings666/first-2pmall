@@ -220,7 +220,7 @@ class GoodsController extends Controller
         //以 json 格式
         $data = Input::get('goods_content');
     
-//        //测试数据
+        //测试数据
 //        $data = array();
 //        $data['goods_name'] = '测试商品名称-'.mt_rand();
 //        //$data['goods_name'] = '测试商品名称-';
@@ -254,7 +254,7 @@ class GoodsController extends Controller
         $data = json_encode($data);
         $goods_content = (array)json_decode($data,true);
         $goods_content['shop_id'] = Session::get('shop_id');
-        //$goods_content['shop_id'] = 10;
+//        $goods_content['shop_id'] = 10;
 //
 //        echo json_encode($goods_content);
 //        exit();
