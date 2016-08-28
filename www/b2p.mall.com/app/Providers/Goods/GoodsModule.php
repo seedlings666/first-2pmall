@@ -170,6 +170,8 @@ class GoodsModule
                 //判断是否已经存在此 sku
                 //如果存在,那么更新数据,不判断 err_code
                 $sku_info = $this->getSkuByAttr($goods_info->id,$sku_attr_color->id,$sku_attr_size->id);
+    
+                $is_on_sale = isset($lv['is_on_sale']) && in_array($lv['is_on_sale'],[0,1]) ? $lv['is_on_sale'] : 1;
                 
                 if(isset($sku_info->id)){
                     //$sku_info->goods_id = $goods_info->id;
@@ -179,6 +181,9 @@ class GoodsModule
                     $sku_info->sku_number = $goods_info->sku_number;
                     $sku_info->sku_attr_1 = $sku_attr_color->id;
                     $sku_info->sku_attr_2 = $sku_attr_size->id;
+                    
+                    //是否上下架,默认上架
+                    $sku_info->in_on_sale = $is_on_sale;
                     
                     //直接修改
                     $sku_info->save();
@@ -192,7 +197,7 @@ class GoodsModule
                     $goods_sku_tmp['sku_number'] = $lv['sku_number'];
                     $goods_sku_tmp['sku_attr_1'] = $sku_attr_color->id;
                     $goods_sku_tmp['sku_attr_2'] = $sku_attr_size->id;
-    
+                    $goods_sku_tmp['is_on_sale'] = $is_on_sale;
     
                     $add_sku_arr[] = $goods_sku_tmp;
                     $save_goods_sku_response[] = $goods_sku_tmp;

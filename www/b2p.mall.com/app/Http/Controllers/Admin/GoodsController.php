@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Goods;
 use App\Http\Controllers\Controller;
 use App\Providers\Goods\GoodsModule;
 use Illuminate\Support\Facades\DB;
@@ -87,7 +86,7 @@ class GoodsController extends Controller
         $data['goods_number'] = 100;
         $data['is_on_sale'] = 1;
         $data['content'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
-        $data['images'] = 'a,1,2,3,10,11,12,13,21,22';
+        $data['images'] = 'a,1,2,3,10,11,12,13,21,22,23';
         $data['is_sku'] = 1;
         $sku_list_tmp = array();
         $sku_list_tmp[1]['sku_name'] = 'sku名称';
@@ -96,6 +95,7 @@ class GoodsController extends Controller
         $sku_list_tmp[1]['sku_number'] = '10';
         $sku_list_tmp[1]['color'] = 'red';
         $sku_list_tmp[1]['size'] = '10寸';
+        $sku_list_tmp[1]['is_on_sale'] = 0;
 
         $sku_list_tmp[2]['sku_name'] = 'sku名称2';
         $sku_list_tmp[2]['shop_price'] = '0.50';
@@ -103,6 +103,7 @@ class GoodsController extends Controller
         $sku_list_tmp[2]['sku_number'] = '100';
         $sku_list_tmp[2]['color'] = 'blue';
         $sku_list_tmp[2]['size'] = '20寸';
+        $sku_list_tmp[2]['is_on_sale'] = 1;
         $data['sku_list'] = $sku_list_tmp;
 
 
@@ -183,5 +184,23 @@ class GoodsController extends Controller
         $goods_info = (new GoodsModule())->getGoodsDetails($goods_id,$shop_id,$is_system);
         
         return Response::json($goods_info);
+    }
+    
+    /**
+     * 删除商品图片
+     * @author  jianwei
+     */
+    public function anyDelGoodsImage()
+    {
+        //图片 id
+        $image_id = Input::get('image_id',0);
+        
+        //商品 id
+        $goods_id = Input::get('goods_id',0);
+        
+        //店铺 id
+        $shop_id = Input::get('shop_id',0);
+        
+        
     }
 }
