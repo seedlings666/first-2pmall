@@ -36,9 +36,15 @@
 }
 
 .order_content_box{
-    background: #fff;
     font-size: 12px;
     color: #525252;
+
+    li{
+        position: relative;
+        background: #fff;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
 
     .order_time{
         padding: 10px;
@@ -119,14 +125,49 @@
         }
 
         a{
-            background: #666;
+            background: #9a9a9a;
             color: #fff;
             padding: 5px;
-            margin-right: 5px;
+            margin-right: 2px;
 
             &:last-child{
                 margin-right: 0;
             }
+
+            &.share_pt{
+                background: #5c7dce;
+            }
+
+            &.join_pt{
+                background: #739af9;
+            }
+
+            &.go_to_buy{
+                background: #ff2f9f;
+            }
         }
+    }
+
+    .is_over{
+        position: absolute;
+        top: 22px;
+        right: -20px;
+        width: 100px;
+        background: #e5e5e5;
+        transform: rotate(45deg);
+        text-align: center;
+        box-shadow: 1px 1px 6px rgba(0,0,0,.5);
+    }
+
+    .backtrack_money{
+        position: absolute;
+        top: 40px;
+        right: -30px;
+        width: 150px;
+        background: #ff7373;
+        color: #fff;
+        transform: rotate(45deg);
+        text-align: center;
+        box-shadow: 1px 1px 6px rgba(0,0,0,.5);
     }
 }
