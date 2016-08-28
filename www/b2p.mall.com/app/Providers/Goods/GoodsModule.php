@@ -872,6 +872,10 @@ class GoodsModule
             return $goods_details;
         }
         
+        if($is_system != 1 && $goods_details->shop_id != $shop_id){
+            return Helper::ErrorMessage(50006,'不得查看其他店铺的商品!');
+        }
+        
         //获取商品图片
         $goods_images_list = $this->getGoodsImagesByGoodsId($goods_id);
     
