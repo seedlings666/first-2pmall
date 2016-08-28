@@ -80,7 +80,7 @@ class GoodsModule
         
         //查询商品图片是否存在
         $goods_images_condition = array();
-//        $goods_images_condition['goods_id'] = 0;
+        $goods_images_condition['goods_id'] = 0;
         $goods_images_list = $this->getImagesByIds($goods_images_id,$goods_images_condition);
         if(is_array($goods_images_list) && isset($goods_images_list['err_code'])){
             return $goods_images_list;
@@ -90,7 +90,7 @@ class GoodsModule
         $goods_images_id_arr = array_column($goods_images_list->toArray(),'id','id');
         
         //检查是否已经有同样的商品名称
-        $check_goods = $this->getGoodsByName($goods_content['goods_name'],['id','goods_name']);
+        $check_goods = $this->getGoodsByName($goods_content['shop_id'],$goods_content['goods_name'],['id','goods_name']);
         
         if(is_array($check_goods) && isset($check_goods['err_code'])){
             return $check_goods;
@@ -438,6 +438,7 @@ class GoodsModule
     public function createGoods(array $data = [])
     {
         $rule = array(
+            'shop_id'  =>  ['required','integer','min:0'],
             'goods_name'  =>  ['required','string','min:2'],
             'goods_desc'  =>  ['required','string','min:2','max:150'],
             'shop_price'  =>  ['required','numeric','min:0'],
@@ -472,15 +473,17 @@ class GoodsModule
      * 通过一个商品名称,获取一个商品
      * @author  jianwei
      */
-    public function getGoodsByName($goods_name,array $select_columns = [],array $relatives = [])
+    public function getGoodsByName($shop_id,$goods_name,array $select_columns = [],array $relatives = [])
     {
-        if(!is_string($goods_name) || empty($goods_name)){
+        if(!is_string($goods_name) || empty($goods_name) || !is_numeric($shop_id) || $shop_id < 1){
             return Helper::ErrorMessage(10000,'参数错误!',array());
         }
         
         $GoodsModel = App::make('GoodsModel');
     
         $goods_obj = $GoodsModel->select($select_columns);
+        
+        $goods_obj->where('shop_id',$shop_id);
     
         $goods_obj->where('goods_name',$goods_name);
         
