@@ -292,6 +292,10 @@ class GoodsModule
             return Helper::ErrorMessage(50007,'没找到任何商品!');
         }
         
+        if($goods_info->shop_id != $goods_content['shop_id']){
+            return Helper::ErrorMessage(50003,'不得修改其他店铺的商品!');
+        }
+        
         if($goods_info->is_sku != $goods_content['is_sku']){
             return Helper::ErrorMessage(50008,'商品不得转换单品与多规格属性!');
         }
