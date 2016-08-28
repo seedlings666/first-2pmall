@@ -52,6 +52,7 @@ return array(
     'CreateOrderTable' => $baseDir . '/database/migrations/2016_08_24_134815_create_order_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreatePaySnTable' => $baseDir . '/database/migrations/2016_08_25_155055_create_pay_sn_table.php',
+    'CreatePaySnTmpTable' => $baseDir . '/database/migrations/2016_08_28_164239_create_pay_sn_tmp_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'Cron\\AbstractField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/AbstractField.php',
     'Cron\\CronExpression' => $vendorDir . '/mtdowling/cron-expression/src/Cron/CronExpression.php',
