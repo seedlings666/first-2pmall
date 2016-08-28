@@ -12,7 +12,7 @@ class Goods extends Model
     use SoftDeletes;
     
     //设置表名
-    public $table = 'goods';
+    public $table = 'zo_goods';
     
     /************************************自动封装*****************************/
     /**

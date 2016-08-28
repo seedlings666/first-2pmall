@@ -12,6 +12,6 @@ class GoodsImages extends Model
     use SoftDeletes;
     
     //设置表名
-    public $table = 'goods_images';
+    public $table = 'zo_goods_images';
     
 }
