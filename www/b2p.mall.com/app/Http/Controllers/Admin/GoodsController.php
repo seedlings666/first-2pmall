@@ -126,4 +126,24 @@ class GoodsController extends Controller
         return Response::json($add_response);
     }
     
+    
+    /**
+     * 删除商品
+     * @author  jianwei
+     */
+    public function anyDelete()
+    {
+        //店铺 id
+        $shop_id = Session::get('shop_id',0);
+        
+        //是否系统管理员
+        $is_system = Session::get('is_system',0);
+        
+        $goods_id = Input::get('goods_id',0);
+        
+        $del_response = (new GoodsModule())-> delGoods($shop_id,$goods_id,$is_system);
+        
+        return Response::json($del_response);
+    }
+    
 }

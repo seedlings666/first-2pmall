@@ -672,6 +672,16 @@ class GoodsModule
     }
     
     
-    
+    /**
+     * 根据商品 id 以及店铺 id 删除商品
+     * @author  jianwei
+     * @param   $shop_id    int 店铺 id
+     * @param   $goods_id   int 商品 id
+     * @param   $is_system  int 是否系统用户
+     */
+    public function delGoods($shop_id,$goods_id,$is_system)
+    {
+        
+    }
     
 }
