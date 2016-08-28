@@ -21,21 +21,15 @@
     <body>
         <div class="main_warp slider_box" id="slider_wrapper">
             <ul>
-                <li>
-                    <a href="###">
-                        <img src="{{asset('images/pic1.jpg')}}" alt="">
-                    </a>
-                </li>
-                <li>
-                    <a href="###">
-                        <img src="{{asset('images/pic2.jpg')}}" alt="">
-                    </a>
-                </li>
-                <li>
-                    <a href="###">
-                        <img src="{{asset('images/pic3.jpg')}}" alt="">
-                    </a>
-                </li>
+                @if(isset($goods_images) && is_array($goods_images) && count($goods_images) > 0)
+                    @foreach($goods_images as $sk=>$sv)
+                        <li>
+                            <a href="###">
+                                <img src="{{ $sv['url_links'] }}" alt="{{ $sv['file_name'] }}">
+                            </a>
+                        </li>
+                    @endforeach
+                @endif
             </ul>
             <div class="dot">
                 <span class="cur"></span>
@@ -48,12 +42,12 @@
             <h1>商品名称商品名称商品名称商品名称</h1>
             <p class="gd_introduction">商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介</p>
             <div class="goods_price_box">
-                <span class="now_price">&yen;<strong>88</strong></span>
-                <del>&yen;115</del>(市场价)
+                <span class="now_price">&yen;<strong>{{ $goods_details['shop_price'] }}</strong></span>
+                <del>&yen;{{ $goods_details['market_price'] }}</del>(市场价)
             </div>
 
             <div class="goods_sales_box">
-                累计销量：365件
+                库存：{{ $goods_details['goods_number'] }}件
             </div>
 
             <div class="goods_sku_box" id="sku_box" data-url="###">
@@ -70,8 +64,11 @@
                     <span>图文详情</span>
                 </div>
                 <div class="pd_detail">
+                    <!--
                     <p>这里是图片文字文字说明</p>
                     <img src="{{asset('images/goods_img.jpg')}}">
+                    -->
+                    {{ $goods_details['content'] }}
                 </div>
             </div>
         </div>
