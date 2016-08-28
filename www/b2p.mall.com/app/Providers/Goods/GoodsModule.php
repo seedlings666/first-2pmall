@@ -228,11 +228,18 @@ class GoodsModule
      */
     public function handleGoods($goods_id)
     {
+        
+        //当所有 sku 都下架以后,强制整个商品下架
+        $check_goods_on_sale = "UPDATE zo_goods AS G ,(SELECT SUM(is_on_sale) AS total,goods_id FROM zo_goods_sku WHERE goods_id = '{$goods_id}' AND deleted_at is null) AS S SET G.is_on_sale = CASE WHEN S.total > 0 THEN 1 ELSE 0 END WHERE G.id = '{$goods_id}' AND G.id = S.goods_id AND G.deleted_at is null";
+        
+        echo $check_goods_on_sale;
+        exit();
+        
         //处理最低商品购买价
-        $handle_buy_price_sql = 'UPDATE zo_goods AS G,(SELECT id,goods_id,shop_price,market_price FROM zo_goods_sku WHERE goods_id = '.$goods_id.' ORDER BY shop_price ASC LIMIT 1) AS S SET G.shop_price = S.shop_price,G.market_price=S.market_price WHERE G.id = '.$goods_id.' AND S.goods_id = G.id;';
+        $handle_buy_price_sql = 'UPDATE zo_goods AS G,(SELECT id,goods_id,shop_price,market_price FROM zo_goods_sku WHERE goods_id = '.$goods_id.' AND is_on_sale = 1 ORDER BY shop_price ASC LIMIT 1) AS S SET G.shop_price = S.shop_price,G.market_price=S.market_price WHERE G.id = '.$goods_id.' AND S.goods_id = G.id;';
         
         //处理商品总库存
-        $handle_goods_number = 'UPDATE zo_goods AS G,(SELECT SUM(sku_number) AS all_number,goods_id FROM zo_goods_sku WHERE goods_id = '.$goods_id.') AS S SET G.goods_number = S.all_number WHERE G.id = '.$goods_id.' AND S.goods_id = G.id;';
+        $handle_goods_number = 'UPDATE zo_goods AS G,(SELECT SUM(sku_number) AS all_number,goods_id FROM zo_goods_sku WHERE goods_id = '.$goods_id.' AND is_on_sale = 1) AS S SET G.goods_number = S.all_number WHERE G.id = '.$goods_id.' AND S.goods_id = G.id;';
         
         DB::update($handle_buy_price_sql);
         DB::update($handle_goods_number);
