@@ -1182,9 +1182,15 @@ class GoodsModule
                 
                         //现阶段,sku_attr_1为 color 属性,sku_attr_2为 size 属性
                         //if('sku_attr_1' == $tk){
+                        $sku_tmp['sku_attr_list'][$tk]['id'] = $goods_attr_value->id;
                         $sku_tmp['sku_attr_list'][$tk]['attr_name'] = $goods_attr_value->GoodsAttr->attr_name;
                         $sku_tmp['sku_attr_list'][$tk]['attr_value'] = $goods_attr_value->value_name;
                         //}
+                        if('sku_attr_1' == $tk) {
+                            $sku_tmp['color'] = $goods_attr_value->value_name;
+                        }else if('sku_attr_2' == $tk){
+                            $sku_tmp['size'] = $goods_attr_value->value_name;
+                        }
                     }
                 }
         

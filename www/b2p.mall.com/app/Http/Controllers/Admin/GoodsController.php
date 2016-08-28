@@ -273,4 +273,19 @@ class GoodsController extends Controller
     
         return Response::json($add_response);
     }
+    
+    /**
+     * 修改页面
+     * @author  jianwei
+     */
+    public function getEdit($goods_id)
+    {
+        $shop_id = Session::get('shop_id',0);
+        
+        $is_system = Session::get('is_system',0);
+        
+        $goods_details = (new GoodsModule())->getGoodsDetails($goods_id,$shop_id,$is_system);
+        
+        return View::make('admin.edit_goods')->with($goods_details);
+    }
 }
