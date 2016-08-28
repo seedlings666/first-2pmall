@@ -334,12 +334,10 @@ $(function(){
             //console.log(is_single_sku);
 
             // 确保图片不为空
-            /*
             if(images_id.length == 0){
                 alert('请上传商品图片至少一张！');
                 return false;
             }
-            */
 
             // 循环把表单数据转为json格式
             $.each(data, function (ix) {
@@ -348,16 +346,9 @@ $(function(){
 
             // 判断是否上架
             if($('[name=is_sell]').prop('checked')){
-                //goods_content['is_sell'] = 1;
                 goods_content['is_on_sale'] = 1;
             }else{
-                //goods_content['is_sell'] = 0;
                 goods_content['is_on_sale'] = 0;
-            }
-
-            // 判断是否为多规格商品
-            if($('#multi_sku').prop('checked')){
-                goods_content['sku_list'] = sku_tmp_data;
             }
 
             // 图片id赋值
@@ -369,7 +360,11 @@ $(function(){
             //数据库中0是单品,1是多 sku
             goods_content['is_sku'] = is_single_sku == 1 ? 0 : 1;
 
-            console.log(goods_content);
+            // 判断是否为多规格商品
+            if(goods_content['is_sku']){
+                goods_content['sku_list'] = sku_tmp_data;
+            }
+
             var a = {};
             a['goods_content'] = goods_content;
             // 提交数据
@@ -379,10 +374,12 @@ $(function(){
                 data: a
             })
             .done(function(json){
-                console.log('success', json);
+                alert('新建商品成功！')
+                window.location.href = "{{ url('/admin/goods') }}";
             })
             .fail(function(re){
-                console.log('fail', re)
+                alert(re.msg);
+                console.log('fail', re);
             });
             return false;
         },
@@ -431,11 +428,11 @@ $(function(){
 
     function showErrorAlert (reason, detail) {
         var msg='';
-        if (reason==='unsupported-file-type') { msg = "Unsupported format " + detail; }
+        if (reason==='unsupported-file-type') { msg = "不支持的格式 " + detail; }
         else {
             console.log("error uploading file", reason, detail);
         }
-        $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+'<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
+        $('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>'+'<strong>文件上传错误！</strong> '+msg+' </div>').prependTo('#alerts');
     }
 
     // 多sku
@@ -536,7 +533,7 @@ $(function(){
         previewTemplate: $('#preview-template').html(),
         thumbnailHeight: 120,
         thumbnailWidth: 120,
-        maxFilesize: 1,
+        maxFilesize: 100,
         addRemoveLinks : true,
         dictRemoveFile: '删除图片',
         dictDefaultMessage :
@@ -560,8 +557,12 @@ $(function(){
         init: function () {
             this.on('success',function(arg1, arg2){
                 if(arg2){
-                    console.log(arg2);
+                    images_id.push(arg2.id);
                 }
+            });
+            this.on('removedfile', function(arg){
+                var data = $.parseJSON(arg.xhr.response);
+                images_id.splice($.inArray(data.id, images_id), 1);
             });
         }
     });

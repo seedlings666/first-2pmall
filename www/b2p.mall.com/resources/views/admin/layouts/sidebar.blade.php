@@ -1,6 +1,6 @@
 <div class="sidebar-shortcuts" id="sidebar-shortcuts">
     <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-        <a href="{{ url('/admin') }}" class="btn btn-success">
+        <a href="{{ url('/admin/goods') }}" class="btn btn-success">
             <i class="ace-icon fa fa-inbox"></i>
         </a>
 
@@ -33,7 +33,7 @@
 
 <ul class="nav nav-list">
     <li class="{{ Request::path() == 'admin/goods' ? 'active' : '' }}">
-        <a href="{{ url('/admin') }}">
+        <a href="{{ url('/admin/goods') }}">
             <i class="menu-icon fa fa-inbox"></i>
             <span class="menu-text"> 商品管理 </span>
         </a>
