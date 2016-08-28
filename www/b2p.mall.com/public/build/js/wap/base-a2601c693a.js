@@ -1,1 +1,0 @@
-!function(e,t){e.ajaxSetup({headers:{"X-CSRF-TOKEN":e('meta[name="csrf-token"]').attr("content")}})}(jQuery);
