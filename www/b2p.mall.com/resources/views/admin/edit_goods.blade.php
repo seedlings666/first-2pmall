@@ -273,6 +273,9 @@ $(function(){
     // 保存图片id
     var images_id = [];
 
+    // 服务器图片数据
+    // var serviceImages = {{ $goods_images }};
+
     $('#validation-form').validate({
         errorElement: 'div',
         errorClass: 'help-block',
@@ -582,6 +585,10 @@ $(function(){
             });
         }
     });
+
+    // 服务器图片显示
+    // myDropzone.emit('addedfile', serviceImages);
+    // myDropzone.emit("thumbnail", serviceImages, "/image/url");
 });
 </script>
 @stop
