@@ -9,21 +9,20 @@
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the controller to call when that URI is requested.
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-
 // 移动端
-Route::group(['prefix' => 'wap','namespace'=>'Wap'], function () {
+Route::group(['prefix' => 'wap', 'namespace' => 'Wap'], function () {
     Route::get('/', function () {
         return view('wap.index');
     });
 
     //商品模块控制器
-    Route::controller('/goods','GoodsController');
+    Route::controller('/goods', 'GoodsController');
 
     Route::get('/user', function () {
         return view('wap.userInfo');
@@ -36,6 +35,11 @@ Route::group(['prefix' => 'wap','namespace'=>'Wap'], function () {
     Route::get('/order/list', function () {
         return view('wap.orderList');
     });
+
+    //拼团支付
+    Route::get('/group/pay', 'BuyController@getPay');
+    //创建拼团订单
+    Route::any('/group/order/{type}', 'BuyController@createOrder');
 });
 
 // 管理后台
@@ -68,10 +72,10 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
     Route::get('/order_statistical', function() {
         return view('admin.order_statistical');
     });
-    Route::get('/user', function() {
+    Route::get('/user', function () {
         return view('admin.user');
     });
-    Route::get('/competence', function() {
+    Route::get('/competence', function () {
         return view('admin.competence');
     });
 });

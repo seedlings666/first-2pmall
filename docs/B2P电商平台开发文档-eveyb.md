@@ -21,9 +21,6 @@
 > plan B:
 > 生成拼团订单时创建两个pay_sn第一个由拼团第一人支付，第二个用于拼团第二人发起支付，存在pay_sn在发起微信支付时是否可以，针对不同用户openid，需要验证。
 
-### 创建订单
-** 功能描述 **
-
 
 ### 订单支付
 ** 功能描述 **
@@ -32,6 +29,23 @@
 1. 如果A用户是创建拼团的第一人时，A用户需要全额付款，等待第二人参与拼团成功后，通过微信返回优惠金额至微信用户账号中
 2. 如果B用户是创建拼团的第二人时，B用户直接支付的是拼团优惠金额，未有返还优惠金额后续流程
 > 当拼团第二人支付完成后，需要触发返还拼团第一人的优惠金额操作。
+
+
+### 创建订单
+** 功能描述 **
+
+** 实现方案 **
+
+```php
+// $input_data传入group_id的话则代表是加入拼团如果未传入则是创建拼团
+$input_date['group_id'] = 801003;
+$input_date['user_id'] = 277;
+$input_date['sku_id'] = 666;
+//如果传入group_id但是判断拼团已结束，则返回err_code提示该拼团已经结束，前端需要做判断选择是否新建拼团
+//如果是创建拼团时，首先要生成pay_sn去支付，支付成功回调后才生成订单，同时生成第拼团第二单pay_sn
+//如果是拼团第二单则在拉取支付前，则使用生成的拼团第二单pay_sn进行支付，并且缓存锁定该团不允许其它用户再加入该团
+$res = Order::joinGroup($input_date);
+```
 
 
 ### 分享
@@ -112,6 +126,7 @@ Create Table: CREATE TABLE `zo_pay_sn` (
 Create Table: CREATE TABLE `zo_order_goods` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单id',
+  `store_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺id',
   `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品id',
   `sku_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'skuid',
   `goods_number` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品购买数量',
