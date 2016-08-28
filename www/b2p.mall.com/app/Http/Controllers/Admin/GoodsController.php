@@ -201,6 +201,6 @@ class GoodsController extends Controller
         //店铺 id
         $shop_id = Input::get('shop_id',0);
         
-        
+//        $del_image_response = (new GoodsModule())->del
     }
 }
