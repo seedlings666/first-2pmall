@@ -1,1 +1,0 @@
-"use strict";var order_list={init:function(){this.tabSwitch()},tabSwitch:function(){$("#order_tab li").on("click",function(){$(this).addClass("on").siblings("li").removeClass("on")})}};$(function(){order_list.init()});

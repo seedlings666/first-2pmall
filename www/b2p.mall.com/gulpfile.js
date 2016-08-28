@@ -20,10 +20,12 @@ elixir(function(mix) {
 
         // 处理js
         .scripts('jquery.js', 'public/js/jquery.js')
+        .scripts('wap/base.js', 'public/js/wap/base.js')
         .scripts('wap/swipeSlide.min.js', 'public/js/wap/swipeSlide.js')
         .scripts('wap/order.js', 'public/js/wap/order.js')
         .scripts('wap/userInfo.js', 'public/js/wap/userInfo.js')
         .scripts('wap/orderList.js', 'public/js/wap/orderList.js')
+        .scripts('wap/detail.js', 'public/js/wap/detail.js')
         .scripts('admin/ace-extra.js', 'public/js/admin/ace-extra.js')
         .scripts('admin/ace-elements.js', 'public/js/admin/ace-elements.js')
         .scripts('admin/tree.js', 'public/js/admin/tree.js')
@@ -35,6 +37,8 @@ elixir(function(mix) {
         .scripts('admin/jquery.easypiechart.js', 'public/js/admin/jquery.easypiechart.js')
         .scripts('admin/jquery.ui.touch-punch.js', 'public/js/admin/jquery.ui.touch-punch.js')
         .scripts('admin/jquery.sparkline/index.js', 'public/js/admin/sparkline.js')
+        .scripts('admin/jquery-validation/jquery.validate.js', 'public/js/admin/jquery.validate.js')
+        .scripts('admin/jquery-validation/additional-methods.js', 'public/js/admin/additional-methods.js')
         .scripts('admin/jquery.flot.js', 'public/js/admin/jquery.flot.js')
         .scripts('admin/jquery.flot.pie.js', 'public/js/admin/jquery.flot.pie.js')
         .scripts('admin/jquery.flot.time.js', 'public/js/admin/jquery.flot.time.js')
@@ -70,6 +74,11 @@ elixir(function(mix) {
         .scripts('admin/css.js', 'public/js/admin/css.js')
         .scripts('admin/generic.js', 'public/js/admin/generic.js')
         .scripts('admin/javascript.js', 'public/js/admin/javascript.js')
+        .scripts('admin/bootstrap-wysiwyg/bootstrap-wysiwyg.js', 'public/js/admin/bootstrap-wysiwyg.js')
+        .scripts('admin/jquery.hotkeys/index.js', 'public/js/admin/jquery.hotkeys.js')
+        .scripts('admin/bootbox/bootbox.js', 'public/js/admin/bootbox.js')
+        .scripts('admin/jqueryui-touch-punch/jquery.ui.touch-punch.js', 'public/js/admin/jquery.ui.touch-punch.js')
+        .scripts('admin/dropzone.js', 'public/js/admin/dropzone.js')
 
         // 处理css、sass
         .styles('wap/base.css', 'public/css/wap')
@@ -78,6 +87,7 @@ elixir(function(mix) {
         .sass('wap/userInfo.scss', 'public/css/wap')
         .sass('wap/orderList.scss', 'public/css/wap')
         .styles('admin/ace.css', 'public/css/admin')
+        .styles('admin/dropzone.css', 'public/css/admin')
         .styles('admin/ace.onpage-help.css', 'public/css/admin')
         .styles('admin/ace-fonts.css', 'public/css/admin')
         .styles('admin/ace-ie.css', 'public/css/admin')
@@ -95,10 +105,12 @@ elixir(function(mix) {
             'js/jquery.js',
 
             // wap js
+            'js/wap/base.js',
             'js/wap/swipeSlide.js',
             'js/wap/userInfo.js',
             'js/wap/order.js',
             'js/wap/orderList.js',
+            'js/wap/detail.js',
 
             // admin js
             'js/admin/ace-extra.js',
@@ -107,6 +119,7 @@ elixir(function(mix) {
             'js/admin/jquery.mobile.custom.js',
             'js/admin/bootstrap.js',
             'js/admin/jquery-ui.custom.js',
+            'js/admin/jquery.ui.touch-punch.js',
             'js/admin/jquery.easypiechart.js',
             'js/admin/jquery.ui.touch-punch.js',
             'js/admin/sparkline.js',
@@ -115,6 +128,8 @@ elixir(function(mix) {
             'js/admin/jquery.flot.time.js',
             'js/admin/jquery.flot.resize.js',
             'js/admin/jquery.flot.axislabels.js',
+            'js/admin/jquery.validate.js',
+            'js/admin/additional-methods.js',
             'js/admin/elements.scroller.js',
             'js/admin/elements.colorpicker.js',
             'js/admin/elements.fileinput.js',
@@ -147,6 +162,10 @@ elixir(function(mix) {
             'js/admin/generic.js',
             'js/admin/ace-elements.js',
             'js/admin/tree.js',
+            'js/admin/bootstrap-wysiwyg.js',
+            'js/admin/jquery.hotkeys.js',
+            'js/admin/bootbox.js',
+            'js/admin/dropzone.js',
 
             // wap css
             'css/wap/base.css',
@@ -157,6 +176,7 @@ elixir(function(mix) {
 
             // admin css
             'css/admin/ace.css',
+            'css/admin/dropzone.css',
             'css/admin/ace.onpage-help.css',
             'css/admin/ace-fonts.css',
             'css/admin/ace-ie.css',

@@ -22,104 +22,104 @@
 			'font' : {
 				values:['Arial', 'Courier', 'Comic Sans MS', 'Helvetica', 'Open Sans', 'Tahoma', 'Verdana'],
 				icon:'fa fa-font',
-				title:'Font'
+				title:'字体'
 			},
 			'fontSize' : {
 				values:{5:'Huge', 3:'Normal', 1:'Small'},
 				icon:'fa fa-text-height',
-				title:'Font Size'
+				title:'字体大小'
 			},
 			'bold' : {
 				icon : 'fa fa-bold',
-				title : 'Bold (Ctrl/Cmd+B)'
+				title : '粗体 (Ctrl/Cmd+B)'
 			},
 			'italic' : {
 				icon : 'fa fa-italic',
-				title : 'Italic (Ctrl/Cmd+I)'
+				title : '斜体 (Ctrl/Cmd+I)'
 			},
 			'strikethrough' : {
 				icon : 'fa fa-strikethrough',
-				title : 'Strikethrough'
+				title : '删除线'
 			},
 			'underline' : {
 				icon : 'fa fa-underline',
-				title : 'Underline'
+				title : '强调线'
 			},
 			'insertunorderedlist' : {
 				icon : 'fa fa-list-ul',
-				title : 'Bullet list'
+				title : '符号列表'
 			},
 			'insertorderedlist' : {
 				icon : 'fa fa-list-ol',
-				title : 'Number list'
+				title : '数字列表'
 			},
 			'outdent' : {
 				icon : 'fa fa-outdent',
-				title : 'Reduce indent (Shift+Tab)'
+				title : '减少缩进 (Shift+Tab)'
 			},
 			'indent' : {
 				icon : 'fa fa-indent',
-				title : 'Indent (Tab)'
+				title : '缩进 (Tab)'
 			},
 			'justifyleft' : {
 				icon : 'fa fa-align-left',
-				title : 'Align Left (Ctrl/Cmd+L)'
+				title : '居左 (Ctrl/Cmd+L)'
 			},
 			'justifycenter' : {
 				icon : 'fa fa-align-center',
-				title : 'Center (Ctrl/Cmd+E)'
+				title : '居中 (Ctrl/Cmd+E)'
 			},
 			'justifyright' : {
 				icon : 'fa fa-align-right',
-				title : 'Align Right (Ctrl/Cmd+R)'
+				title : '居右 (Ctrl/Cmd+R)'
 			},
 			'justifyfull' : {
 				icon : 'fa fa-align-justify',
-				title : 'Justify (Ctrl/Cmd+J)'
+				title : '两边对齐 (Ctrl/Cmd+J)'
 			},
 			'createLink' : {
 				icon : 'fa fa-link',
-				title : 'Hyperlink',
+				title : '超链接',
 				button_text : 'Add',
 				placeholder : 'URL',
 				button_class : 'btn-primary'
 			},
 			'unlink' : {
 				icon : 'fa fa-chain-broken',
-				title : 'Remove Hyperlink'
+				title : '移除超链接'
 			},
 			'insertImage' : {
 				icon : 'fa fa-picture-o',
-				title : 'Insert picture',
-				button_text : '<i class="'+ ace.vars['icon'] + 'fa fa-file"></i> Choose Image &hellip;',
-				placeholder : 'Image URL',
-				button_insert : 'Insert',
+				title : '插入图片',
+				button_text : '<i class="'+ ace.vars['icon'] + 'fa fa-file"></i> 选择图片',
+				placeholder : '图片地址',
+				button_insert : '插入',
 				button_class : 'btn-success',
 				button_insert_class : 'btn-primary',
 				choose_file: true //show the choose file button?
 			},
 			'foreColor' : {
 				values : color_values,
-				title : 'Change Color'
+				title : '颜色'
 			},
 			'backColor' : {
 				values : color_values,
-				title : 'Change Background Color'
+				title : '更改背景颜色'
 			},
 			'undo' : {
 				icon : 'fa fa-undo',
-				title : 'Undo (Ctrl/Cmd+Z)'
+				title : '撤销 (Ctrl/Cmd+Z)'
 			},
 			'redo' : {
 				icon : 'fa fa-repeat',
-				title : 'Redo (Ctrl/Cmd+Y)'
+				title : '恢复 (Ctrl/Cmd+Y)'
 			},
 			'viewSource' : {
 				icon : 'fa fa-code',
-				title : 'View Source'
+				title : '查看源码'
 			}
 		}
-		
+
 		var toolbar_buttons =
 		options.toolbar ||
 		[
