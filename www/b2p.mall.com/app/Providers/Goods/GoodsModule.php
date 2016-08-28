@@ -30,6 +30,10 @@ class GoodsModule
         $select_column = ['*'];
         
         $goods_obj = $GoodsModel->select($select_column);
+        
+        if(isset($condition['shop_id'])){
+            $goods_obj->where('shop_id',$condition['shop_id']);
+        }
     
         //商品名称模糊匹配
         if(!empty($condition['goods_name'])) {
@@ -563,7 +567,7 @@ class GoodsModule
      */
     public function goodsImageUpload($goods_id,$image_file)
     {
-        if(!is_numeric($goods_id) || $goods_id < 1){
+        if(!is_numeric($goods_id) || $goods_id < 0){
            return Helper::ErrorMessage(10000,'参数错误!');
         }
         
@@ -644,7 +648,8 @@ class GoodsModule
         //url 访问的相对路径
         $GoodsImagesModel->url_links = $file_relative_path.$file_name;
         //base64码
-        $GoodsImagesModel->base_code = base64_encode(file_get_contents($file_full_name));
+        //$GoodsImagesModel->base_code = base64_encode(file_get_contents($file_full_name));
+        $GoodsImagesModel->base_code = '';
         //图片大小
         $GoodsImagesModel->size = $file_size;
         //图片的宽

@@ -21,6 +21,20 @@ class GoodsController extends Controller
     {
         $condition = Input::get();
         
+        //是否系统管理员,当为系统管理员,则忽略查询 shop_id 条件
+        $is_system = Session::get('is_system');
+        
+        //商品 id
+        $shop_id = Session::get('shop_id',0);
+        
+        if($is_system != 1){
+            $condition['shop_id'] = $shop_id;
+        }else{
+            if(isset($condition['shop_id'])){
+                unset($condition['shop_id']);
+            }
+        }
+        
         $goods_list = (new GoodsModule())->goodsList($condition);
         
         return View::make('admin.index')->with('goods_list',$goods_list);
@@ -35,7 +49,7 @@ class GoodsController extends Controller
         $file = Input::file('file');
         //检验文件是否有效
     
-        $goods_id = Input::get('goods_id',10);
+        $goods_id = Input::get('goods_id',0);
         
         $upload_response = (new GoodsModule())->goodsImageUpload($goods_id,$file);
         
@@ -62,35 +76,35 @@ class GoodsController extends Controller
         //以 json 格式
         $data = Input::get('goods_content');
         
-//        //测试数据
-//        $data = array();
-//        //$data['goods_name'] = '测试商品名称-'.mt_rand();
-//        $data['goods_name'] = '测试商品名称-';
-//        $data['goods_desc'] = '商品描述';
-//        $data['shop_price'] = '10.00';
-//        $data['market_price'] = '20.20';
-//        $data['goods_number'] = 100;
-//        $data['is_on_sale'] = 1;
-//        $data['content'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
-//        $data['test'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
-//        $data['images'] = 'a,1,2,3,10,11,12,13';
-//        $data['is_sku'] = 1;
-//        $sku_list_tmp = array();
-//        $sku_list_tmp[1]['sku_name'] = 'sku名称';
-//        $sku_list_tmp[1]['shop_price'] = '10.10';
-//        $sku_list_tmp[1]['market_price'] = '20.20';
-//        $sku_list_tmp[1]['sku_number'] = '10';
-//        $sku_list_tmp[1]['color'] = 'red';
-//        $sku_list_tmp[1]['size'] = '10寸';
-//
-//        $sku_list_tmp[2]['sku_name'] = 'sku名称2';
-//        $sku_list_tmp[2]['shop_price'] = '0.50';
-//        $sku_list_tmp[2]['market_price'] = '0.60';
-//        $sku_list_tmp[2]['sku_number'] = '100';
-//        $sku_list_tmp[2]['color'] = 'blue';
-//        $sku_list_tmp[2]['size'] = '20寸';
-//        $data['sku_list'] = $sku_list_tmp;
-//
+        //测试数据
+        $data = array();
+        //$data['goods_name'] = '测试商品名称-'.mt_rand();
+        $data['goods_name'] = '测试商品名称-';
+        $data['goods_desc'] = '商品描述';
+        $data['shop_price'] = '10.00';
+        $data['market_price'] = '20.20';
+        $data['goods_number'] = 100;
+        $data['is_on_sale'] = 1;
+        $data['content'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
+        $data['test'] = 'contentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontentcontent';
+        $data['images'] = 'a,1,2,3,10,11,12,13,21';
+        $data['is_sku'] = 1;
+        $sku_list_tmp = array();
+        $sku_list_tmp[1]['sku_name'] = 'sku名称';
+        $sku_list_tmp[1]['shop_price'] = '10.10';
+        $sku_list_tmp[1]['market_price'] = '20.20';
+        $sku_list_tmp[1]['sku_number'] = '10';
+        $sku_list_tmp[1]['color'] = 'red';
+        $sku_list_tmp[1]['size'] = '10寸';
+
+        $sku_list_tmp[2]['sku_name'] = 'sku名称2';
+        $sku_list_tmp[2]['shop_price'] = '0.50';
+        $sku_list_tmp[2]['market_price'] = '0.60';
+        $sku_list_tmp[2]['sku_number'] = '100';
+        $sku_list_tmp[2]['color'] = 'blue';
+        $sku_list_tmp[2]['size'] = '20寸';
+        $data['sku_list'] = $sku_list_tmp;
+
         
         $data = json_encode($data);
         $goods_content = (array)json_decode($data,true);
