@@ -170,6 +170,8 @@ class GoodsModule
                 //判断是否已经存在此 sku
                 //如果存在,那么更新数据,不判断 err_code
                 $sku_info = $this->getSkuByAttr($goods_info->id,$sku_attr_color->id,$sku_attr_size->id);
+    
+                $is_on_sale = isset($lv['is_on_sale']) && in_array($lv['is_on_sale'],[0,1]) ? $lv['is_on_sale'] : 1;
                 
                 if(isset($sku_info->id)){
                     //$sku_info->goods_id = $goods_info->id;
@@ -179,6 +181,9 @@ class GoodsModule
                     $sku_info->sku_number = $goods_info->sku_number;
                     $sku_info->sku_attr_1 = $sku_attr_color->id;
                     $sku_info->sku_attr_2 = $sku_attr_size->id;
+                    
+                    //是否上下架,默认上架
+                    $sku_info->in_on_sale = $is_on_sale;
                     
                     //直接修改
                     $sku_info->save();
@@ -192,7 +197,7 @@ class GoodsModule
                     $goods_sku_tmp['sku_number'] = $lv['sku_number'];
                     $goods_sku_tmp['sku_attr_1'] = $sku_attr_color->id;
                     $goods_sku_tmp['sku_attr_2'] = $sku_attr_size->id;
-    
+                    $goods_sku_tmp['is_on_sale'] = $is_on_sale;
     
                     $add_sku_arr[] = $goods_sku_tmp;
                     $save_goods_sku_response[] = $goods_sku_tmp;
@@ -223,12 +228,17 @@ class GoodsModule
      */
     public function handleGoods($goods_id)
     {
+        
+        //当所有 sku 都下架以后,强制整个商品下架
+        $check_goods_on_sale_sql = "UPDATE zo_goods AS G ,(SELECT SUM(is_on_sale) AS total,goods_id FROM zo_goods_sku WHERE goods_id = '{$goods_id}' AND deleted_at is null) AS S SET G.is_on_sale = CASE WHEN S.total > 0 THEN 1 ELSE 0 END WHERE G.id = '{$goods_id}' AND G.id = S.goods_id AND G.deleted_at is null";
+        
         //处理最低商品购买价
-        $handle_buy_price_sql = 'UPDATE zo_goods AS G,(SELECT id,goods_id,shop_price,market_price FROM zo_goods_sku WHERE goods_id = '.$goods_id.' ORDER BY shop_price ASC LIMIT 1) AS S SET G.shop_price = S.shop_price,G.market_price=S.market_price WHERE G.id = '.$goods_id.' AND S.goods_id = G.id;';
+        $handle_buy_price_sql = 'UPDATE zo_goods AS G,(SELECT id,goods_id,shop_price,market_price FROM zo_goods_sku WHERE goods_id = '.$goods_id.' AND is_on_sale = 1 ORDER BY shop_price ASC LIMIT 1) AS S SET G.shop_price = S.shop_price,G.market_price=S.market_price WHERE G.id = '.$goods_id.' AND S.goods_id = G.id;';
         
         //处理商品总库存
-        $handle_goods_number = 'UPDATE zo_goods AS G,(SELECT SUM(sku_number) AS all_number,goods_id FROM zo_goods_sku WHERE goods_id = '.$goods_id.') AS S SET G.goods_number = S.all_number WHERE G.id = '.$goods_id.' AND S.goods_id = G.id;';
+        $handle_goods_number = 'UPDATE zo_goods AS G,(SELECT SUM(sku_number) AS all_number,goods_id FROM zo_goods_sku WHERE goods_id = '.$goods_id.' AND is_on_sale = 1) AS S SET G.goods_number = S.all_number WHERE G.id = '.$goods_id.' AND S.goods_id = G.id;';
         
+        DB::update($check_goods_on_sale_sql);
         DB::update($handle_buy_price_sql);
         DB::update($handle_goods_number);
         
@@ -870,6 +880,10 @@ class GoodsModule
         
         if(is_array($goods_details) && isset($goods_details['err_code'])){
             return $goods_details;
+        }
+        
+        if($is_system != 1 && $goods_details->shop_id != $shop_id){
+            return Helper::ErrorMessage(50006,'不得查看其他店铺的商品!');
         }
         
         //获取商品图片
