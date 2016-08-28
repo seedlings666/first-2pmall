@@ -175,15 +175,15 @@ class GoodsModule
                 
                 if(isset($sku_info->id)){
                     //$sku_info->goods_id = $goods_info->id;
-                    $sku_info->sku_name = $goods_info->sku_name;
-                    $sku_info->shop_price = $goods_info->shop_price;
-                    $sku_info->market_price = $goods_info->market_price;
-                    $sku_info->sku_number = $goods_info->sku_number;
+                    $sku_info->sku_name = $lv['sku_name'];
+                    $sku_info->shop_price = $lv['shop_price'];
+                    $sku_info->market_price = $lv['market_price'];
+                    $sku_info->sku_number = $lv['sku_number'];
                     $sku_info->sku_attr_1 = $sku_attr_color->id;
                     $sku_info->sku_attr_2 = $sku_attr_size->id;
                     
                     //是否上下架,默认上架
-                    $sku_info->in_on_sale = $is_on_sale;
+                    $sku_info->is_on_sale = $is_on_sale;
                     
                     //直接修改
                     $sku_info->save();
@@ -198,6 +198,8 @@ class GoodsModule
                     $goods_sku_tmp['sku_attr_1'] = $sku_attr_color->id;
                     $goods_sku_tmp['sku_attr_2'] = $sku_attr_size->id;
                     $goods_sku_tmp['is_on_sale'] = $is_on_sale;
+                    $goods_sku_tmp['created_at'] = date('Y-m-d H:i:s',time());
+                    $goods_sku_tmp['updated_at'] = $is_on_sale;
     
                     $add_sku_arr[] = $goods_sku_tmp;
                     $save_goods_sku_response[] = $goods_sku_tmp;
@@ -220,6 +222,224 @@ class GoodsModule
         return $goods_info;
     }
     
+    
+    
+    /**
+     * 修改商品
+     * @author  jianwei
+     * @param   $goods_id   int 商品 id
+     * @param   $goods_content  array   商品的内容
+     */
+    public function updateGoods($goods_id,array $goods_content = [])
+    {
+        $rule = array(
+            'goods_name'  =>  ['required','string','min:2'],
+            'goods_desc'  =>  ['required','string','min:2','max:150'],
+            'shop_price'  =>  ['required','numeric','min:0'],
+            'market_price'  =>  ['required','numeric','min:0'],
+            'goods_number'  =>  ['required','integer','min:0'],
+            'shop_id'  =>  ['required','integer','min:0'],
+            'is_on_sale'    =>  ['required','integer','in:0,1'],
+            'content'   =>  ['required','min:0'],
+            'is_sku'    =>  ['required','integer','in:0,1'],
+            'images'    =>  ['required','string',],
+            'sku_list'    =>  [],
+        );
+        
+        $validate = Validator::make($goods_content,$rule);
+        
+        //校验
+        if($validate->fails()){
+            return Helper::ErrorMessage(10000,'参数错误!',$validate->messages()->toArray());
+        }
+        
+        $goods_images = $goods_content['images'];
+        
+        $goods_images_id = explode(',',$goods_images);
+        
+        $goods_images_id = array_filter($goods_images_id,function($value){
+            return is_numeric($value) ? true : false;
+        });
+        
+        //查询商品图片是否存在
+        $goods_images_condition = array();
+        //$goods_images_condition['goods_id'] = 0;
+        $goods_images_list = $this->getImagesByIds($goods_images_id,$goods_images_condition);
+        if(is_array($goods_images_list) && isset($goods_images_list['err_code'])){
+            return $goods_images_list;
+        }
+        
+        //return $goods_images_list;
+        
+        //存储此图片的 id
+        $goods_images_id_arr = array_column($goods_images_list->toArray(),'id','id');
+        
+        //检查是否已经有同样的商品名称
+        $check_goods = $this->getGoodsByName($goods_content['shop_id'],$goods_content['goods_name'],['id','goods_name']);
+        
+        if(is_array($check_goods) && isset($check_goods['err_code'])){
+            return $check_goods;
+        }else if(is_object($check_goods) && isset($check_goods->id) && $check_goods->id != $goods_id){
+            return Helper::ErrorMessage(50000,'商品已存在!');
+        }
+        
+        //创建商品
+        $goods_info = $this->getGoodsInfoById($goods_id);
+        
+        if(is_array($check_goods) && isset($check_goods['err_code'])){
+            return $check_goods;
+        }else if($check_goods === false){
+            return Helper::ErrorMessage(50007,'没找到任何商品!');
+        }
+        
+        if($goods_info->shop_id != $goods_content['shop_id']){
+            return Helper::ErrorMessage(50003,'不得修改其他店铺的商品!');
+        }
+        
+        if($goods_info->is_sku != $goods_content['is_sku']){
+            return Helper::ErrorMessage(50008,'商品不得转换单品与多规格属性!');
+        }
+        
+        //图片处理
+        //修改图片的 goods_id
+    
+        //删除不存在$goods_images_id_arr中的图片
+        App::make('GoodsImagesModel')->whereNotIn('id',$goods_images_id_arr)->where('goods_id',$goods_id)->delete();
+        
+        //修改其他图片
+        App::make('GoodsImagesModel')->whereIn('id',$goods_images_id_arr)->where('goods_id',0)->update(['goods_id'=>$goods_id]);
+        
+//        $update_goods_images_condition = array();
+//        $update_goods_images_condition['goods_id'] = 0;
+//        $update_goods_images_update = array();
+//        $update_goods_images_update['goods_id'] = $goods_info->id;
+//        //暂时不判断是否可用
+//        $update_goods_images_response = $this->updateGoodsImages($goods_images_id_arr,$update_goods_images_condition,$update_goods_images_update);
+        
+        $sku_list = isset($goods_content['sku_list']) ? $goods_content['sku_list'] : array();
+        
+        //处理 sku
+        //不为 sku 时,那么生成一条默认 sku 数据到 sku
+        $save_goods_sku_response = array();
+        if($goods_content['is_sku'] == 0) {
+            //创建单品
+            //查询是否已经有默认 sku 数据
+            $default_sku_info = $this->getSkuByAttr($goods_id,0,0);
+            if(isset($default_sku_info->id)){
+                $GoodsSkuModel = App::make('GoodsSkuModel');
+                $GoodsSkuModel->shop_price = $goods_info->shop_price;
+                $GoodsSkuModel->market_price = $goods_info->market_price;
+                $GoodsSkuModel->sku_number = $goods_info->sku_number;
+                $GoodsSkuModel->save();
+                $save_goods_sku_response[] = $GoodsSkuModel;
+            }else{
+                $goods_sku_condition = array();
+                $goods_sku_condition['goods_id'] = $goods_info->id;
+                $goods_sku_condition['sku_name'] = '默认 sku';
+                $goods_sku_condition['shop_price'] = $goods_info->shop_price;
+                $goods_sku_condition['market_price'] = $goods_info->market_price;
+                $goods_sku_condition['sku_number'] = $goods_info->goods_number;
+                $goods_sku_condition['sku_attr_1'] = 0;
+                $goods_sku_condition['sku_attr_2'] = 0;
+                $save_goods_sku_response[] = $this->saveGoodsSku($goods_sku_condition);
+            }
+        }else if($goods_content['is_sku'] == 1 && is_array($sku_list) && !empty($sku_list)){
+            //先创建2个属性
+            //颜色属性
+            $goods_color_attr = $this->saveGoodsAttr($goods_info->id,'颜色');
+            //尺寸属性
+            $goods_size_attr = $this->saveGoodsAttr($goods_info->id,'尺寸');
+            
+            
+            //存储新增的商品 sku 属性
+            //$add_sku_arr = array();
+            
+            //存储生成后的 sku_id
+            $new_goods_sku_id = array();
+            //循环存储 sku 数据
+            foreach($sku_list as $lk=>$lv){
+                
+                if(!isset($lv['sku_name']) ||
+                    !isset($lv['shop_price']) ||
+                    !isset($lv['market_price']) ||
+                    !isset($lv['sku_number']) ||
+                    !isset($lv['color']) ||
+                    !isset($lv['size'])
+                ){
+                    continue;
+                }
+                
+                //创建属性
+                //颜色属性
+                $sku_attr_color = $this->saveGoodsAttrValue($goods_info->id,$goods_color_attr->id,$lv['color']);
+                //大小属性
+                $sku_attr_size = $this->saveGoodsAttrValue($goods_info->id,$goods_size_attr->id,$lv['size']);
+                
+                //判断是否已经存在此 sku
+                //如果存在,那么更新数据,不判断 err_code
+                $sku_info = $this->getSkuByAttr($goods_info->id,$sku_attr_color->id,$sku_attr_size->id);
+                
+                
+                $is_on_sale = isset($lv['is_on_sale']) && in_array($lv['is_on_sale'],[0,1]) ? $lv['is_on_sale'] : 1;
+                
+                if(isset($sku_info->id)){
+                    //$sku_info->goods_id = $goods_info->id;
+                    $sku_info->sku_name = $lv['sku_name'];
+                    $sku_info->shop_price = $lv['shop_price'];
+                    $sku_info->market_price = $lv['market_price'];
+                    $sku_info->sku_number = $lv['sku_number'];
+                    $sku_info->sku_attr_1 = $sku_attr_color->id;
+                    $sku_info->sku_attr_2 = $sku_attr_size->id;
+                    
+                    //是否上下架,默认上架
+                    $sku_info->is_on_sale = $is_on_sale;
+                    
+                    //直接修改
+                    $sku_info->save();
+                    $new_goods_sku_id[] = $sku_info->id;
+                    $save_goods_sku_response[] = $sku_info->toArray();
+                }else {
+                    $goods_sku_tmp = array();
+                    $goods_sku_tmp['goods_id'] = $goods_info->id;
+                    $goods_sku_tmp['sku_name'] = $lv['sku_name'];
+                    $goods_sku_tmp['shop_price'] = $lv['shop_price'];
+                    $goods_sku_tmp['market_price'] = $lv['market_price'];
+                    $goods_sku_tmp['sku_number'] = $lv['sku_number'];
+                    $goods_sku_tmp['sku_attr_1'] = $sku_attr_color->id;
+                    $goods_sku_tmp['sku_attr_2'] = $sku_attr_size->id;
+                    $goods_sku_tmp['is_on_sale'] = $is_on_sale;
+                    $goods_sku_tmp['created_at'] = date('Y-m-d H:i:s',time());
+                    $goods_sku_tmp['updated_at'] = date('Y-m-d H:i:s',time());
+                    
+                    //$add_sku_arr[] = $goods_sku_tmp;
+                    $last_insert_id = App::make('GoodsSkuModel')->insertGetId($goods_sku_tmp);
+                    $new_goods_sku_id[] = $last_insert_id;
+                    $save_goods_sku_response[] = $goods_sku_tmp;
+                }
+                
+            }
+            
+            //if(!empty($add_sku_arr)){
+                //新增数据
+            //    App::make('GoodsSkuModel')->insert($add_sku_arr);
+            //}
+            
+            //删除 sku 数据
+            if(!empty($new_goods_sku_id)){
+                App::make('GoodsSkuModel')->where('goods_id',$goods_info->id)->whereNotIn('id',$new_goods_sku_id)->delete();
+            }else {
+                App::make('GoodsSkuModel')->where('goods_id', $goods_info->id)->delete();
+            }
+        }else{
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+        
+        
+        //回调,整理商品的数据
+        $handle_goods_response = $this->handleGoods($goods_info->id);
+        
+        return $goods_info;
+    }
     
     /**
      * 整理商品数据
@@ -567,11 +787,11 @@ class GoodsModule
      */
     public function updateGoodsImages(array $images_id = [],array $condition = [],array $update_arr = [])
     {
-        $update_arr = array_filter($update_arr);
+        //$update_arr = array_filter($update_arr);
     
-        $condition = array_filter($condition);
+        //$condition = array_filter($condition);
     
-        $images_id = array_filter($images_id);
+        //$images_id = array_filter($images_id);
         
         if(empty($update_arr) || empty($condition) || empty($images_id)){
             return Helper::ErrorMessage(10000,'参数错误!');
@@ -962,9 +1182,15 @@ class GoodsModule
                 
                         //现阶段,sku_attr_1为 color 属性,sku_attr_2为 size 属性
                         //if('sku_attr_1' == $tk){
+                        $sku_tmp['sku_attr_list'][$tk]['id'] = $goods_attr_value->id;
                         $sku_tmp['sku_attr_list'][$tk]['attr_name'] = $goods_attr_value->GoodsAttr->attr_name;
                         $sku_tmp['sku_attr_list'][$tk]['attr_value'] = $goods_attr_value->value_name;
                         //}
+                        if('sku_attr_1' == $tk) {
+                            $sku_tmp['color'] = $goods_attr_value->value_name;
+                        }else if('sku_attr_2' == $tk){
+                            $sku_tmp['size'] = $goods_attr_value->value_name;
+                        }
                     }
                 }
         
@@ -983,6 +1209,16 @@ class GoodsModule
         $goods_respone['goods_images'] = $goods_images_arr;
         
         return $goods_respone;
+    }
+    
+    /**
+     * 删除图片
+     * @author  jianwei
+     */
+    public function delGoodsImages($image_id)
+    {
+        
+        
     }
     
 }
