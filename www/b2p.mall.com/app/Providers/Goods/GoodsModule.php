@@ -30,6 +30,10 @@ class GoodsModule
         $select_column = ['*'];
         
         $goods_obj = $GoodsModel->select($select_column);
+        
+        if(isset($condition['shop_id'])){
+            $goods_obj->where('shop_id',$condition['shop_id']);
+        }
     
         //商品名称模糊匹配
         if(!empty($condition['goods_name'])) {
@@ -60,7 +64,7 @@ class GoodsModule
             'content'   =>  ['required','min:0'],
             'is_sku'    =>  ['required','in:0,1'],
             'images'    =>  ['required','string',],
-            'sku_list'    =>  ['required',],
+            'sku_list'    =>  [],
         );
         
         $validate = Validator::make($goods_content,$rule);
@@ -80,7 +84,7 @@ class GoodsModule
         
         //查询商品图片是否存在
         $goods_images_condition = array();
-//        $goods_images_condition['goods_id'] = 0;
+        $goods_images_condition['goods_id'] = 0;
         $goods_images_list = $this->getImagesByIds($goods_images_id,$goods_images_condition);
         if(is_array($goods_images_list) && isset($goods_images_list['err_code'])){
             return $goods_images_list;
@@ -90,7 +94,7 @@ class GoodsModule
         $goods_images_id_arr = array_column($goods_images_list->toArray(),'id','id');
         
         //检查是否已经有同样的商品名称
-        $check_goods = $this->getGoodsByName($goods_content['goods_name'],['id','goods_name']);
+        $check_goods = $this->getGoodsByName($goods_content['shop_id'],$goods_content['goods_name'],['id','goods_name']);
         
         if(is_array($check_goods) && isset($check_goods['err_code'])){
             return $check_goods;
@@ -116,7 +120,7 @@ class GoodsModule
         //暂时不判断是否可用
         $update_goods_images_response = $this->updateGoodsImages($goods_images_id_arr,$update_goods_images_condition,$update_goods_images_update);
     
-        $sku_list = $goods_content['sku_list'];
+        $sku_list = isset($goods_content['sku_list']) ? $goods_content['sku_list'] : array();
         
         //处理 sku
         //不为 sku 时,那么生成一条默认 sku 数据到 sku
@@ -146,6 +150,17 @@ class GoodsModule
             
             //循环存储 sku 数据
             foreach($sku_list as $lk=>$lv){
+                
+                if(!isset($lv['sku_name']) ||
+                    !isset($lv['shop_price']) ||
+                    !isset($lv['market_price']) ||
+                    !isset($lv['sku_number']) ||
+                    !isset($lv['color']) ||
+                    !isset($lv['size'])
+                ){
+                    continue;
+                }
+                
                 //创建属性
                 //颜色属性
                 $sku_attr_color = $this->saveGoodsAttrValue($goods_info->id,$goods_color_attr->id,$lv['color']);
@@ -438,6 +453,7 @@ class GoodsModule
     public function createGoods(array $data = [])
     {
         $rule = array(
+            'shop_id'  =>  ['required','integer','min:0'],
             'goods_name'  =>  ['required','string','min:2'],
             'goods_desc'  =>  ['required','string','min:2','max:150'],
             'shop_price'  =>  ['required','numeric','min:0'],
@@ -472,15 +488,17 @@ class GoodsModule
      * 通过一个商品名称,获取一个商品
      * @author  jianwei
      */
-    public function getGoodsByName($goods_name,array $select_columns = [],array $relatives = [])
+    public function getGoodsByName($shop_id,$goods_name,array $select_columns = [],array $relatives = [])
     {
-        if(!is_string($goods_name) || empty($goods_name)){
+        if(!is_string($goods_name) || empty($goods_name) || !is_numeric($shop_id) || $shop_id < 1){
             return Helper::ErrorMessage(10000,'参数错误!',array());
         }
         
         $GoodsModel = App::make('GoodsModel');
     
         $goods_obj = $GoodsModel->select($select_columns);
+        
+        $goods_obj->where('shop_id',$shop_id);
     
         $goods_obj->where('goods_name',$goods_name);
         
@@ -560,7 +578,7 @@ class GoodsModule
      */
     public function goodsImageUpload($goods_id,$image_file)
     {
-        if(!is_numeric($goods_id) || $goods_id < 1){
+        if(!is_numeric($goods_id) || $goods_id < 0){
            return Helper::ErrorMessage(10000,'参数错误!');
         }
         
@@ -641,7 +659,8 @@ class GoodsModule
         //url 访问的相对路径
         $GoodsImagesModel->url_links = $file_relative_path.$file_name;
         //base64码
-        $GoodsImagesModel->base_code = base64_encode(file_get_contents($file_full_name));
+        //$GoodsImagesModel->base_code = base64_encode(file_get_contents($file_full_name));
+        $GoodsImagesModel->base_code = '';
         //图片大小
         $GoodsImagesModel->size = $file_size;
         //图片的宽
@@ -664,6 +683,78 @@ class GoodsModule
     }
     
     
+    /**
+     * 通过商品 id获取一个商品
+     * @author  jianwei
+     * @param   $goods_id   int 商品 id
+     * @param   $select_columns array   查询字段
+     * @param   $relatives  array   关联关系
+     */
+    public function getGoodsInfoById($goods_id,array $select_columns = ['*'],array $relatives = [])
+    {
+        if(!is_numeric($goods_id) || $goods_id < 1){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+        
+        $GoodsModel = App::make('GoodsModel');
+        
+        $goods_obj = $GoodsModel->select($select_columns);
+        
+        $goods_obj->where('id',$goods_id);
+        
+        if(!empty($relatives)){
+            $goods_obj->with($relatives);
+        }
+        
+        $goods_info = $goods_obj->first();
+        
+        if(empty($goods_info)){
+            return Helper::ErrorMessage(50004,'商品不存在!');
+        }
+        
+        return $goods_info;
+    }
     
+    /**
+     * 根据商品 id 以及店铺 id 删除商品
+     * @author  jianwei
+     * @param   $shop_id    int 店铺 id
+     * @param   $goods_id   int 商品 id
+     * @param   $is_system  int 是否系统用户
+     */
+    public function delGoods($shop_id,$goods_id,$is_system)
+    {
+        if(!is_numeric($shop_id) || !is_numeric($goods_id) || !is_numeric($is_system)){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+        
+        $goods_info = $this->getGoodsInfoById($goods_id);
+        
+        if(is_array($goods_info) && isset($goods_info['err_code'])){
+            return $goods_info;
+        }
+        
+        //当不为系统管理员,并且 shop_id 不相同,那么禁止操作
+        if($is_system != 1 && $goods_info->shop_id != $shop_id){
+            return Helper::ErrorMessage(50003,'不得修改其他店铺的商品!');
+        }
+        
+        
+        //开启事务,删除此商品相关数据
+        //DB::beginTransaction();
+        //删除商品
+        $goods_info->delete();
+        //商品此商品的 sku
+        App::make('GoodsSkuModel')->where('goods_id',$goods_id)->delete();
+        //删除此商品的属性
+        App::make('GoodsAttrModel')->where('goods_id',$goods_id)->delete();
+        //删除商品的属性值
+        App::make('GoodsAttrValueModel')->where('goods_id',$goods_id)->delete();
+        //删除商品图片
+        App::make('GoodsImagesModel')->where('goods_id',$goods_id)->delete();
+        
+        
+        return $goods_info;
+    }
     
 }
