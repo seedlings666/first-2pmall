@@ -14,4 +14,13 @@ class GoodsAttrValue extends Model
     //设置表名
     public $table = 'goods_attr_value';
     
+    
+    /**
+     * 关联到属性表
+     * @author  jianwei
+     */
+    public function GoodsAttr()
+    {
+        return $this->hasOne(__NAMESPACE__.'\GoodsAttr','id','attr_id');
+    }
 }
