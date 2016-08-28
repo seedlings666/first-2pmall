@@ -14,4 +14,23 @@ class GoodsSku extends Model
     //设置表名
     public $table = 'goods_sku';
     
+    
+    /**
+     * 关联到商品属性表
+     * @author  jianwei
+     */
+    public function GoodsAttrColorValue()
+    {
+        return $this->hasOne(__NAMESPACE__.'\GoodsAttrValue','id','sku_attr_1');
+    }
+    
+    /**
+     * 关联到商品属性表
+     * @author  jianwei
+     */
+    public function GoodsAttrSizeValue()
+    {
+        return $this->hasOne(__NAMESPACE__.'\GoodsAttrValue','id','sku_attr_2');
+    }
+    
 }
