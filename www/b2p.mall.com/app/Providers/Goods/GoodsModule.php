@@ -684,6 +684,38 @@ class GoodsModule
     
     
     /**
+     * 通过商品 id获取一个商品
+     * @author  jianwei
+     * @param   $goods_id   int 商品 id
+     * @param   $select_columns array   查询字段
+     * @param   $relatives  array   关联关系
+     */
+    public function getGoodsInfoById($goods_id,array $select_columns = ['*'],array $relatives = [])
+    {
+        if(!is_numeric($goods_id) || $goods_id < 1){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+        
+        $GoodsModel = App::make('GoodsModel');
+        
+        $goods_obj = $GoodsModel->select($select_columns);
+        
+        $goods_obj->where('id',$goods_id);
+        
+        if(!empty($relatives)){
+            $goods_obj->with($relatives);
+        }
+        
+        $goods_info = $goods_obj->first();
+        
+        if(empty($goods_info)){
+            return Helper::ErrorMessage(50004,'商品不存在!');
+        }
+        
+        return $goods_info;
+    }
+    
+    /**
      * 根据商品 id 以及店铺 id 删除商品
      * @author  jianwei
      * @param   $shop_id    int 店铺 id
@@ -692,7 +724,37 @@ class GoodsModule
      */
     public function delGoods($shop_id,$goods_id,$is_system)
     {
+        if(!is_numeric($shop_id) || !is_numeric($goods_id) || !is_numeric($is_system)){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
         
+        $goods_info = $this->getGoodsInfoById($goods_id);
+        
+        if(is_array($goods_info) && isset($goods_info['err_code'])){
+            return $goods_info;
+        }
+        
+        //当不为系统管理员,并且 shop_id 不相同,那么禁止操作
+        if($is_system != 1 && $goods_info->shop_id != $shop_id){
+            return Helper::ErrorMessage(50003,'不得修改其他店铺的商品!');
+        }
+        
+        
+        //开启事务,删除此商品相关数据
+        //DB::beginTransaction();
+        //删除商品
+        $goods_info->delete();
+        //商品此商品的 sku
+        App::make('GoodsSkuModel')->where('goods_id',$goods_id)->delete();
+        //删除此商品的属性
+        App::make('GoodsAttrModel')->where('goods_id',$goods_id)->delete();
+        //删除商品的属性值
+        App::make('GoodsAttrValueModel')->where('goods_id',$goods_id)->delete();
+        //删除商品图片
+        App::make('GoodsImagesModel')->where('goods_id',$goods_id)->delete();
+        
+        
+        return $goods_info;
     }
     
 }
