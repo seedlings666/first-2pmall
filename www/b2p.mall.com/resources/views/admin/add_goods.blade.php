@@ -33,21 +33,21 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="goods_summary"> 商品简介 </label>
+                    <label class="col-sm-2 control-label no-padding-right" for="goods_desc"> 商品简介 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_summary" name="goods_summary" placeholder="商品简介" class="col-xs-12" />
+                            <input type="text" id="goods_desc" name="goods_desc" placeholder="商品简介" class="col-xs-12" />
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="goods_price"> 商品价 </label>
+                    <label class="col-sm-2 control-label no-padding-right" for="shop_price"> 商品价 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_price" name="goods_price" placeholder="商品价" class="col-xs-5" />
+                            <input type="text" id="shop_price" name="shop_price" placeholder="商品价" class="col-xs-5" />
                         </div>
                     </div>
                 </div>
@@ -63,11 +63,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="stock"> 库存 </label>
+                    <label class="col-sm-2 control-label no-padding-right" for="goods_number"> 库存 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="stock" name="stock" placeholder="库存" class="col-xs-5" />
+                            <input type="text" id="goods_number" name="goods_number" placeholder="库存" class="col-xs-5" />
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                 <div class="col-sm-2">
                     <div class="clearfix">
                         <label class="radio">
-                            <input name="is_single_sku" type="radio" checked class="ace">
+                            <input name="is_single_sku" value="1" type="radio" checked class="ace">
                             <span class="lbl"></span>
                         </label>
                     </div>
@@ -101,7 +101,7 @@
                 <div class="col-sm-2">
                     <div class="clearfix">
                         <label class="radio">
-                            <input name="is_single_sku" type="radio" class="ace" id="multi_sku">
+                            <input name="is_single_sku" value="2" type="radio" class="ace" id="multi_sku">
                             <span class="lbl"></span>
                         </label>
                     </div>
@@ -141,7 +141,7 @@
                                     <input class="col-xs-12" type="text" name="sku_market_price" placeholder="市场价格">
                                 </td>
                                 <td>
-                                    <input class="col-xs-12" type="text" name="sku_stock" placeholder="库存">
+                                    <input class="col-xs-12" type="text" name="sku_goods_number" placeholder="库存">
                                 </td>
                                 <td class="center">
                                     <a title="新增" class="btn btn-xs btn-success" href="javascript:void(0);" id="add_sku">
@@ -266,11 +266,11 @@ $(function(){
             goods_name: {
                 required: true
             },
-            goods_summary: {
+            goods_desc: {
                 required: true,
                 maxlength: 50
             },
-            goods_price: {
+            shop_price: {
                 required: true,
                 number: true
             },
@@ -278,18 +278,18 @@ $(function(){
                 required: true,
                 number: true
             },
-            stock: {
+            goods_number: {
                 required: true,
                 number: true
             }
         },
         messages: {
             goods_name: "必须填写商品名！",
-            goods_summary: {
+            goods_desc: {
                 required: "必须填写商品简介！",
                 maxlength: "输入的内容不得大于50的字符！"
             },
-            goods_price: {
+            shop_price: {
                 required: "必须填写商品价格！",
                 number: "请输入一个正确的数字！"
             },
@@ -297,7 +297,7 @@ $(function(){
                 required: "必须填写商品市场价格！",
                 number: "请输入一个正确的数字！"
             },
-            stock: {
+            goods_number: {
                 required: "必须填写商品名库存！",
                 number: "请输入一个正确的数字！"
             }
@@ -329,12 +329,17 @@ $(function(){
         submitHandler: function (form) {
             var data = $(form).serializeArray();
             var goods_detail = $('#editor1').html();
+            var is_single_sku = $('[name=is_single_sku]:checked').val();
+
+            //console.log(is_single_sku);
 
             // 确保图片不为空
+            /*
             if(images_id.length == 0){
                 alert('请上传商品图片至少一张！');
                 return false;
             }
+            */
 
             // 循环把表单数据转为json格式
             $.each(data, function (ix) {
@@ -343,9 +348,11 @@ $(function(){
 
             // 判断是否上架
             if($('[name=is_sell]').prop('checked')){
-                goods_content['is_sell'] = 1;
+                //goods_content['is_sell'] = 1;
+                goods_content['is_on_sale'] = 1;
             }else{
-                goods_content['is_sell'] = 0;
+                //goods_content['is_sell'] = 0;
+                goods_content['is_on_sale'] = 0;
             }
 
             // 判断是否为多规格商品
@@ -359,10 +366,13 @@ $(function(){
             // 获取富文本内容
             goods_content['content'] = goods_detail;
 
+            //数据库中0是单品,1是多 sku
+            goods_content['is_sku'] = is_single_sku == 1 ? 0 : 1;
+
             console.log(goods_content);
             // 提交数据
             $.ajax({
-                url: '',
+                url: '{{ url('/admin/goods/store') }}',
                 type: 'POST',
                 data: goods_content
             })
@@ -444,7 +454,7 @@ $(function(){
         var sku_color        = $('[name=sku_color]').val();
         var sku_size         = $('[name=sku_size]').val();
         var sku_price        = $('[name=sku_price]').val();
-        var sku_stock        = $('[name=sku_stock]').val();
+        var sku_goods_number        = $('[name=sku_goods_number]').val();
         var sku_market_price = $('[name=sku_market_price]').val();
 
         if(sku_name == ''){
@@ -472,7 +482,7 @@ $(function(){
             return false;
         }
 
-        if(sku_stock == ''){
+        if(sku_goods_number == ''){
             alert("sku库存必须填写！");
             return false;
         }
@@ -482,7 +492,7 @@ $(function(){
             color: sku_color,
             size: sku_size,
             shop_price: sku_price,
-            sku_number: sku_stock,
+            sku_number: sku_goods_number,
             market_price: sku_market_price
         }
 
@@ -497,7 +507,7 @@ $(function(){
         $('[name=sku_color]').val('');
         $('[name=sku_size]').val('');
         $('[name=sku_price]').val('');
-        $('[name=sku_stock]').val('');
+        $('[name=sku_goods_number]').val('');
         $('[name=sku_market_price]').val('');
     });
 
@@ -520,7 +530,7 @@ $(function(){
     // 图片上传
     Dropzone.autoDiscover = false;
     var myDropzone = new Dropzone('#goods_images_box', {
-        url: './index.php',
+        url: '{{ url('admin/goods/upload') }}',
         previewTemplate: $('#preview-template').html(),
         thumbnailHeight: 120,
         thumbnailWidth: 120,
