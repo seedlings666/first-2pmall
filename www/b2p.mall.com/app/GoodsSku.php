@@ -12,7 +12,7 @@ class GoodsSku extends Model
     use SoftDeletes;
     
     //设置表名
-    public $table = 'goods_sku';
+    public $table = 'zo_goods_sku';
     
     
     /**

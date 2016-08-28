@@ -12,7 +12,7 @@ class GoodsAttrValue extends Model
     use SoftDeletes;
     
     //设置表名
-    public $table = 'goods_attr_value';
+    public $table = 'zo_goods_attr_value';
     
     
     /**
