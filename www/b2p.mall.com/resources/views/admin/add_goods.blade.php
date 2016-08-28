@@ -370,11 +370,13 @@ $(function(){
             goods_content['is_sku'] = is_single_sku == 1 ? 0 : 1;
 
             console.log(goods_content);
+            var a = {};
+            a['goods_content'] = goods_content;
             // 提交数据
             $.ajax({
                 url: '{{ url('/admin/goods/store') }}',
                 type: 'POST',
-                data: goods_content
+                data: a
             })
             .done(function(json){
                 console.log('success', json);
@@ -534,7 +536,7 @@ $(function(){
         previewTemplate: $('#preview-template').html(),
         thumbnailHeight: 120,
         thumbnailWidth: 120,
-        maxFilesize: 0.5,
+        maxFilesize: 1,
         addRemoveLinks : true,
         dictRemoveFile: '删除图片',
         dictDefaultMessage :
@@ -543,7 +545,6 @@ $(function(){
         <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>'
         ,
         thumbnail: function(file, dataUrl) {
-            console.log(file, dataUrl);
             if (file.previewElement) {
                 $(file.previewElement).removeClass("dz-file-preview");
                 var images = $(file.previewElement).find("[data-dz-thumbnail]").each(function() {
@@ -557,55 +558,13 @@ $(function(){
             }
         },
         init: function () {
-            this.on('uploadprogress',function(arg1, arg2, arg3){
-                console.log(arg1, arg2, arg3);
+            this.on('success',function(arg1, arg2){
+                if(arg2){
+                    console.log(arg2);
+                }
             });
         }
     });
-
-    // 模拟上传进度
-//     var minSteps = 6,
-//         maxSteps = 60,
-//         timeBetweenSteps = 100,
-//         bytesPerStep = 100000;
-
-//     myDropzone.uploadFiles = function(files) {
-//         var self = this;
-// console.log(files, self.URL);
-//         for (var i = 0; i < files.length; i++) {
-//             var file = files[i];
-//             totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
-
-//             for (var step = 0; step < totalSteps; step++) {
-//                 var duration = timeBetweenSteps * (step + 1);
-//                 setTimeout(function(file, totalSteps, step) {
-//                     return function() {
-//                         file.upload = {
-//                             progress: 100 * (step + 1) / totalSteps,
-//                             total: file.size,
-//                             bytesSent: (step + 1) * file.size / totalSteps
-//                         };
-
-//                         self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
-//                         if (file.upload.progress == 100) {
-//                             file.status = Dropzone.SUCCESS;
-//                             self.emit("success", file, 'success', null);
-//                             self.emit("complete", file);
-//                             self.processQueue();
-//                         }
-//                     };
-//                 }(file, totalSteps, step), duration);
-//             }
-//         }
-//     }
-
-
-//     //remove dropzone instance when leaving this page in ajax mode
-//     $(document).one('ajaxloadstart.page', function(e) {
-//         try {
-//             myDropzone.destroy();
-//         } catch(e) {}
-//     });
 });
 </script>
 @stop

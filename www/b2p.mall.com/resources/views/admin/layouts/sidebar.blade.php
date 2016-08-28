@@ -32,7 +32,7 @@
 </div><!-- /.sidebar-shortcuts -->
 
 <ul class="nav nav-list">
-    <li class="{{ Request::path() == 'admin' ? 'active' : '' }}">
+    <li class="{{ Request::path() == 'admin/goods' ? 'active' : '' }}">
         <a href="{{ url('/admin') }}">
             <i class="menu-icon fa fa-inbox"></i>
             <span class="menu-text"> 商品管理 </span>
