@@ -91,7 +91,7 @@ class BuyModule
     {
         //获取拼团第一单数据
         $group_order_res = (array) DB::table('zo_orders')
-            ->select(['user_id', 'order_status'])
+            ->select(['user_id', 'order_status', 'created_at'])
             ->where('id', $group_id)
             ->first();
         $order_goods_res = (array) DB::table('zo_order_goods')
@@ -105,6 +105,8 @@ class BuyModule
             return ['err_code' => '400816', '不能参加自己的拼团!'];
         } elseif ($group_order_res['order_status'] == 2) {
             return ['err_code' => '400812', 'err_msg' => '拼团已结束!'];
+        } elseif (time() > (strtotime($group_order_res['created_at']) + 86400)) {
+            return ['err_code' => '400813', 'err_msg' => '拼团已过期!'];
         }
 
         return ['group_order_res', 'order_goods_res'];
@@ -434,7 +436,7 @@ class BuyModule
         if (!$pay_sn_res) {
             return ['err_code' => '400804', 'err_msg' => '支付编号不存在!'];
         }
-        if (DB::table('zo_orders')->where('id', $pay_sn_res['group_id'])->where('order_status', 2)->first()) {
+        if (DB::table('zo_orders')->where('id', $pay_sn_res['group_id'])->where('order_status', 2)->first(['id'])) {
             return ['err_code' => '400812', 'err_msg' => '拼团已结束!'];
         }
         if ($this->plan == 'B' && $pay_sn_res['group_rp'] != 1) {
@@ -602,5 +604,55 @@ class BuyModule
         DB::commit();
 
         return array_merge($in_order_data, $up_order_data);
+    }
+
+    /**
+     * 获取订单数据
+     * @author Evey-b <eveyb277@gmail.com>
+     * @date   2016-08-28
+     * @return array
+     */
+    public function getOrderList()
+    {
+        $order_result = DB::table('zo_orders')
+            ->whereRaw('`deleted_at` is null')
+            ->orderBy('group_rp', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->forPage(1, 15)
+            ->get();
+
+        $order_ids  = [];
+        $order_list = [];
+        foreach ($order_result as $value) {
+            $value->orderGoods = [];
+            $order_list[]      = (array) $value;
+            $order_ids[]       = $value->id;
+        }
+
+        $order_goods_result = DB::table('zo_order_goods')->whereIn('order_id', $order_ids)->get();
+        $order_goods_list   = [];
+        foreach ($order_goods_result as $value) {
+            $order_goods_list[$value->order_id][] = (array) $value;
+        }
+        foreach ($order_list as &$val) {
+            $val['is_share']   = '';
+            $val['join_group'] = '';
+            $is_group_rp1      = $val['group_rp'] == 1;
+            $is_order_status1  = $val['order_status'] == 1;
+            $is_expired        = strtotime($val['created_at']) + 86400 > time();
+            //判断是否可以分享,分享链接地址
+            if ($is_group_rp1 && $is_order_status1) {
+                $val['is_share'] = [];
+            }
+            //加入拼团链接地址
+            if ($is_group_rp1 && $is_order_status1 && !$is_expired) {
+                $val['join_group'] = '';
+            }
+            if (isset($order_goods_list[$val['id']])) {
+                $val['orderGoods'] = $order_goods_list[$val['id']];
+            }
+        }
+
+        return $order_list;
     }
 }
