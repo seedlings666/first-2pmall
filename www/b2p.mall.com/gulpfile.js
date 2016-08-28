@@ -25,6 +25,7 @@ elixir(function(mix) {
         .scripts('wap/order.js', 'public/js/wap/order.js')
         .scripts('wap/userInfo.js', 'public/js/wap/userInfo.js')
         .scripts('wap/orderList.js', 'public/js/wap/orderList.js')
+        .scripts('wap/detail.js', 'public/js/wap/detail.js')
         .scripts('admin/ace-extra.js', 'public/js/admin/ace-extra.js')
         .scripts('admin/ace-elements.js', 'public/js/admin/ace-elements.js')
         .scripts('admin/tree.js', 'public/js/admin/tree.js')
@@ -109,6 +110,7 @@ elixir(function(mix) {
             'js/wap/userInfo.js',
             'js/wap/order.js',
             'js/wap/orderList.js',
+            'js/wap/detail.js',
 
             // admin js
             'js/admin/ace-extra.js',
