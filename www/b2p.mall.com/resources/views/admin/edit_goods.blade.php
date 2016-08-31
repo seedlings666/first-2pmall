@@ -124,7 +124,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @if(isset($goods_sku_list) && count($goods_sku_list) > 0)
+                        @if(isset($goods_sku_list) && !isset($goods_sku_list['err_code']) && count($goods_sku_list) > 0)
                             @foreach($goods_sku_list as $lk=>$lv)
                             <tr>
                                 <td>
@@ -272,6 +272,9 @@ $(function(){
 
     // 保存图片id
     var images_id = [];
+
+    // 服务器图片数据
+    // var serviceImages = {{ $goods_images }};
 
     $('#validation-form').validate({
         errorElement: 'div',
@@ -582,6 +585,10 @@ $(function(){
             });
         }
     });
+
+    // 服务器图片显示
+    // myDropzone.emit('addedfile', serviceImages);
+    // myDropzone.emit("thumbnail", serviceImages, "/image/url");
 });
 </script>
 @stop

@@ -21,9 +21,8 @@
     <body>
         <div class="main_warp order_tab_box">
             <ul id="order_tab">
-                <li class="on">全部订单</li>
-                <li>待付款</li>
-                <li>代收货</li>
+                <li class="on">我的订单</li>
+                <li>全部订单</li>
             </ul>
         </div>
 
@@ -52,8 +51,48 @@
                     </div>
                     <div class="order_status">
                         <span>待支付</span>
-                        <a href="">去支付</a>
+                        <a href="" class="share_pt">分享拼团</a>
+                        <a href="" class="join_pt">加入拼团</a>
+                        <a href="" class="go_to_buy">去支付</a>
                         <a href="">取消订单</a>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="order_time">2016-08-22 21:34:07</div>
+                    <div class="goods_info">
+                        <div class="goods_img">
+                            <img src="{{asset('images/goods_img.jpg')}}" alt="商品名称">
+                        </div>
+
+                        <div class="goods_name">
+                            <p>商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
+                            <p>数量：1</p>
+                            <p>库存：1000件</p>
+                        </div>
+
+                        <div class="goods_price">
+                            <span>&yen;<big id="goods_price">95</big>/件</span>
+                        </div>
+                    </div>
+                    <div class="goods_sum">
+                        共1件商品
+                        <span>实付：<big id="pay_price">&yen;0</big></span>
+                    </div>
+                    <div class="order_status">
+                        <span>待支付</span>
+                        <a href="" class="go_to_buy">去支付</a>
+                        <a href="">取消订单</a>
+                    </div>
+
+                    <!-- 拼团已结束标签 -->
+                    <div class="is_over">
+                        拼团已结束
+                    </div>
+
+                    <!-- 等待返回拼团优惠金标签 -->
+                    <div class="backtrack_money">
+                        等待返回拼团优惠金
                     </div>
                 </li>
             </ul>
