@@ -124,7 +124,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @if(isset($goods_sku_list) && count($goods_sku_list) > 0)
+                        @if(isset($goods_sku_list) && !isset($goods_sku_list['err_code']) && count($goods_sku_list) > 0)
                             @foreach($goods_sku_list as $lk=>$lv)
                             <tr>
                                 <td>
