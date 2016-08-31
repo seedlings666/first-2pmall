@@ -23,7 +23,7 @@ class CreateOrderTable extends Migration
                 ->comment('订单状态:0初始,1创建订单成功,2拼团成功');
             $table->tinyInteger('pay_status')
                 ->default(0)
-                ->comment('支付状态:0初始,1支付中,2支付成功');
+                ->comment('支付状态:0初始,1支付中,2支付成功,3返还现金');
             $table->integer('group_id')->unsigned()->default(0)->comment('拼团id,使用拼团第一单的order_id');
             $table->integer('user_id')->unsigned()->default(0)->comment('用户id');
             $table->bigInteger('order_sn')->unsigned()->default(0)->comment('订单编号');

@@ -28,73 +28,52 @@
 
         <div class="main_warp order_content_box">
             <ul id="order_content">
+            @foreach($response_data['order_list'] as $order)
                 <li>
-                    <div class="order_time">2016-08-22 21:34:07</div>
+                    <div class="order_time">{{ $order['created_at'] }}</div>
                     <div class="goods_info">
                         <div class="goods_img">
                             <img src="{{asset('images/goods_img.jpg')}}" alt="商品名称">
                         </div>
 
                         <div class="goods_name">
-                            <p>商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
-                            <p>数量：1</p>
-                            <p>库存：1000件</p>
+                            <p>{{ $order['orderGoods'][0]['goods_title'] }}</p>
+                            <p>数量：{{ $order['orderGoods'][0]['goods_number'] }}</p>
+                            <p>&nbsp;<!-- 库存：1000件 --></p>
                         </div>
 
                         <div class="goods_price">
-                            <span>&yen;<big id="goods_price">95</big>/件</span>
+                            <span>&yen;<big id="goods_price">{{ $order['orderGoods'][0]['buy_price'] }}</big>/件</span>
                         </div>
                     </div>
                     <div class="goods_sum">
                         共1件商品
-                        <span>实付：<big id="pay_price">&yen;0</big></span>
+                        <span>实付：<big id="pay_price">&yen;{{ $order['order_amount'] }}</big></span>
                     </div>
                     <div class="order_status">
-                        <span>待支付</span>
+                        <!-- <span>待支付</span> -->
+                        <!-- <a href="" class="go_to_buy">去支付</a> -->
+                        <!-- <a href="">取消订单</a> -->
+                        @if($order['is_share'])
                         <a href="" class="share_pt">分享拼团</a>
-                        <a href="" class="join_pt">加入拼团</a>
-                        <a href="" class="go_to_buy">去支付</a>
-                        <a href="">取消订单</a>
-                    </div>
-                </li>
-
-                <li>
-                    <div class="order_time">2016-08-22 21:34:07</div>
-                    <div class="goods_info">
-                        <div class="goods_img">
-                            <img src="{{asset('images/goods_img.jpg')}}" alt="商品名称">
-                        </div>
-
-                        <div class="goods_name">
-                            <p>商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
-                            <p>数量：1</p>
-                            <p>库存：1000件</p>
-                        </div>
-
-                        <div class="goods_price">
-                            <span>&yen;<big id="goods_price">95</big>/件</span>
-                        </div>
-                    </div>
-                    <div class="goods_sum">
-                        共1件商品
-                        <span>实付：<big id="pay_price">&yen;0</big></span>
-                    </div>
-                    <div class="order_status">
-                        <span>待支付</span>
-                        <a href="" class="go_to_buy">去支付</a>
-                        <a href="">取消订单</a>
+                        @endif
+                        @if($order['join_group'])
+                        <a href="{{ $order['join_group'] }}" class="join_pt">加入拼团</a>
+                        @endif
                     </div>
 
-                    <!-- 拼团已结束标签 -->
+                    @if($order['is_end'])
                     <div class="is_over">
                         拼团已结束
                     </div>
-
-                    <!-- 等待返回拼团优惠金标签 -->
+                    @endif
+                    @if($order['wait_cashback'])
                     <div class="backtrack_money">
                         等待返回拼团优惠金
                     </div>
+                    @endif
                 </li>
+            @endforeach
             </ul>
         </div>
 

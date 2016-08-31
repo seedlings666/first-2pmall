@@ -614,12 +614,15 @@ class BuyModule
      */
     public function getOrderList()
     {
-        $order_result = DB::table('zo_orders')
+        $user_id            = 0;
+        $order_fields       = ['id', 'user_id', 'group_id', 'group_rp', 'order_amount', 'order_status', 'pay_status', 'created_at'];
+        $order_goods_fields = ['id', 'goods_id', 'order_id', 'goods_title', 'sale_price', 'buy_price', 'goods_number', 'goods_img'];
+        $order_result       = DB::table('zo_orders')
             ->whereRaw('`deleted_at` is null')
-            ->orderBy('group_rp', 'asc')
             ->orderBy('created_at', 'desc')
+            ->orderBy('group_rp', 'asc')
             ->forPage(1, 15)
-            ->get();
+            ->get($order_fields);
 
         $order_ids  = [];
         $order_list = [];
@@ -629,30 +632,54 @@ class BuyModule
             $order_ids[]       = $value->id;
         }
 
-        $order_goods_result = DB::table('zo_order_goods')->whereIn('order_id', $order_ids)->get();
+        $order_goods_result = DB::table('zo_order_goods')->whereIn('order_id', $order_ids)->get($order_goods_fields);
         $order_goods_list   = [];
         foreach ($order_goods_result as $value) {
             $order_goods_list[$value->order_id][] = (array) $value;
         }
-        foreach ($order_list as &$val) {
-            $val['is_share']   = '';
-            $val['join_group'] = '';
-            $is_group_rp1      = $val['group_rp'] == 1;
-            $is_order_status1  = $val['order_status'] == 1;
-            $is_expired        = strtotime($val['created_at']) + 86400 > time();
+        foreach ($order_list as $key => &$val) {
+            if (empty($order_goods_list[$val['id']])) {
+                unset($order_list[$key]);
+                continue;
+            }
+            $val['orderGoods'] = $order_goods_list[$val['id']];
+
+            $val['is_share']      = [];
+            $val['join_group']    = '';
+            $val['is_end']        = 0;
+            $val['wait_cashback'] = 0;
+            $val['is_expire']     = 0;
+            $is_group_rp1         = $val['group_rp'] == 1;
+            $is_order_status2     = $val['order_status'] == 2;
+            $is_order_status1     = $val['order_status'] == 1;
+            $is_expired           = (strtotime($val['created_at']) + 86400) < time();
+
+            //判断是否结束
+            if ($is_order_status2) {
+                $val['is_end'] = 1;
+            }
             //判断是否可以分享,分享链接地址
-            if ($is_group_rp1 && $is_order_status1) {
+            if ($is_group_rp1) {
                 $val['is_share'] = [];
             }
-            //加入拼团链接地址
-            if ($is_group_rp1 && $is_order_status1 && !$is_expired) {
-                $val['join_group'] = '';
+            //判断是否已过期
+            if ($is_group_rp1 && !$is_order_status2 && $is_expired) {
+                $val['is_expire'] = 1;
             }
-            if (isset($order_goods_list[$val['id']])) {
-                $val['orderGoods'] = $order_goods_list[$val['id']];
+            //判断是否等待返回优惠金额
+            if ($is_group_rp1 && $is_order_status2 && $val['pay_status'] != 3) {
+                $val['wait_cashback'] = 1;
+            }
+            //加入拼团链接地址,使用商品详情加上group_id
+            if ($is_group_rp1 && $is_order_status1 && !$is_expired && $user_id != $val['user_id']) {
+                // if (true) {
+                $params = [
+                    'id' => $val['orderGoods'][0]['goods_id'],
+                ];
+                $val['join_group'] = action('Wap\GoodsController@getShow', $params) . '?group_id=' . $val['group_id'];
             }
         }
 
-        return $order_list;
+        return ['order_list' => $order_list, 'next_page' => 15];
     }
 }

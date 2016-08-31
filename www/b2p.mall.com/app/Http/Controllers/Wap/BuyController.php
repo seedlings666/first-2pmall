@@ -54,6 +54,9 @@ class BuyController extends Controller
     {
         $buyModule  = new BuyModule();
         $order_list = $buyModule->getOrderList();
-        var_dump($order_list);
+        if (\Request::ajax()) {
+            return ['response_data' => $order_list];
+        }
+        return view('wap.orderList', ['response_data' => $order_list]);
     }
 }
