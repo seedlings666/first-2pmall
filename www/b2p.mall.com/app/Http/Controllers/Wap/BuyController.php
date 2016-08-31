@@ -40,7 +40,7 @@ class BuyController extends Controller
      */
     public function createOrder($type = 'callback')
     {
-        $input_data['pay_sn'] = '10584147238240505142';
+        $input_data['pay_sn']  = '10584147238240505142';
         $input_data['user_id'] = '275';
 
         $buyModule = new BuyModule();
@@ -48,5 +48,15 @@ class BuyController extends Controller
         // $res       = $buyModule->genrateOrderSN('10');
         // $res       = $buyModule->genrateInsertOrderData(['order_amount' => '18888.00']);
         var_dump($res);
+    }
+
+    public function groupOrders()
+    {
+        $buyModule  = new BuyModule();
+        $order_list = $buyModule->getOrderList();
+        if (\Request::ajax()) {
+            return ['response_data' => $order_list];
+        }
+        return view('wap.orderList', ['response_data' => $order_list]);
     }
 }
