@@ -99,6 +99,27 @@
         padding: 15px 0;
     }
 
+    .goods_sku_box{
+        padding-bottom: 15px;
+
+        span{
+            display: inline-block;
+            padding: 5px;
+            border: 1px solid #e5e5e5;
+            margin-right: 5px;
+
+            &:last-child{
+                margin-right: 0;
+            }
+
+            &.cur{
+                background-color: #ff5555;
+                border-color: #ff5555;
+                color: #fff;
+            }
+        }
+    }
+
     .hint_box{
         background: #e1e1e1;
         padding: 10px;

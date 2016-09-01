@@ -25,6 +25,7 @@ elixir(function(mix) {
         .scripts('wap/order.js', 'public/js/wap/order.js')
         .scripts('wap/userInfo.js', 'public/js/wap/userInfo.js')
         .scripts('wap/orderList.js', 'public/js/wap/orderList.js')
+        .scripts('wap/detail.js', 'public/js/wap/detail.js')
         .scripts('admin/ace-extra.js', 'public/js/admin/ace-extra.js')
         .scripts('admin/ace-elements.js', 'public/js/admin/ace-elements.js')
         .scripts('admin/tree.js', 'public/js/admin/tree.js')
@@ -77,6 +78,7 @@ elixir(function(mix) {
         .scripts('admin/jquery.hotkeys/index.js', 'public/js/admin/jquery.hotkeys.js')
         .scripts('admin/bootbox/bootbox.js', 'public/js/admin/bootbox.js')
         .scripts('admin/jqueryui-touch-punch/jquery.ui.touch-punch.js', 'public/js/admin/jquery.ui.touch-punch.js')
+        .scripts('admin/dropzone.js', 'public/js/admin/dropzone.js')
 
         // 处理css、sass
         .styles('wap/base.css', 'public/css/wap')
@@ -85,6 +87,7 @@ elixir(function(mix) {
         .sass('wap/userInfo.scss', 'public/css/wap')
         .sass('wap/orderList.scss', 'public/css/wap')
         .styles('admin/ace.css', 'public/css/admin')
+        .styles('admin/dropzone.css', 'public/css/admin')
         .styles('admin/ace.onpage-help.css', 'public/css/admin')
         .styles('admin/ace-fonts.css', 'public/css/admin')
         .styles('admin/ace-ie.css', 'public/css/admin')
@@ -107,6 +110,7 @@ elixir(function(mix) {
             'js/wap/userInfo.js',
             'js/wap/order.js',
             'js/wap/orderList.js',
+            'js/wap/detail.js',
 
             // admin js
             'js/admin/ace-extra.js',
@@ -161,6 +165,7 @@ elixir(function(mix) {
             'js/admin/bootstrap-wysiwyg.js',
             'js/admin/jquery.hotkeys.js',
             'js/admin/bootbox.js',
+            'js/admin/dropzone.js',
 
             // wap css
             'css/wap/base.css',
@@ -171,6 +176,7 @@ elixir(function(mix) {
 
             // admin css
             'css/admin/ace.css',
+            'css/admin/dropzone.css',
             'css/admin/ace.onpage-help.css',
             'css/admin/ace-fonts.css',
             'css/admin/ace-ie.css',

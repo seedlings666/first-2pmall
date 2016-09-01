@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Laravel</title>
+        <title>商品详情</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
         <meta name="format-detection" content="telephone=no" />
@@ -12,7 +12,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <!-- 它支持用户将网页创建快捷方式到桌面时，其图标变为我们自己定义的图标 apple-touch-icon.png 命名 -->
         <link rel="apple-touch-icon-precomposed" href="http://3gimg.qq.com/wap30/info/info5/img/logo_icon.png">
-        <meta name="author" content="CK-Joey" />
+        <meta name="author" content="seedlings" />
 
         <link rel="stylesheet" href="{{ elixir('css/wap/base.css') }}">
         <link rel="stylesheet" href="{{ elixir('css/wap/index.css') }}">
@@ -21,21 +21,15 @@
     <body>
         <div class="main_warp slider_box" id="slider_wrapper">
             <ul>
-                <li>
-                    <a href="###">
-                        <img src="{{asset('images/pic1.jpg')}}" alt="">
-                    </a>
-                </li>
-                <li>
-                    <a href="###">
-                        <img src="{{asset('images/pic2.jpg')}}" alt="">
-                    </a>
-                </li>
-                <li>
-                    <a href="###">
-                        <img src="{{asset('images/pic3.jpg')}}" alt="">
-                    </a>
-                </li>
+                @if(isset($goods_images) && is_array($goods_images) && count($goods_images) > 0)
+                    @foreach($goods_images as $sk=>$sv)
+                        <li>
+                            <a href="###">
+                                <img src="{{ $sv['url_links'] }}" alt="{{ $sv['file_name'] }}">
+                            </a>
+                        </li>
+                    @endforeach
+                @endif
             </ul>
             <div class="dot">
                 <span class="cur"></span>
@@ -48,12 +42,19 @@
             <h1>商品名称商品名称商品名称商品名称</h1>
             <p class="gd_introduction">商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介</p>
             <div class="goods_price_box">
-                <span class="now_price">&yen;<strong>88</strong></span>
-                <del>&yen;115</del>(市场价)
+                <span class="now_price">&yen;<strong>{{ $goods_details['shop_price'] }}</strong></span>
+                <del>&yen;{{ $goods_details['market_price'] }}</del>(市场价)
             </div>
+
             <div class="goods_sales_box">
-                累计销量：365件
+                库存：{{ $goods_details['goods_number'] }}件
             </div>
+
+            <div class="goods_sku_box" id="sku_box" data-url="###">
+                规格：
+                <span class="cur" data-id="11">规格1</span><span data-id="555">规格2</span>
+            </div>
+
             <div class="hint_box">
                 *开团并邀请2人参团，人数不足自动退款。
             </div>
@@ -63,13 +64,16 @@
                     <span>图文详情</span>
                 </div>
                 <div class="pd_detail">
+                    <!--
                     <p>这里是图片文字文字说明</p>
                     <img src="{{asset('images/goods_img.jpg')}}">
+                    -->
+                    {{ $goods_details['content'] }}
                 </div>
             </div>
         </div>
 
-        <div class="recommend_goods main_warp">
+        <!-- <div class="recommend_goods main_warp">
             <div class="rg_title">
                 你可能还喜欢
             </div>
@@ -159,7 +163,7 @@
                     </a>
                 </li>
             </ul>
-        </div>
+        </div> -->
 
         <div class="fix_nav">
             <ul>
@@ -176,6 +180,7 @@
 
         <script src="{{ elixir('js/jquery.js') }}"></script>
         <script src="{{ elixir('js/wap/base.js') }}"></script>
+        <script src="{{ elixir('js/wap/detail.js') }}"></script>
         <script src="{{ elixir('js/wap/swipeSlide.js') }}"></script>
         <script>
             $(function(){

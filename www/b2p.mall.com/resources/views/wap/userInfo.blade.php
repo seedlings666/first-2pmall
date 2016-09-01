@@ -12,7 +12,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <!-- 它支持用户将网页创建快捷方式到桌面时，其图标变为我们自己定义的图标 apple-touch-icon.png 命名 -->
         <link rel="apple-touch-icon-precomposed" href="http://3gimg.qq.com/wap30/info/info5/img/logo_icon.png">
-        <meta name="author" content="CK-Joey" />
+        <meta name="author" content="seedlings" />
 
         <link rel="stylesheet" href="{{ elixir('css/wap/base.css') }}">
         <link rel="stylesheet" href="{{ elixir('css/wap/userInfo.css') }}">
