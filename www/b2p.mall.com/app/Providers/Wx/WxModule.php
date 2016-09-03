@@ -2,6 +2,9 @@
 
 namespace App\Providers\Wx;
 
+use App\Providers\Wx\Helper;
+use DB;
+
 /**
  * 微信
  * @author chentengfeng @create_at 2016-08-28  00:29:25
@@ -34,7 +37,7 @@ class WxModule
     /**
      * 获取微信用户信息
      *
-     * @return void
+     * @return mix(int, array) 若是已经存在用户则返回id, 若无则返回对应的用户信息或者错误信息
      * @author chentengfeng @create_at 2016-08-28  09:07:55
      */
     private function toolWxInfo($code)
@@ -43,17 +46,30 @@ class WxModule
         $secret = config('wx.appsecret');
         $token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$secret}&code={$code}&grant_type=authorization_code";
         $token = Helper::curlGet($token_url);
-        $token = json_decode($token);
+        $token = json_decode($token, true);
         //获取授权码失败
         if (isset($token['errcode'])) {
-            return ;
+            return Helper::error(90000, '获取微信授权码失败');
         }
+
+        //检测是否存在对应的openid
+        $user_info  = DB::table($this->tables['user'])
+                    ->select('id', 'avatar', 'nick_name')
+                    ->whereExists(function ($query) {
+                        $query->from($this->tables['user_wx'])
+                              ->whereRaw($this->tables['user'] . '.id = ' . $this->tables['user_wx'] . '.user_id');
+                    })
+                    ->first();
+        if (!empty($user_info)) {
+            return $user_info;
+        }
+
         $token['access_token'];
         $token['openid'];
         $info_url = "https://api.weixin.qq.com/sns/userinfo?access_token={$token['access_token']}&openid={$token['openid']}&lang=zh_CN";
         $user_info = Helper::curlGet($info_url);
         if (isset($user_info['errcode'])) {
-            return ;
+            return Helper::error(90001, '用户信息获取不到');
         }
 
         return $user_info;
@@ -76,7 +92,7 @@ class WxModule
         }
         
         try {
-            $redirect_url = action(ucfirst($controller).'Controller@'.$this->toolGetFun($fun));
+            $redirect_url = action('Wap\\'.ucfirst($controller).'Controller@'.$this->toolGetFun($fun));
         } catch (Exceptions $e) {
             //查找不到该路由则使用默认路由
             $redirect_url = action(ucfirst(Config::get('wx.default_controller')).'Controller@'.$this->toolGetFun(Config::get('wx.default_fun')));
@@ -96,6 +112,7 @@ class WxModule
     {
         $user_info = $this->toolWxInfo($code);
         if (isset($user_info['err_code'])) {
+            Helper::log('user', json_encode($user_info));
             return $user_info;
         }
 
@@ -130,12 +147,38 @@ class WxModule
 
         DB::table($this->tables['user_wx'])->insertGetId($insert);
 
-        Session::put('user', [
-            'user_id'   => $id,
-            'avatar'    => $user_info['headimgurl'],
-            'nick_name' => $user_info['nick_name']
-        ]);
+        Helper::saveLoginInfo($id, $user_info['headimgurl'], $user_info['nick_name']);
     }
+
+
+    /**
+     * 获取微信token
+     *
+     * @return void
+     * @author chentengfeng @create_at 2016-09-01  08:19:18
+     */
+    /* //修改为使用overtrue
+    public function getAccessToken()
+    {
+        $cache_key = '';
+        $value = Cache::get($cache_key);
+        if (!empty($value)) {
+            return $value;
+        }
+
+        $appid = config('wx.appid');
+        $secret = config('wx.appsecret');
+        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appid}&secret={$secret}";
+        $result = json_decode(Helper::curlGet($url), true);
+        if (isset($result['errcode'])) {
+            Helper::log('access-token', json_encode($result));
+            return null;
+        }
+
+        Cache::put($cache_key, $result['access_token'], $result['expires_in'] - 60);
+        return $result['access_token'];
+    }
+     */
 }
 
 

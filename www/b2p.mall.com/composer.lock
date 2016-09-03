@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bbe542d7d3895c597e4bc9d68a720ad8",
-    "content-hash": "94709ed69fe291961237d198009cd25e",
+    "hash": "63a1ddea000fb2c899e660f9ff74c0bb",
+    "content-hash": "431258c31d51d33dd368c164af7f9b6f",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -979,6 +979,48 @@
                 "php"
             ],
             "time": "2016-04-19 13:41:41"
+        },
+        {
+            "name": "overtrue/laravel-wechat",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/laravel-wechat.git",
+                "reference": "1880acfeb6cda15d521c3b35f36b7dfc7c14bccb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overtrue/laravel-wechat/zipball/1880acfeb6cda15d521c3b35f36b7dfc7c14bccb",
+                "reference": "1880acfeb6cda15d521c3b35f36b7dfc7c14bccb",
+                "shasum": ""
+            },
+            "require": {
+                "overtrue/wechat": "~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Overtrue\\LaravelWechat\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "anzhengchao@gmail.com"
+                }
+            ],
+            "description": "微信 SDK for Laravel",
+            "keywords": [
+                "laravel",
+                "sdk",
+                "wechat",
+                "weixin"
+            ],
+            "time": "2016-08-23 13:45:21"
         },
         {
             "name": "overtrue/socialite",

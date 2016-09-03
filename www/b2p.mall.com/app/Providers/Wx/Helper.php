@@ -101,4 +101,55 @@ class Helper
         //返回结果
         return $output;
     }//end func curlPost
+
+
+    /**
+     * 日志纪录
+     *
+     * @return void
+     * @author chentengfeng @create_at 2016-09-01  08:19:18
+     */
+    public static function log($type, $content)
+    {
+        $current_day = date('Y-m-d');
+        $msg = '[' . $current_day . ' ' . date('H:i:s') . ']';
+        $msg .= $content;
+        $msg .= "\n";
+        $path = storage_path("logs/{$current_day}");
+        if (!file_exists($path)) {
+            mkdir($path, 0755);
+        }
+        file_put_contents("{$path}/$type.log", $msg, FILE_APPEND);
+    }
+
+
+    /**
+     * 保存登录信息
+     *
+     * @return void
+     * @author chentengfeng @create_at 2016-09-03  17:46:41
+     */
+    public static function saveLoginInfo($id, $headimgurl, $nick_name)
+    {
+        Session::put('user', [
+            'user_id'   => $id,
+            'avatar'    => $headimgurl,
+            'nick_name' => $nick_name
+        ]);
+    }
+
+    /**
+     * 返回错误数据格式
+     *
+     * @return void
+     * @author chentengfeng @create_at 2016-09-03  20:09:33
+     */
+    public static function error($code, $msg='', $data = [])
+    {
+        return [
+            'err_code' => $code,
+            'err_msg'  => $msg,
+            'data' => $data,
+        ];
+    }
 }

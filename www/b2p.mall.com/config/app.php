@@ -155,8 +155,11 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\WxServiceProvider::class,
     
         Intervention\Image\ImageServiceProvider::class,
+        //微信操作
+        Overtrue\LaravelWechat\ServiceProvider::class,
 
     ],
 
@@ -205,6 +208,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Image' =>  Intervention\Image\Facades\Image::class,
+        'Wechat' => Overtrue\LaravelWechat\Facade::class,
     ],
 
 ];
