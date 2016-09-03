@@ -829,6 +829,65 @@ class GoodsModule
         return $update_response;
     }
     
+    
+    /**
+     * 获取某个属性的值
+     * @author  jianwei
+     * @param   $goods_id   int     商品 id
+     * @param   $sku_att    int     属性名称?
+     */
+    public function getSkuAttrValue($goods_id,$sku_att)
+    {
+        if(!is_numeric($goods_id) || $goods_id < 1 || !in_array($sku_att,['color','size'])){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+        
+        $sku_list = $this->getGoodsSkuList($goods_id,['id','sku_attr_1','sku_attr_2','is_on_sale']);
+        
+        $sku_attr_arr = array();
+        $goods_attr_id = 0;
+        if($sku_att == 'color'){
+            //获取属性id
+            //颜色属性
+            $goods_color_attr = $this->saveGoodsAttr($goods_id,'颜色');
+            
+            $goods_attr_id = $goods_color_attr->id;
+    
+            foreach($sku_list as $lk=>$lv){
+                if($lv->is_on_sale == 1){
+                    $sku_attr_arr[] = $lv->sku_attr_1;
+                }
+            }
+        }else if($sku_att == 'size'){
+            //尺寸属性
+            $goods_size_attr = $this->saveGoodsAttr($goods_id,'尺寸');
+    
+            $goods_attr_id = $goods_size_attr->id;
+    
+            foreach($sku_list as $lk=>$lv){
+                if($lv->is_on_sale == 1){
+                    $sku_attr_arr[] = $lv->sku_attr_2;
+                }
+            }
+        }
+        
+        if(empty($sku_attr_arr)){
+            $err_msg = Helper::ErrorMessage(50010, '该商品已下架!');
+            return $err_msg;
+        }
+    
+        $select_columns = ['id','goods_id','attr_id','value_name'];
+        $sku_attr_value_list = App::make('GoodsAttrValueModel')->select($select_columns)->where('goods_id',$goods_id)->where('attr_id',$goods_attr_id)->whereIn('id',$sku_attr_arr)->get();
+        
+        if(empty($sku_attr_value_list)){
+            $err_msg = Helper::ErrorMessage(50012, '没找到任何规格!');
+            return $err_msg;
+        }
+        
+        
+        return $sku_attr_value_list;
+    }
+    
     /**
      * 图片文件上传
      * @author  jianwei
