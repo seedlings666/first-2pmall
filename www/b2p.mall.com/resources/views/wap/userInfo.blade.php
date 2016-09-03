@@ -21,10 +21,10 @@
     <body>
         <div class="main_warp user_info_box">
             <div class="user_photo">
-                <img src="{{asset('images/goods_img.jpg')}}">
+                <img src="{{asset($user->avatar)}}">
             </div>
-            <strong>CK-Joey</strong>
-            <p>我的积分：450</p>
+            <strong>{{$user->nick_name}}</strong>
+            <p>我的积分：{{$user->points}}</p>
         </div>
 
         <div class="main_warp user_tool">

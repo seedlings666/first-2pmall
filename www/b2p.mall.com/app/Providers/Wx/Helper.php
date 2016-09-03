@@ -132,7 +132,7 @@ class Helper
     public static function saveLoginInfo($id, $headimgurl, $nick_name)
     {
         Session::put('user', [
-            'user_id'   => $id,
+            'id'        => $id,
             'avatar'    => $headimgurl,
             'nick_name' => $nick_name
         ]);

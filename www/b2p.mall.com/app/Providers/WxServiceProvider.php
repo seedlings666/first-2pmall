@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Providers\Wx\WxModule;
+use App\Providers\Wx\UserModule;
 
 /**
  * 微信服务
@@ -28,11 +29,18 @@ class WxServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('App\Providers\Wx\WxModule', function () {
-            return new WxModule([
-                'user' => 'zo_users',
-                'user_wx' => 'zo_user_weixin'
-            ]);
+        $tables = [
+            'user' => 'zo_users',
+            'user_wx' => 'zo_user_weixin'
+        ];
+
+        $this->app->bind('App\Providers\Wx\WxModule', function () use($tables) {
+            return new WxModule($tables);
+        });
+
+
+        $this->app->bind('App\Providers\Wx\UserModule', function () use ($tables) {
+            return new UserModule($tables);
         });
     }
 }

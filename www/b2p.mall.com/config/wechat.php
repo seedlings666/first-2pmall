@@ -57,4 +57,6 @@ return [
     //     // 'sub_merchant_id' => env('WECHAT_PAYMENT_SUB_MERCHANT_ID', ''),
     //     // ...
     // ],
+    
+    'avatar' => 'xxx',
 ];

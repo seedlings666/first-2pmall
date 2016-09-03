@@ -27,6 +27,9 @@ Route::group(['prefix' => 'wap', 'namespace' => 'Wap'], function () {
     //微信
     Route::controller('/wx','WxController');
 
+    //用户
+    Route::controller('/user','UserController');
+
     Route::get('/user', function () {
         return view('wap.userInfo');
     });
