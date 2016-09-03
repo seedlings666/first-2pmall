@@ -2,6 +2,8 @@
 
 namespace App\Providers\Wx;
 
+use Session;
+
 /**
  * Class Helper
  * @author chentengfeng @create_at 2016-08-28  09:07:55
