@@ -119,7 +119,7 @@ class WxModule
         }
 
         if ($user_info['id'] instanceof stdClass) {
-            Helper::saveLoginInfo($user_info['id'], $user_info['avatar'], $user_info['nick_name']);
+            Helper::saveLoginInfo($user_info->id, $user_info->avatar, $user_info->nick_name);
             return ;
         }
 
