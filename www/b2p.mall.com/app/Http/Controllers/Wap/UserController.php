@@ -22,11 +22,13 @@ class UserController extends Controller
      */
     public function getShow(UserModule $module, Application $wechat_app)
     {
+        /*
         Session::put('user', [
             'id'        => 1,
             'avatar'    => '123',
             'nick_name' => '123'
         ]);
+         */
         $user = $module->userInfo(Session::get('user.id'));
         $js = $wechat_app->js;
 
