@@ -24,6 +24,9 @@ Route::group(['prefix' => 'wap', 'namespace' => 'Wap'], function () {
     //商品模块控制器
     Route::controller('/goods', 'GoodsController');
 
+    //微信
+    Route::controller('/wx','WxController');
+
     Route::get('/user', function () {
         return view('wap.userInfo');
     });
