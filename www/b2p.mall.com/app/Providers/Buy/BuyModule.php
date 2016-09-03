@@ -23,28 +23,30 @@ class BuyModule
      */
     private function checkGoodsIsBuy(array $goods_data)
     {
+        $sku_res = (array) DB::table('zo_goods_sku')->whereRaw('`deleted_at` is null')
+            ->where('id', $goods_data['sku_id'])
+            ->first(['id', 'goods_id', 'market_price', 'shop_price']);
         //商品不存在参数错误
-        if (false) {
+        if (!$sku_res) {
+            return ['err_code' => '400704', 'err_msg' => '商品参数错误!'];
+        }
+        $goods_res = (array) DB::table('zo_goods')->whereRaw('`deleted_at` is null')
+            ->where('id', $sku_res['goods_id'])
+            ->first(['id', 'is_on_sale']);
+        //商品不存在参数错误
+        if (!$goods_res) {
             return ['err_code' => '400704', 'err_msg' => '商品参数错误!'];
         }
         //商品已下架或关闭
-        if (false) {
+        if ($goods_res['is_on_sale'] !== 1) {
+            // if ($sku_res['is_on_sale'] !== 1 || $goods_res['is_on_sale'] !== 1) {
             return ['err_code' => '400701', 'err_msg' => '商品已下架!'];
         }
         //商品库存不足,该判断暂未明确是否需要
-        if (false) {
-            # code...
-        }
-        $goods_arr = [
-            'goods_id'     => '333',
-            'sku_id'       => '777',
-            'goods_number' => '1',
-            'market_price' => '18000.00',
-            'shop_price'   => '14000.00',
-            'goods_title'  => 'MacBook Pro 顶配版本',
-            'goods_spec'   => '{"666":"顶配版本"}',
-        ];
-        return $goods_arr;
+        // if (false) {
+        //     # code...
+        // }
+        return $sku_res;
     }
 
     /**
@@ -57,25 +59,47 @@ class BuyModule
     public function getGoodsBySkuIds(array $sku_ids)
     {
         //商品信息
-        /**
-         * @todo
-         */
-        // $select    = ['pay_sn', 'user_id', 'attach'];
-        // $goods_res = DB::table('zo_pay_sn')->select($select)->where('pay_sn', $pay_sn)->first();
-        // if (!$goods_res) {
-        //     return ['err_code' => '400804', '支付编号不存在!'];
-        // }
-        $goods_res   = [];
-        $goods_res[] = [
-            'goods'        => ['shop_id' => 277],
-            'goods_id'     => 333,
-            'sku_id'       => 777,
-            'market_price' => 18000.00,
-            'shop_price'   => 14000.00,
-            'sku_name'     => 'MacBook Pro 顶配版本',
-        ];
+        $sku_res = (array) DB::table('zo_goods_sku')->whereRaw('`deleted_at` is null')
+            ->whereIn('id', $sku_ids)
+            ->get(['id', 'goods_id', 'market_price', 'shop_price', 'sku_name']);
+        if (!$sku_res) {
+            return ['err_code' => '400724', '商品参数错误!'];
+        }
+        $goods_ids = [];
+        foreach ($sku_res as $sku) {
+            $goods_ids[] = $sku->goods_id;
+        }
+        $goods_res = (array) DB::table('zo_goods')->whereRaw('`deleted_at` is null')
+            ->whereIn('id', $goods_ids)
+            ->get(['id', 'shop_id']);
+        if (!$goods_res) {
+            return ['err_code' => '400724', '商品参数错误!'];
+        }
+        $goods_hash = [];
+        foreach ($goods_res as $goods) {
+            $goods_hash[$goods->id] = (array) $goods;
+        }
+        $goods_img_res = (array) DB::table('zo_goods_images')->whereRaw('`deleted_at` is null')
+            ->whereIn('goods_id', $goods_ids)
+            ->get(['id', 'goods_id', 'url_links']);
+        $goods_img_hash = [];
+        foreach ($goods_img_res as $goods_img) {
+            $goods_img_hash[$goods_img->goods_id][] = (array) $goods_img;
+        }
 
-        return $goods_res;
+        foreach ($sku_res as &$sku) {
+            $sku   = (array) $sku;
+            $goods = $imgs = [];
+            if (isset($goods_hash[$sku['goods_id']])) {
+                $goods = $goods_hash[$sku['goods_id']];
+            }
+            if (isset($goods_img_hash[$sku['goods_id']])) {
+                $imgs = $goods_img_hash[$sku['goods_id']];
+            }
+            $sku['goods'] = $goods;
+            $sku['imgs']  = $imgs;
+        }
+        return $sku_res;
     }
 
     /**
@@ -109,7 +133,7 @@ class BuyModule
             return ['err_code' => '400813', 'err_msg' => '拼团已过期!'];
         }
 
-        return ['group_order_res', 'order_goods_res'];
+        return compact('group_order_res', 'order_goods_res');
     }
 
     /**
@@ -493,7 +517,7 @@ class BuyModule
                 'buy_price'    => $buy_price,
                 'goods_title'  => $val['sku_name'],
                 'goods_spec'   => '',
-                'goods_img'    => '',
+                'goods_img'    => (!empty($val['imgs'][0]['url_links']) ? $val['imgs'][0]['url_links'] : ''),
             ];
             $in_order_goods[]  = $order_goods;
             $sale_goods_amount = ($order_goods['sale_price'] * $order_goods['goods_number']) + $sale_goods_amount;
