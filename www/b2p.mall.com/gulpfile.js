@@ -79,6 +79,7 @@ elixir(function(mix) {
         .scripts('admin/bootbox/bootbox.js', 'public/js/admin/bootbox.js')
         .scripts('admin/jqueryui-touch-punch/jquery.ui.touch-punch.js', 'public/js/admin/jquery.ui.touch-punch.js')
         .scripts('admin/dropzone.js', 'public/js/admin/dropzone.js')
+        .scripts('admin/jquery.colorbox.min.js', 'public/js/admin/jquery.colorbox.js')
 
         // 处理css、sass
         .styles('wap/base.css', 'public/css/wap')
@@ -98,6 +99,7 @@ elixir(function(mix) {
         .styles('admin/pace.css', 'public/css/admin')
         .styles('admin/font-awesome.min.css', 'public/css/admin')
         .styles('admin/sunburst.css', 'public/css/admin')
+        .styles('admin/colorbox.min.css', 'public/css/admin')
 
         // 添加版本号
         .version([
@@ -166,6 +168,7 @@ elixir(function(mix) {
             'js/admin/jquery.hotkeys.js',
             'js/admin/bootbox.js',
             'js/admin/dropzone.js',
+            'js/admin/jquery.colorbox.js',
 
             // wap css
             'css/wap/base.css',
@@ -187,6 +190,7 @@ elixir(function(mix) {
             'css/admin/pace.css',
             'css/admin/font-awesome.min.css',
             'css/admin/sunburst.css',
+            'css/admin/colorbox.min.css',
         ]);
 
     // 自动刷新页面
