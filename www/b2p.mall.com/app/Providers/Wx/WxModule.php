@@ -117,6 +117,11 @@ class WxModule
             return $user_info;
         }
 
+        if (isset($user_info['id'])) {
+            Helper::saveLoginInfo($user_info['id'], $user_info['avatar'], $user_info['nick_name']);
+            return ;
+        }
+
         DB::beginTransaction();
         $current_time = time();
         $insert = [
