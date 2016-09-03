@@ -139,7 +139,7 @@ class WxModule
             'country'    => $user_info['country'],
             'headimgurl' => $user_info['headimgurl'],
             'privilege'  => implode(',', $user_info['privilege']),
-            'id'         => $id,
+            'user_id'    => $id,
         ];
 
         //只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段
