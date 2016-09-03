@@ -493,10 +493,89 @@ class GoodsModule
     
     
     /**
+     * 通过商品 id 的某个属性值,获取另外属性值选项
+     * @author  jianwei
+     * @param   $goods_id   int 商品 id
+     * @param   $attr_type  enum color,size
+     * @param   $attr_id    int 属性值id
+     */
+    public function getGoodsSomeAttrValue($goods_id,$attr_type,$attr_id)
+    {
+        if(!is_numeric($goods_id) || $goods_id < 1 || !in_array($attr_type,['color','size']) || !is_numeric($attr_id) || $attr_id < 0){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+        
+        $GoodsSkuModel = App::make('GoodsSkuModel');
+        
+        $sku_select_columns = ['*'];
+        $goods_sku_obj = $GoodsSkuModel->select($sku_select_columns);
+        
+        $goods_sku_obj->where('goods_id',$goods_id);
+        $goods_sku_obj->where('is_on_sale',1);
+    
+    
+        //保存数据
+        $sku_attr_x_list = null;
+    
+        if($attr_type == 'color'){
+            $goods_sku_obj->where('sku_attr_1',$attr_id);
+            $sku_attr_x_list = $goods_sku_obj->pluck('sku_attr_2');
+        }else{
+            $goods_sku_obj->where('sku_attr_2',$attr_id);
+            $sku_attr_x_list = $goods_sku_obj->pluck('sku_attr_1');
+        }
+        
+        if(count($sku_attr_x_list) < 1){
+            $err_msg = Helper::ErrorMessage(50012, '没找到任何规格!');
+            return $err_msg;
+        }
+        
+        //查找属性值
+        $attr_value_columns = ['id','goods_id','attr_id','value_name'];
+        $sku_attr_value_list = App::make('GoodsAttrValueModel')->select($attr_value_columns)->whereIn('id',$sku_attr_x_list)->get();
+        
+        return $sku_attr_value_list;
+        
+    }
+    
+    /**
+     * 确定一个 sku
+     * @author  jianwei
+     * @param   $goods_id   int 商品 id
+     * @param   $color_attr_val_id  int 颜色属性 id
+     * @param   $size_attr_val_id   int 规格属性 id
+     */
+    public function getSkuByAttr($goods_id,$color_attr_val_id,$size_attr_val_id)
+    {
+        if(!is_numeric($goods_id) || $goods_id < 1 || !is_numeric($color_attr_val_id) || !is_numeric($size_attr_val_id)){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+    
+    
+        $GoodsSkuModel = App::make('GoodsSkuModel');
+    
+        $sku_select_columns = ['*'];
+        $goods_sku_obj = $GoodsSkuModel->select($sku_select_columns);
+    
+        $goods_sku_obj->where('goods_id',$goods_id);
+        //$goods_sku_obj->where('is_on_sale',1);
+        
+        $goods_sku_obj->where('sku_attr_1',$color_attr_val_id);
+        $goods_sku_obj->where('sku_attr_2',$size_attr_val_id);
+        
+        $goods_sku_obj->orderBy('id','desc');
+    
+        $goods_sku_info = $goods_sku_obj->first();
+        
+        return $goods_sku_info;
+    }
+    
+    
+    /**
      * 各部 goods_id,sku_attr_1,sku_attr_2获取是否已经存在sku数据
      * @author  jianwei
      */
-    public function getSkuByAttr($goods_id,$sku_attr_color_id,$sku_attr_size_id,array $select_columns = ['*'],array $relatives = [])
+    public function checkSkuByAttr($goods_id,$sku_attr_color_id,$sku_attr_size_id,array $select_columns = ['*'],array $relatives = [])
     {
         if(!is_numeric($goods_id) ||
             $goods_id < 1 ||
@@ -508,6 +587,7 @@ class GoodsModule
             return Helper::ErrorMessage(10000,'参数错误!');
         }
         
+        /*
         $GoodsSkuModel = App::make('GoodsSkuModel');
     
         $goods_sku_obj = $GoodsSkuModel->select($select_columns);
@@ -524,6 +604,21 @@ class GoodsModule
         
         if(!empty($goods_sku_info) && !empty($relatives)){
             $goods_sku_info->load($relatives);
+        }
+        */
+    
+        $goods_sku_info = $this->getSkuByAttr($goods_id,$sku_attr_color_id,$sku_attr_size_id);
+        
+        if(isset($goods_sku_info['err_code'])){
+            return $goods_sku_info;
+        }
+        
+        if(empty($goods_sku_info)){
+            return Helper::ErrorMessage(50014,'sku 不存在!');
+        }
+        
+        if($goods_sku_info->is_on_sale == 0){
+            return Helper::ErrorMessage(50015,'该 规格商品已下架!');
         }
         
         return $goods_sku_info;
