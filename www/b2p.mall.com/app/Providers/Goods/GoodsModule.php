@@ -426,9 +426,10 @@ class GoodsModule
             
             //删除 sku 数据
             if(!empty($new_goods_sku_id)){
-                App::make('GoodsSkuModel')->where('goods_id',$goods_info->id)->whereNotIn('id',$new_goods_sku_id)->delete();
+                //商品 sku 不得删除
+                //App::make('GoodsSkuModel')->where('goods_id',$goods_info->id)->whereNotIn('id',$new_goods_sku_id)->delete();
             }else {
-                App::make('GoodsSkuModel')->where('goods_id', $goods_info->id)->delete();
+                //App::make('GoodsSkuModel')->where('goods_id', $goods_info->id)->delete();
             }
         }else{
             return Helper::ErrorMessage(10000,'参数错误!');
@@ -458,11 +459,36 @@ class GoodsModule
         //处理商品总库存
         $handle_goods_number = 'UPDATE zo_goods AS G,(SELECT SUM(sku_number) AS all_number,goods_id FROM zo_goods_sku WHERE goods_id = '.$goods_id.' AND is_on_sale = 1) AS S SET G.goods_number = S.all_number WHERE G.id = '.$goods_id.' AND S.goods_id = G.id;';
         
+        //删除多余的属性以及属性值,sku 不得删除
+        
         DB::update($check_goods_on_sale_sql);
         DB::update($handle_buy_price_sql);
         DB::update($handle_goods_number);
         
         return true;
+    }
+    
+    /**
+     * 删除多于的属性以及属性值
+     * @author  jianwei
+     * @param   $goods_id    int    商品 id
+     */
+    public function delGoodsExtraAttrValue($goods_id)
+    {
+        if(!is_numeric($goods_id) || $goods_id < 1){
+            return Helper::ErrorMessage(10000);
+        }
+        
+        //获取所有sku_attr_1跟 sku_attr_2值
+        $goods_sku_list = $this->getGoodsSkuList($goods_id,['id','sku_attr_1','sku_attr_2']);
+        
+        $sku_color_attr_id_arr = [];
+        $sku_size_attr_id_arr = [];
+        foreach($goods_sku_list as $lk=>$lv){
+//            $sku_color_attr_id_arr
+        }
+        
+        return $goods_sku_list;
     }
     
     
