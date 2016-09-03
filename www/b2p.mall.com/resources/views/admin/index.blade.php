@@ -82,9 +82,9 @@
                                         <i class="ace-icon fa fa-check bigger-120"></i>
                                     </button>
 
-                                    <button class="btn btn-xs btn-info">
+                                    <a href="{{ action('Admin\GoodsController@getEdit', [$lv->id]) }}" class="btn btn-xs btn-info">
                                         <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                    </button>
+                                    </a>
 
                                     <button class="btn btn-xs btn-danger">
                                         <i class="ace-icon fa fa-trash-o bigger-120"></i>
