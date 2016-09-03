@@ -42,14 +42,14 @@ class WxModule
      */
     private function toolWxInfo($code)
     {
-        $appid = config('wx.appid');
-        $secret = config('wx.appsecret');
+        $appid = config('wechat.app_id');
+        $secret = config('wechat.secret');
         $token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$secret}&code={$code}&grant_type=authorization_code";
         $token_json = Helper::curlGet($token_url);
         $token = json_decode($token_json, true);
         //获取授权码失败
         if (isset($token['errcode'])) {
-            return Helper::error(90000, '获取微信授权码失败', $token_json);
+            return Helper::error(90000, '获取微信授权码失败', $token_json . $token_url);
         }
 
         //检测是否存在对应的openid
