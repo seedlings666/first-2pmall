@@ -4,6 +4,7 @@ namespace App\Providers\Wx;
 
 use App\Providers\Wx\Helper;
 use DB;
+use stdClass;
 
 /**
  * 微信
@@ -117,7 +118,7 @@ class WxModule
             return $user_info;
         }
 
-        if (isset($user_info['id'])) {
+        if ($user_info['id'] instanceof stdClass) {
             Helper::saveLoginInfo($user_info['id'], $user_info['avatar'], $user_info['nick_name']);
             return ;
         }
