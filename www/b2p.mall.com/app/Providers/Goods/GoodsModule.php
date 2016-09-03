@@ -849,7 +849,7 @@ class GoodsModule
     
         $path_name = public_path().$file_relative_path;
         
-        $file_name = date('YmdHis').'.'.$ext_name;
+        $file_name = date('YmdHis').'_'.'.'.$ext_name;
         
         $file_full_name = $path_name.$file_name;
         
