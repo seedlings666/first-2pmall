@@ -131,7 +131,7 @@ class WxModule
 
         $insert = [
             'openid'     => $user_info['openid'],
-            'nickname'   => $user_info['nick_name'],
+            'nickname'   => $user_info['nickname'],
             'sex'        => $user_info['sex'],
             'province'   => $user_info['province'],
             'city'       => $user_info['city'],
