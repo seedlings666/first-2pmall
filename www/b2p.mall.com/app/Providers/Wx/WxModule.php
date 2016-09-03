@@ -121,7 +121,7 @@ class WxModule
         $insert = [
             'sex'        => $user_info['sex'],
             'source'     => 3,
-            'avatar'     => $user_info,
+            'avatar'     => $user_info['headimgurl'],
             'reg_time'   => $current_time,
             'last_login' => $current_time,
             'user_name'  => $user_info['openid'],
