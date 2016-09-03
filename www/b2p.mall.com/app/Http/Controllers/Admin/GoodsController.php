@@ -286,11 +286,11 @@ class GoodsController extends Controller
         $is_system = Session::get('is_system',0);
         
         $goods_details = (new GoodsModule())->getGoodsDetails($goods_id,$shop_id,$is_system);
-        
+
         if(is_array($goods_details) && isset($goods_details['err_code'])){
             return Redirect::back();
         }
-        
+
         return View::make('admin.edit_goods')->with($goods_details);
     }
 }
