@@ -160,6 +160,8 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         //微信操作
         Overtrue\LaravelWechat\ServiceProvider::class,
+        //DebugBar
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -209,6 +211,7 @@ return [
 
         'Image' =>  Intervention\Image\Facades\Image::class,
         'Wechat' => Overtrue\LaravelWechat\Facade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];
