@@ -17,6 +17,6 @@ class Order extends Base
 
     public function orderGoods()
     {
-        return $this->hasOne(__NAMESPACE__ . '\OrderGoods', 'id', 'order_id');
+        return $this->hasOne(__NAMESPACE__ . '\OrderGoods', 'order_id', 'id');
     }
 }
