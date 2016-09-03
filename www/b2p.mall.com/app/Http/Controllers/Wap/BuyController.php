@@ -52,6 +52,12 @@ class BuyController extends Controller
 
     public function groupOrders($type = null)
     {
+        // Session::put('user', [
+        //     'id'        => $id,
+        //     'avatar'    => '',
+        //     'nick_name' => '',
+        // ]);
+
         //seesion获取用户id
         $input_data = ['user_id' => 277];
         if (strtolower($type) == 'my_orders') {
