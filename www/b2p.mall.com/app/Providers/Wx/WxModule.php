@@ -118,7 +118,7 @@ class WxModule
             return $user_info;
         }
 
-        if (iset($user_info['id'])) {
+        if (isset($user_info['id'])) {
             Helper::saveLoginInfo($user_info['id'], $user_info['avatar'], $user_info['nick_name']);
             return ;
         }
