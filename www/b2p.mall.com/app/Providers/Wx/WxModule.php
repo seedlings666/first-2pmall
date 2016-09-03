@@ -55,8 +55,9 @@ class WxModule
         //检测是否存在对应的openid
         $user_info  = DB::table($this->tables['user'])
                     ->select('id', 'avatar', 'nick_name')
-                    ->whereExists(function ($query) {
+                    ->whereExists(function ($query) use ($token) {
                         $query->from($this->tables['user_wx'])
+                              ->where('openid', $token['openid'])
                               ->whereRaw($this->tables['user'] . '.id = ' . $this->tables['user_wx'] . '.user_id');
                     })
                     ->first();
@@ -148,7 +149,7 @@ class WxModule
 
         DB::table($this->tables['user_wx'])->insertGetId($insert);
 
-        Helper::saveLoginInfo($id, $user_info['headimgurl'], $user_info['nick_name']);
+        Helper::saveLoginInfo($id, $user_info['headimgurl'], $user_info['nickname']);
         DB::commit();
     }
 
