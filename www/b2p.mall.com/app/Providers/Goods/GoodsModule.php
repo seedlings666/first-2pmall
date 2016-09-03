@@ -1121,8 +1121,9 @@ class GoodsModule
             foreach($goods_images_list as $ak=>$av){
                 $goods_images_tmp['id'] = $av->id;
                 $goods_images_tmp['file_name'] = $av->file_name;
+                $goods_images_tmp['size'] = $av->size;
                 $goods_images_tmp['goods_id'] = $av->goods_id;
-                $goods_images_tmp['origin_name'] = $av->origin_name;
+                $goods_images_tmp['name'] = $av->origin_name;
                 $goods_images_tmp['url_links'] = config('site.image_domain').$av->url_links;
     
                 $goods_images_arr[] = $goods_images_tmp;
