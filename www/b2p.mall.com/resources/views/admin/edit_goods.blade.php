@@ -420,10 +420,10 @@ $(function(){
                 goods_content['sku_list'] = sku_tmp_data;
             }
 
-            goods_content['id'] = {{ $goods_details['id'] }};
 
             var a = {};
             a['goods_content'] = goods_content;
+            a['goods_id'] = {{ $goods_details['id'] }};
             // 提交数据
             $.ajax({
                 url: '{{ url('/admin/goods/update') }}',
