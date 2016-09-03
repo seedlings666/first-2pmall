@@ -152,4 +152,19 @@ class Helper
             'data' => $data,
         ];
     }
+
+
+    /**
+     * 生成微信url
+     *
+     * @return void
+     * @author chentengfeng @create_at 2016-09-04  00:21:14
+     */
+    public static function wechatUrl()
+    {
+        $appid = config('wx.appid');
+        $uri = action('Wap\WxController@getUserInfo', ['user', 'show']);
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$uri}&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect";
+        return $url;
+    }
 }
