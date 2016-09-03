@@ -67,7 +67,7 @@ class WxModule
         $token['access_token'];
         $token['openid'];
         $info_url = "https://api.weixin.qq.com/sns/userinfo?access_token={$token['access_token']}&openid={$token['openid']}&lang=zh_CN";
-        $user_info = Helper::curlGet($info_url);
+        $user_info = json_decode(Helper::curlGet($info_url), true);
         if (isset($user_info['errcode'])) {
             return Helper::error(90001, '用户信息获取不到');
         }
@@ -116,6 +116,7 @@ class WxModule
             return $user_info;
         }
 
+        DB::beginTransaction();
         $current_time = time();
         $insert = [
             'sex'        => $user_info['sex'],
@@ -148,6 +149,7 @@ class WxModule
         DB::table($this->tables['user_wx'])->insertGetId($insert);
 
         Helper::saveLoginInfo($id, $user_info['headimgurl'], $user_info['nick_name']);
+        DB::commit();
     }
 
 
