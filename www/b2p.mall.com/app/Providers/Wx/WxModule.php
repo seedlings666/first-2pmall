@@ -118,7 +118,7 @@ class WxModule
             return $user_info;
         }
 
-        if ($user_info['id'] instanceof stdClass) {
+        if ($user_info instanceof stdClass) {
             Helper::saveLoginInfo($user_info->id, $user_info->avatar, $user_info->nick_name);
             return ;
         }
