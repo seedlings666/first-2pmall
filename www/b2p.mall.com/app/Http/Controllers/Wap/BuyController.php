@@ -50,10 +50,17 @@ class BuyController extends Controller
         var_dump($res);
     }
 
-    public function groupOrders()
+    public function groupOrders($type = null)
     {
+        //seesion获取用户id
+        $input_data = ['user_id' => 277];
+        if (strtolower($type) == 'my_orders') {
+            //seesion获取用户id
+            $input_data['by_user'] = 278;
+        }
         $buyModule  = new BuyModule();
-        $order_list = $buyModule->getOrderList();
+        $order_list = $buyModule->getOrderList($input_data, \Request::get('next_page', 0), 15);
+
         if (\Request::ajax()) {
             return ['response_data' => $order_list];
         }
