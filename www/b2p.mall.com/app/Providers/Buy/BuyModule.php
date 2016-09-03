@@ -609,20 +609,27 @@ class BuyModule
     /**
      * 获取订单数据
      * @author Evey-b <eveyb277@gmail.com>
-     * @date   2016-08-28
-     * @return array
+     * @date   2016-09-03
+     * @param  array      $input_data 条件参数
+     * @param  integer    $offset     获取开始值
+     * @param  integer    $take       每页条数
+     * @return [type]                 [description]
      */
-    public function getOrderList()
+    public function getOrderList(array $input_data, $offset = 0, $take = 15)
     {
-        $user_id            = 0;
+        $user_id            = $input_data['user_id'];
         $order_fields       = ['id', 'user_id', 'group_id', 'group_rp', 'order_amount', 'order_status', 'pay_status', 'created_at'];
         $order_goods_fields = ['id', 'goods_id', 'order_id', 'goods_title', 'sale_price', 'buy_price', 'goods_number', 'goods_img'];
-        $order_result       = DB::table('zo_orders')
-            ->whereRaw('`deleted_at` is null')
-            ->orderBy('created_at', 'desc')
-            ->orderBy('group_rp', 'asc')
-            ->forPage(1, 15)
-            ->get($order_fields);
+        $order_res          = DB::table('zo_orders')->whereRaw('`deleted_at` is null');
+        if (!empty($input_data['by_user'])) {
+            $order_res = $order_res->where('user_id', $input_data['by_user']);
+        }
+        $order_res    = $order_res->orderBy('created_at', 'desc')->orderBy('group_rp', 'asc');
+        $order_result = $order_res->take($take)->offset($offset)->get($order_fields);
+        $next_page    = $take + $offset;
+        if (!$order_res->take(1)->offset($next_page)->first()) {
+            $next_page = null;
+        }
 
         $order_ids  = [];
         $order_list = [];
@@ -680,6 +687,6 @@ class BuyModule
             }
         }
 
-        return ['order_list' => $order_list, 'next_page' => 15];
+        return ['order_list' => $order_list, 'next_page' => $next_page];
     }
 }
