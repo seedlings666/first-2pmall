@@ -21,11 +21,14 @@ class Login
     {
         //重定向到微信授权
         if (!Session::has('user')) {
-            $call = (url()->getRequest()->getRouteResolver());
-            $route_path = $call()->getActionName();
-            $info = explode('@', last(explode('\\', $route_path)));
+            $call = url()->getRequest()->getRouteResolver();
+            $route = $call();
+            $info = explode('@', last(explode('\\', $route_path->getActionName())));
             $controller = lcfirst(str_replace('Controller', '',  $info[0]));
             $fun = lcfirst(str_replace(['get', 'post'], '',  $info[1]));
+            $params = $route->parameters();
+            dd($params);
+            dd($route);
 
             return redirect();
         }

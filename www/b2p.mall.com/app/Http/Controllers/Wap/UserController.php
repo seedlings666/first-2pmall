@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Wap;
 
 use App\Http\Controllers\Controller;
 use App\Providers\Wx\UserModule;
+use EasyWeChat\Foundation\Application;
 use View;
 use Session;
 
@@ -19,7 +20,7 @@ class UserController extends Controller
      * @return void
      * @author chentengfeng @create_at 2016-09-03  21:09:40
      */
-    public function getShow(UserModule $module)
+    public function getShow(UserModule $module, Application $wechat_app)
     {
         Session::put('user', [
             'id'        => 1,
@@ -27,7 +28,8 @@ class UserController extends Controller
             'nick_name' => '123'
         ]);
         $user = $module->userInfo(Session::get('user.id'));
+        $js = $wechat_app->js;
 
-        return view('wap.userInfo')->with(compact('user'));
+        return view('wap.userInfo')->with(compact('user', 'js'));
     }
 }
