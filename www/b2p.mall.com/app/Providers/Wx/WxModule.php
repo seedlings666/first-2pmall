@@ -63,7 +63,7 @@ class WxModule
                     })
                     ->first();
         if (!empty($user_info)) {
-            return $user_info;
+            return (array)$user_info;
         }
 
         $token['access_token'];
@@ -118,8 +118,8 @@ class WxModule
             return $user_info;
         }
 
-        if ($user_info instanceof stdClass) {
-            Helper::saveLoginInfo($user_info->id, $user_info->avatar, $user_info->nick_name);
+        if (iset($user_info['id'])) {
+            Helper::saveLoginInfo($user_info['id'], $user_info['avatar'], $user_info['nick_name']);
             return ;
         }
 
