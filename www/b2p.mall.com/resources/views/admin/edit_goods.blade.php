@@ -274,7 +274,9 @@ $(function(){
     var images_id = [];
 
     // 服务器图片数据
-    // var serviceImages = {{ json_encode($goods_images) }};
+     var serviceImages = JSON.parse('{!! json_encode($goods_images) !!}');
+
+    console.log(serviceImages);
 
     $('#validation-form').validate({
         errorElement: 'div',
