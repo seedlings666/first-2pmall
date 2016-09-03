@@ -849,7 +849,12 @@ class GoodsModule
     
         $path_name = public_path().$file_relative_path;
         
-        $file_name = date('YmdHis').'_'.'.'.$ext_name;
+        list($micro_time,$second_time) = explode(' ',microtime());
+        
+        $micro_time_tmp = mb_substr($micro_time,2,null,'utf-8');
+        
+        //$file_name = date('YmdHis').'_'.'.'.$ext_name;
+        $file_name = $second_time.'_'.$micro_time_tmp.'.'.$ext_name;
         
         $file_full_name = $path_name.$file_name;
         
