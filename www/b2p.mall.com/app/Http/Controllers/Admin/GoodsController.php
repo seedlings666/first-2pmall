@@ -174,9 +174,9 @@ class GoodsController extends Controller
      * 商品详情
      * @author  jianwei
      */
-    public function getShow()
+    public function getShow($goods_id)
     {
-        $goods_id = Input::get('goods_id',0);
+        //$goods_id = Input::get('goods_id',0);
         
         $shop_id = Session::get('shop_id',0);
         
@@ -184,7 +184,12 @@ class GoodsController extends Controller
         
         $goods_info = (new GoodsModule())->getGoodsDetails($goods_id,$shop_id,$is_system);
         
-        return Response::json($goods_info);
+        if(isset($goods_info['err_code'])){
+            return $goods_info;
+        }
+        
+        //return Response::json($goods_info);
+        return View::make('admin.show_goods')->with($goods_info);
     }
     
     /**
@@ -286,6 +291,28 @@ class GoodsController extends Controller
         $is_system = Session::get('is_system',0);
         
         $goods_details = (new GoodsModule())->getGoodsDetails($goods_id,$shop_id,$is_system);
+
+        if(is_array($goods_details) && isset($goods_details['err_code'])){
+            return Redirect::back();
+        }
+
+        return View::make('admin.edit_goods')->with($goods_details);
+    }
+    
+    
+    
+    /**
+     * 商品相亲页面
+     * @author  jianwei
+     */
+    /*
+    public function getShow($goods_id)
+    {
+        $shop_id = Session::get('shop_id',0);
+        
+        $is_system = Session::get('is_system',0);
+        
+        $goods_details = (new GoodsModule())->getGoodsDetails($goods_id,$shop_id,$is_system);
         
         if(is_array($goods_details) && isset($goods_details['err_code'])){
             return Redirect::back();
@@ -293,4 +320,6 @@ class GoodsController extends Controller
         
         return View::make('admin.edit_goods')->with($goods_details);
     }
+    */
+    
 }

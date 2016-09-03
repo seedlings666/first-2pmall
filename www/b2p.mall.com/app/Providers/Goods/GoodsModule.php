@@ -849,7 +849,12 @@ class GoodsModule
     
         $path_name = public_path().$file_relative_path;
         
-        $file_name = date('YmdHis').'.'.$ext_name;
+        list($micro_time,$second_time) = explode(' ',microtime());
+        
+        $micro_time_tmp = mb_substr($micro_time,2,null,'utf-8');
+        
+        //$file_name = date('YmdHis').'_'.'.'.$ext_name;
+        $file_name = $second_time.'_'.$micro_time_tmp.'.'.$ext_name;
         
         $file_full_name = $path_name.$file_name;
         
@@ -1116,8 +1121,9 @@ class GoodsModule
             foreach($goods_images_list as $ak=>$av){
                 $goods_images_tmp['id'] = $av->id;
                 $goods_images_tmp['file_name'] = $av->file_name;
+                $goods_images_tmp['size'] = $av->size;
                 $goods_images_tmp['goods_id'] = $av->goods_id;
-                $goods_images_tmp['origin_name'] = $av->origin_name;
+                $goods_images_tmp['name'] = $av->origin_name;
                 $goods_images_tmp['url_links'] = config('site.image_domain').$av->url_links;
     
                 $goods_images_arr[] = $goods_images_tmp;

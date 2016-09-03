@@ -9,10 +9,10 @@
     <!-- /section:settings.box -->
     <div class="page-header">
         <h1>
-            编辑商品
+            商品预览
             <small>
                 <i class="ace-icon fa fa-angle-double-right"></i>
-                编辑商品基础数据
+                预览商品基础数据
             </small>
         </h1>
     </div><!-- /.page-header -->
@@ -27,7 +27,7 @@
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_name" name="goods_name" placeholder="商品名" value="{{ $goods_details['goods_name'] }}" class="col-xs-5" />
+                            <input type="text" id="goods_name" name="goods_name" placeholder="商品名" readonly style="background-color: #ffffff;" value="{{ $goods_details['goods_name'] }}" class="col-xs-5" />
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                     <div class="col-sm-10">
                         <div class="clearfix">
                             <label class="control-label">
-                                <input name="is_sell" class="ace ace-switch" type="checkbox" {{ $goods_details['is_on_sale'] == 1 ? 'checked="checked"' : '' }} />
+                                <input name="is_sell" class="ace ace-switch" type="checkbox" {{ $goods_details['is_on_sale'] == 1 ? 'checked="checked"' : '' }}} />
                                 <span class="lbl"></span>
                             </label>
                         </div>
@@ -92,7 +92,7 @@
                 <div class="col-sm-2">
                     <div class="clearfix">
                         <label class="radio">
-                            <input name="is_single_sku" value="1" type="radio" {{ $goods_details['attributes']['is_sku'] == 0 ? 'checked' : '' }} class="ace">
+                            <input name="is_single_sku" value="1" type="radio" {{ $goods_details['is_sku'] == 0 ? 'checked' : '' }} class="ace">
                             <span class="lbl"></span>
                         </label>
                     </div>
@@ -101,14 +101,14 @@
                 <div class="col-sm-2">
                     <div class="clearfix">
                         <label class="radio">
-                            <input name="is_single_sku" value="2" type="radio" class="ace"  {{ $goods_details['attributes']['is_sku'] == 1 ? 'checked' : '' }} id="multi_sku">
+                            <input name="is_single_sku" value="2" type="radio" class="ace"  {{ $goods_details['is_sku'] == 1 ? 'checked' : '' }} id="multi_sku">
                             <span class="lbl"></span>
                         </label>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group" id="multi_sku_box" style="display: {{ $goods_details['attributes']['is_sku'] == 1 ? 'block' : 'none' }};">
+            <div class="form-group" id="multi_sku_box" style="display: {{ $goods_details['is_sku'] == 1 ? 'block' : 'none' }}};">
                 <label class="col-sm-2 control-label no-padding-right"></label>
                 <div class="col-sm-10">
                     <table class="table table-bordered table-hover">
@@ -124,24 +124,26 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @if(isset($goods_sku_list) && !isset($goods_sku_list['err_code']) && count($goods_sku_list) > 0)
+                            @foreach($goods_sku_list as $lk=>$lv)
                             <tr>
                                 <td>
-                                    <input class="col-xs-12" type="text" name="sku_name" value="" placeholder="sku名称">
+                                    <input class="col-xs-12" type="text" name="sku_name" value="{{ $lv['sku_name'] }}" placeholder="sku名称">
                                 </td>
                                 <td>
-                                    <input class="col-xs-12" type="text" name="sku_color" value="" placeholder="颜色">
+                                    <input class="col-xs-12" type="text" name="sku_color" value="{{ isset($lv['color']) ? $lv['color'] : '' }}" placeholder="颜色">
                                 </td>
                                 <td>
-                                    <input class="col-xs-12" type="text" name="sku_size" value="" placeholder="大小">
+                                    <input class="col-xs-12" type="text" name="sku_size" value="{{ isset($lv['size']) ? $lv['size'] : '' }}" placeholder="大小">
                                 </td>
                                 <td>
-                                    <input class="col-xs-12" type="text" name="sku_price" value="" placeholder="商城价格">
+                                    <input class="col-xs-12" type="text" name="sku_price" value="{{ $lv['shop_price'] }}" placeholder="商城价格">
                                 </td>
                                 <td>
-                                    <input class="col-xs-12" type="text" name="sku_market_price" value="" placeholder="市场价格">
+                                    <input class="col-xs-12" type="text" name="sku_market_price" value="{{ $lv['market_price'] }}" placeholder="市场价格">
                                 </td>
                                 <td>
-                                    <input class="col-xs-12" type="text" name="sku_goods_number" value="" placeholder="库存">
+                                    <input class="col-xs-12" type="text" name="sku_goods_number" value="{{ $lv['sku_number'] }}" placeholder="库存">
                                 </td>
                                 <td class="center">
                                     <a title="新增" class="btn btn-xs btn-success" href="javascript:void(0);" id="add_sku">
@@ -149,35 +151,7 @@
                                     </a>
                                 </td>
                             </tr>
-
-                            @if(isset($goods_sku_list) && !isset($goods_sku_list['err_code']) && count($goods_sku_list) > 0 && $goods_details['attributes']['is_sku'] == 1)
-                                @foreach($goods_sku_list as $lk=>$lv)
-                                    <tr>
-                                        <td>
-                                            {{ $lv['sku_name'] }}
-                                        </td>
-                                        <td>
-                                            {{ isset($lv['color']) ? $lv['color'] : '' }}
-                                        </td>
-                                        <td>
-                                            {{ isset($lv['size']) ? $lv['size'] : '' }}
-                                        </td>
-                                        <td>
-                                            {{ $lv['shop_price'] }}
-                                        </td>
-                                        <td>
-                                            {{ $lv['market_price'] }}
-                                        </td>
-                                        <td>
-                                            {{ $lv['sku_number'] }}
-                                        </td>
-                                        <td class="center">
-                                            <button class="btn btn-xs btn-danger" data-id="zj{{ $lv['id'] }}" name="del_sku">
-                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            @endforeach
                             @endif
                         </tbody>
                     </table>
@@ -194,6 +168,18 @@
                     </div>
                     <div id="preview-template" class="hide">
                         <div class="dz-preview dz-file-preview">
+                            <!--
+                            //获取现有图片
+                                @if(isset($goods_images) && is_array($goods_images) && count($goods_images))
+                                    @foreach($goods_images as $sk=>$sv)
+                                        <div>图片 id : {{ $sv['id'] }} </div>
+                                        <div>文件名称 : {{ $sv['file_name'] }} </div>
+                                        <div>文件原名 : {{ $sv['origin_name'] }} </div>
+                                        <div>文件 url : {{ $sv['url_links'] }} </div>
+                                    @endforeach
+                                @endif
+
+                            -->
                             <div class="dz-image">
                                 <img data-dz-thumbnail="" />
                             </div>
@@ -239,7 +225,7 @@
 
                 <div class="col-sm-10">
                     <div class="wysiwyg-editor" id="editor1">
-                        {!! $goods_details['content'] !!}
+                        {{ $goods_details['content'] }}
                     </div>
                 </div>
             </div>
@@ -247,6 +233,7 @@
             <!-- /section:elements.form -->
             <div class="space-4"></div>
 
+            <!--
             <div class="clearfix form-actions">
                 <div class="col-md-offset-3 col-md-9">
                     <button class="btn btn-info" type="button" name="submit_from">
@@ -261,6 +248,7 @@
                     </a>
                 </div>
             </div>
+            -->
         </div><!-- /.row -->
     </div>
 </div><!-- /.page-content -->
@@ -281,36 +269,16 @@ $(function(){
     // 最终提交的数据
     var goods_content = {};
 
-    // 服务器sku_list数据
-    @if(isset($goods_sku_list) && !isset($goods_sku_list['err_code']) && count($goods_sku_list) > 0 && $goods_details['attributes']['is_sku'] == 1)
-        var serviceSkuList = {!! json_encode($goods_sku_list) !!};
-    @endif
-
     // 零时保存sku组信息
     var sku_tmp_data = [];
-
-    // 如果服务器传回有sku数据就进行赋值;
-    if(serviceSkuList){
-        for(var i in serviceSkuList){
-            var skuData = {
-                self_id: 'zj' + serviceSkuList[i].id,
-                sku_name: serviceSkuList[i].sku_name,
-                color: serviceSkuList[i].color,
-                size: serviceSkuList[i].size,
-                shop_price: serviceSkuList[i].shop_price,
-                sku_number: serviceSkuList[i].sku_number,
-                market_price: serviceSkuList[i].market_price
-            }
-            sku_tmp_data.push(skuData);
-        }
-    }
-    // console.log(sku_tmp_data);
 
     // 保存图片id
     var images_id = [];
 
     // 服务器图片数据
-    var serviceImages = JSON.parse('{!! json_encode($goods_images) !!}');
+     var serviceImages = JSON.parse('{!! json_encode($goods_images) !!}');
+
+    console.log(serviceImages);
 
     $('#validation-form').validate({
         errorElement: 'div',
@@ -420,23 +388,17 @@ $(function(){
                 goods_content['sku_list'] = sku_tmp_data;
             }
 
-
             var a = {};
             a['goods_content'] = goods_content;
-            a['goods_id'] = {{ $goods_details['id'] }};
             // 提交数据
             $.ajax({
-                url: '{{ url('/admin/goods/update') }}',
+                url: '{{ url('/admin/goods/store') }}',
                 type: 'POST',
                 data: a
             })
             .done(function(json){
-                if(!json.err_code){
-                    alert('编辑商品成功！');
-                    window.location.href = "{{ url('/admin/goods') }}";
-                }else{
-                    alert(json.msg);
-                }
+                alert('新建商品成功！')
+                window.location.href = "{{ url('/admin/goods') }}";
             })
             .fail(function(re){
                 alert(re.msg);
@@ -547,7 +509,7 @@ $(function(){
             return false;
         }
         var data = {
-            self_id: 'zj' + sku_tmp_id,
+            id: sku_tmp_id,
             sku_name: sku_name,
             color: sku_color,
             size: sku_size,
@@ -556,7 +518,7 @@ $(function(){
             market_price: sku_market_price
         }
 
-        var appHt = '<tr><td>'+ data.sku_name +'</td><td>'+ data.color +'</td><td>'+ data.size +'</td><td>'+ data.shop_price +'</td><td>'+ data.market_price +'</td><td>'+ data.sku_number +'</td><td class="center"><button class="btn btn-xs btn-danger" data-id="'+ data.self_id +'" name="del_sku"><i class="ace-icon fa fa-trash-o bigger-120"></i></button></td></tr>';
+        var appHt = '<tr><td>'+ data.sku_name +'</td><td>'+ data.color +'</td><td>'+ data.size +'</td><td>'+ data.shop_price +'</td><td>'+ data.market_price +'</td><td>'+ data.sku_number +'</td><td class="center"><button class="btn btn-xs btn-danger" data-id="'+ data.id +'" name="del_sku"><i class="ace-icon fa fa-trash-o bigger-120"></i></button></td></tr>';
 
         $(this).parents('tr').after(appHt);
 
@@ -575,7 +537,7 @@ $(function(){
     $('body').on('click', '[name=del_sku]', function(){
         var dataId = $(this).data('id');
         $.each(sku_tmp_data, function(ix){
-            if(this.self_id == dataId){
+            if(this.id == dataId){
                 sku_tmp_data.splice(ix, 1);
             }
         });
@@ -622,25 +584,15 @@ $(function(){
                 }
             });
             this.on('removedfile', function(arg){
-                if(arg.xhr){
-                    var data = $.parseJSON(arg.xhr.response);
-                    images_id.splice($.inArray(data.id, images_id), 1);
-                }else{
-                    images_id.splice($.inArray(arg.id, images_id), 1);
-                }
+                var data = $.parseJSON(arg.xhr.response);
+                images_id.splice($.inArray(data.id, images_id), 1);
             });
         }
     });
 
     // 服务器图片显示
-    if(serviceImages.length > 0){
-        for (var i = 0, j = serviceImages.length; i < j; i++) {
-            images_id.push(serviceImages[i].id);
-            myDropzone.emit('addedfile', serviceImages[i]);
-            myDropzone.createThumbnailFromUrl(serviceImages[i], serviceImages[i].url_links);
-            myDropzone.emit("complete", serviceImages[i]);
-        }
-    }
+    // myDropzone.emit('addedfile', serviceImages);
+    // myDropzone.emit("thumbnail", serviceImages, "/image/url");
 });
 </script>
 @stop
