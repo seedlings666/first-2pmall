@@ -1,1 +1,0 @@
-"use strict";!function(a,s){a("#sku_box span").on("click",function(){var s=a(this).data("id"),n=a(this).parent().data("url");a(this).addClass("cur").siblings("span").removeClass("cur"),a.ajax({url:n,type:"POST",dataType:"json",data:{sku_id:s}}).done(function(a){}).fail(function(a){})})}(jQuery);

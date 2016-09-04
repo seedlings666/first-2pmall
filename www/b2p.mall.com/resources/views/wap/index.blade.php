@@ -19,32 +19,32 @@
 
 		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
-			wx.config({!! $js->config(array('onMenuShareTimeline', 'onMenuShareAppMessage'), true) !!});
-			//分享到朋友圈
-			wx.onMenuShareTimeline({
-				title: '这是分享到朋友圈的标题', // 分享标题
-				link: '这是分享到朋友圈的链接', // 分享链接
-				imgUrl: 'xx', // 分享图标
-				success: function () { 
-					// 用户确认分享后执行的回调函数
-				},
-				cancel: function () { 
-					// 用户取消分享后执行的回调函数
-				}
-			});
-			//分享给朋友
-			wx.onMenuShareAppMessage({
-				title: '这是分享朋友的标题', // 分享标题
-				desc: '这是分享朋友的描述', // 分享描述
-				link: '这是分享朋友的链接', // 分享链接
-				imgUrl: '这是分享朋友的图片', // 分享图标
-				success: function () { 
-					// 用户确认分享后执行的回调函数
-				},
-				cancel: function () { 
-					// 用户取消分享后执行的回调函数
-				}
-			});
+			// wx.config({{--!! $js->config(array('onMenuShareTimeline', 'onMenuShareAppMessage'), true) !!--}});
+			// //分享到朋友圈
+			// wx.onMenuShareTimeline({
+			// 	title: '这是分享到朋友圈的标题', // 分享标题
+			// 	link: '这是分享到朋友圈的链接', // 分享链接
+			// 	imgUrl: 'xx', // 分享图标
+			// 	success: function () {
+			// 		// 用户确认分享后执行的回调函数
+			// 	},
+			// 	cancel: function () {
+			// 		// 用户取消分享后执行的回调函数
+			// 	}
+			// });
+			// //分享给朋友
+			// wx.onMenuShareAppMessage({
+			// 	title: '这是分享朋友的标题', // 分享标题
+			// 	desc: '这是分享朋友的描述', // 分享描述
+			// 	link: '这是分享朋友的链接', // 分享链接
+			// 	imgUrl: '这是分享朋友的图片', // 分享图标
+			// 	success: function () {
+			// 		// 用户确认分享后执行的回调函数
+			// 	},
+			// 	cancel: function () {
+			// 		// 用户取消分享后执行的回调函数
+			// 	}
+			// });
 		</script>
     </head>
 
@@ -67,37 +67,30 @@
                 <span class=""></span>
             </div>
         </div>
-        <div class="goods_detail main_warp"  data-atr-url="###" data-url="###">
+        <div class="goods_detail main_warp" id="goods_main_box" data-atr-url="{{url('/wap/goods/attr-value')}}" data-url="{{ url('wap/goods/check-sku') }}">
             <h1>{{$goods_details -> goods_name}}</h1>
             <p class="gd_introduction">{{$goods_details -> goods_desc}}</p>
             <div class="goods_price_box">
-                <span class="now_price">&yen;<strong>{{ $goods_details['shop_price'] }}</strong></span>
-                <del>&yen;{{ $goods_details['market_price'] }}</del>(市场价)
+                <span class="now_price" name="shop_price">&yen;<strong>{{ $goods_details['shop_price'] }}</strong></span>
+                <del name="market_price">&yen;{{ $goods_details['market_price'] }}</del>(市场价)
             </div>
 
-            <div class="goods_sales_box">
+            <div class="goods_sales_box" name="stock">
                 库存：{{ $goods_details['goods_number'] }}件
             </div>
 
             @if(isset($goods_details['is_sku']) && $goods_details['is_sku'] == 1)
-                <div class="goods_sku_box" id="sku_box" data-url="###">
+                <div class="goods_sku_box" name="sku_box" data-url="{{url('/wap/goods/attr-value')}}" data-type="color">
                     颜色：
-                    <!--
-                    <span class="cur" data-id="11">规格1</span><span data-id="555">规格2</span>
-                    -->
                     @if(!empty($color_attr) && count($color_attr) > 0)
                         @foreach($color_attr as $ak=>$av)
-                            <span data-id="{{ $av->id }}" data-attr-id="{{ $av->attr_id }}}">{{ $av->value_name }}</span>
+                            <span data-id="{{ $av->id }}" data-attr-id="{{ $av->attr_id }}">{{ $av->value_name }}</span>
                         @endforeach
                     @endif
                 </div>
 
-
-                <div class="goods_sku_box" id="sku_box" data-url="###">
+                <div class="goods_sku_box" name="sku_box" data-url="{{url('/wap/goods/attr-value')}}" data-type="size">
                     规格：
-                    <!--
-                    <span class="cur" data-id="11">规格1</span><span data-id="555">规格2</span>
-                    -->
                     @if(!empty($size_attr) && count($size_attr) > 0)
                         @foreach($size_attr as $sk=>$sv)
                             <span data-id="{{ $sv->id }}" data-attr-id="{{ $sv->attr_id }}">{{ $sv->value_name }}</span>
@@ -215,12 +208,9 @@
         <div class="fix_nav">
             <ul>
                 <li>
-                    <span>&yen;108</span>
-                    <span>单独购</span>
-                </li>
-                <li>
-                    <span>&yen;88</span>
-                    <span>3人购</span>
+                    <a href="{{action('Wap\BuyController@getPay', ['goods_id' => 5, 'sku_id' => 1 , 'goods_number' => 100])}}">
+                        提交订单
+                    </a>
                 </li>
             </ul>
         </div>
@@ -230,13 +220,13 @@
         <script src="{{ elixir('js/wap/detail.js') }}"></script>
         <script src="{{ elixir('js/wap/swipeSlide.js') }}"></script>
         <script>
-            //当为单品,那么 is_sku 为0,多 sku 商品为1
-            var is_sku = '{{ $goods_details['is_sku'] }}';
-            //当为单品时,那么 sku_id 为 默认 skuid,否则为0
-            var sku_id = '{{ isset($default_sku_info) && isset($default_sku_info->id) ? $default_sku_info->id : 0 }}';
-
-            console.log('is_sku:'+is_sku);
-            console.log('sku_id:'+sku_id);
+            var goodsData={
+                //当为单品,那么 is_sku 为0,多 sku 商品为1
+                is_sku : '{{ $goods_details['is_sku'] }}',
+                //当为单品时,那么 sku_id 为 默认 skuid,否则为0
+                sku_id : '{{ isset($default_sku_info) && isset($default_sku_info->id) ? $default_sku_info->id : 0 }}',
+                goods_id : {{ $goods_details['id'] }}
+            };
 
             $(function(){
                 $('#slider_wrapper').swipeSlide({

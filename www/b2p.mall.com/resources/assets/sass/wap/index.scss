@@ -204,26 +204,14 @@
     ul{
         overflow: hidden;
         li{
-            color: #fff;
-            width: 50%;
-            float: left;
             text-align: center;
+            background: #ff5555;
 
-            &:first-child{
-                background: #ff8f8f;
-            }
-
-            &:nth-child(2){
-                background: #ff5555;
-            }
-
-            span{
+            a{
                 display: block;
-                padding: 5px 0;
-                &:first-child{
-                    font-size: 14px;
-                    padding-bottom:0;
-                }
+                font-size: 14px;
+                line-height: 45px;
+                color: #fff;
             }
         }
     }
