@@ -59,6 +59,15 @@
         <b class="arrow"></b>
     </li>
 
+    <li class="{{ Request::path() == 'admin/shop' ? 'active' : '' }}">
+        <a href="{{ url('/admin/shop') }}">
+            <i class="menu-icon fa fa-users"></i>
+            <span class="menu-text"> 店铺管理 </span>
+        </a>
+
+        <b class="arrow"></b>
+    </li>
+
     <li class="{{ Request::path() == 'admin/user' ? 'active' : '' }}">
         <a href="{{ url('/admin/user') }}">
             <i class="menu-icon fa fa-users"></i>

@@ -120,6 +120,7 @@
                                 <th class="center" width="100">商城价格</th>
                                 <th class="center" width="100">市场价格</th>
                                 <th class="center" width="100">库存</th>
+                                <th class="center" width="100">是否上架</th>
                                 <th class="center" width="100">操作</th>
                             </tr>
                         </thead>
@@ -142,6 +143,12 @@
                                 </td>
                                 <td>
                                     <input class="col-xs-12" type="text" name="sku_goods_number" placeholder="库存">
+                                </td>
+                                <td>
+                                    <select name="sku_is_on_sale">
+                                        <option value="1">是</option>
+                                        <option value="0">否</option>
+                                    </select>
                                 </td>
                                 <td class="center">
                                     <a title="新增" class="btn btn-xs btn-success" href="javascript:void(0);" id="add_sku">
@@ -367,6 +374,8 @@ $(function(){
 
             var a = {};
             a['goods_content'] = goods_content;
+
+            console.log(a);
             // 提交数据
             $.ajax({
                 url: '{{ url('/admin/goods/store') }}',
@@ -432,7 +441,7 @@ $(function(){
         else {
             console.log("error uploading file", reason, detail);
         }
-        $('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>'+'<strong>文件上传错误！</strong> '+msg+' </div>').prependTo('#alerts');
+        $('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>'+'<strong>文件上传错误！</strong> '+ msg +' </div>').prependTo('#alerts');
     }
 
     // 多sku
@@ -453,8 +462,11 @@ $(function(){
         var sku_color        = $('[name=sku_color]').val();
         var sku_size         = $('[name=sku_size]').val();
         var sku_price        = $('[name=sku_price]').val();
-        var sku_goods_number        = $('[name=sku_goods_number]').val();
+        var sku_goods_number = $('[name=sku_goods_number]').val();
         var sku_market_price = $('[name=sku_market_price]').val();
+        var sku_is_on_sale   = $('[name=sku_is_on_sale]').val();
+
+        console.log(sku_is_on_sale);
 
         if(sku_name == ''){
             alert("sku名称必须填写！");
@@ -492,10 +504,11 @@ $(function(){
             size: sku_size,
             shop_price: sku_price,
             sku_number: sku_goods_number,
-            market_price: sku_market_price
+            market_price: sku_market_price,
+            is_on_sale: sku_is_on_sale
         }
 
-        var appHt = '<tr><td>'+ data.sku_name +'</td><td>'+ data.color +'</td><td>'+ data.size +'</td><td>'+ data.shop_price +'</td><td>'+ data.market_price +'</td><td>'+ data.sku_number +'</td><td class="center"><button class="btn btn-xs btn-danger" data-id="'+ data.id +'" name="del_sku"><i class="ace-icon fa fa-trash-o bigger-120"></i></button></td></tr>';
+        var appHt = '<tr><td>'+ data.sku_name +'</td><td>'+ data.color +'</td><td>'+ data.size +'</td><td>'+ data.shop_price +'</td><td>'+ data.market_price +'</td><td>'+ data.sku_number +'</td><td>'+ (data.is_on_sale==1 ? '是' : '否') +'</td><td class="center"><button class="btn btn-xs btn-danger" data-id="'+ data.id +'" name="del_sku"><i class="ace-icon fa fa-trash-o bigger-120"></i></button></td></tr>';
 
         $(this).parents('tr').after(appHt);
 
