@@ -208,12 +208,9 @@
         <div class="fix_nav">
             <ul>
                 <li>
-                    <span>&yen;108</span>
-                    <span>单独购</span>
-                </li>
-                <li>
-                    <span>&yen;88</span>
-                    <span>3人购</span>
+                    <a href="{{action('Wap\BuyController@getPay', ['goods_id' => 5, 'sku_id' => 1 , 'goods_number' => 100])}}">
+                        提交订单
+                    </a>
                 </li>
             </ul>
         </div>
