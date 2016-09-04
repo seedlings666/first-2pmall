@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Wap;
 use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
 use App\Providers\Wx\WxModule;
+use App\Providers\Wx\Helper;
 use Request;
 use Config;
 
@@ -36,5 +37,17 @@ class WxController extends Controller
         }
 
         return redirect($redirect_url);
+    }
+
+
+    /**
+     * 获取url
+     *
+     * @return void
+     * @author chentengfeng @create_at 2016-09-04  00:21:14
+     */
+    public function getUrl()
+    {
+        return Helper::wechatUrl();
     }
 }

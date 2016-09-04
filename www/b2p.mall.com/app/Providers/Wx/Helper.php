@@ -2,6 +2,8 @@
 
 namespace App\Providers\Wx;
 
+use Session;
+
 /**
  * Class Helper
  * @author chentengfeng @create_at 2016-08-28  09:07:55
@@ -132,7 +134,7 @@ class Helper
     public static function saveLoginInfo($id, $headimgurl, $nick_name)
     {
         Session::put('user', [
-            'user_id'   => $id,
+            'id'        => $id,
             'avatar'    => $headimgurl,
             'nick_name' => $nick_name
         ]);
@@ -151,5 +153,20 @@ class Helper
             'err_msg'  => $msg,
             'data' => $data,
         ];
+    }
+
+
+    /**
+     * 生成微信url
+     *
+     * @return void
+     * @author chentengfeng @create_at 2016-09-04  00:21:14
+     */
+    public static function wechatUrl()
+    {
+        $appid = config('wx.appid');
+        $uri = action('Wap\WxController@getUserInfo', ['user', 'show']);
+        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$uri}&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect";
+        return $url;
     }
 }
