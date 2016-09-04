@@ -42,6 +42,7 @@ Route::group(['prefix' => 'wap', 'namespace' => 'Wap'], function () {
         return view('wap.orderList');
     });
 
+
     //拼团支付
     Route::get('/group/pay', 'BuyController@getPay');
     //创建拼团订单
@@ -52,22 +53,27 @@ Route::group(['prefix' => 'wap', 'namespace' => 'Wap'], function () {
 
 // 管理后台
 Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
-    
+
     //后台商品模块
     Route::controller('/goods','GoodsController');
-    
-    
+
     Route::get('/', function() {
         return view('admin.index');
     });
-    
+
+    Route::get('/shop', function(){
+        return view('admin.shop');
+    });
+
+    Route::get('/shop/create', function(){
+        return view('admin.shop_create');
+    });
     /**
     Route::get('/goods/add', function() {
         return view('admin.add_goods');
     });
      */
-    
-    
+
     Route::get('/login', function() {
         return view('admin.login');
     });

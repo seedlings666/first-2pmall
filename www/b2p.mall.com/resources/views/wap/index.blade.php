@@ -67,10 +67,9 @@
                 <span class=""></span>
             </div>
         </div>
-
-        <div class="goods_detail main_warp">
-            <h1>商品名称商品名称商品名称商品名称</h1>
-            <p class="gd_introduction">商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介</p>
+        <div class="goods_detail main_warp"  data-atr-url="###" data-url="###">
+            <h1>{{$goods_details -> goods_name}}</h1>
+            <p class="gd_introduction">{{$goods_details -> goods_desc}}</p>
             <div class="goods_price_box">
                 <span class="now_price">&yen;<strong>{{ $goods_details['shop_price'] }}</strong></span>
                 <del>&yen;{{ $goods_details['market_price'] }}</del>(市场价)
@@ -80,8 +79,12 @@
                 库存：{{ $goods_details['goods_number'] }}件
             </div>
 
-            <div class="goods_sku_box" id="sku_box" data-url="###">
-                规格：
+            <div class="goods_sku_box" id="sku_box">
+                颜色：
+                <span class="cur" data-id="11">规格1</span><span data-id="555">规格2</span>
+            </div>
+            <div class="goods_sku_box" id="sku_box">
+                大小：
                 <span class="cur" data-id="11">规格1</span><span data-id="555">规格2</span>
             </div>
 
@@ -94,11 +97,7 @@
                     <span>图文详情</span>
                 </div>
                 <div class="pd_detail">
-                    <!--
-                    <p>这里是图片文字文字说明</p>
-                    <img src="{{asset('images/goods_img.jpg')}}">
-                    -->
-                    {{ $goods_details['content'] }}
+                    {!! $goods_details['content'] !!}
                 </div>
             </div>
         </div>
