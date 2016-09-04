@@ -79,14 +79,32 @@
                 库存：{{ $goods_details['goods_number'] }}件
             </div>
 
-            <div class="goods_sku_box" id="sku_box">
-                颜色：
-                <span class="cur" data-id="11">规格1</span><span data-id="555">规格2</span>
-            </div>
-            <div class="goods_sku_box" id="sku_box">
-                大小：
-                <span class="cur" data-id="11">规格1</span><span data-id="555">规格2</span>
-            </div>
+            @if(isset($goods_details['is_sku']) && $goods_details['is_sku'] == 1)
+                <div class="goods_sku_box" id="sku_box" data-url="###">
+                    颜色：
+                    <!--
+                    <span class="cur" data-id="11">规格1</span><span data-id="555">规格2</span>
+                    -->
+                    @if(!empty($color_attr) && count($color_attr) > 0)
+                        @foreach($color_attr as $ak=>$av)
+                            <span data-id="{{ $av->id }}" data-attr-id="{{ $av->attr_id }}}">{{ $av->value_name }}</span>
+                        @endforeach
+                    @endif
+                </div>
+
+
+                <div class="goods_sku_box" id="sku_box" data-url="###">
+                    规格：
+                    <!--
+                    <span class="cur" data-id="11">规格1</span><span data-id="555">规格2</span>
+                    -->
+                    @if(!empty($size_attr) && count($size_attr) > 0)
+                        @foreach($size_attr as $sk=>$sv)
+                            <span data-id="{{ $sv->id }}" data-attr-id="{{ $sv->attr_id }}">{{ $sv->value_name }}</span>
+                        @endforeach
+                    @endif
+                </div>
+            @endif
 
             <div class="hint_box">
                 *开团并邀请2人参团，人数不足自动退款。
@@ -212,6 +230,14 @@
         <script src="{{ elixir('js/wap/detail.js') }}"></script>
         <script src="{{ elixir('js/wap/swipeSlide.js') }}"></script>
         <script>
+            //当为单品,那么 is_sku 为0,多 sku 商品为1
+            var is_sku = '{{ $goods_details['is_sku'] }}';
+            //当为单品时,那么 sku_id 为 默认 skuid,否则为0
+            var sku_id = '{{ isset($default_sku_info) && isset($default_sku_info->id) ? $default_sku_info->id : 0 }}';
+
+            console.log('is_sku:'+is_sku);
+            console.log('sku_id:'+sku_id);
+
             $(function(){
                 $('#slider_wrapper').swipeSlide({
                     continuousScroll: true,
