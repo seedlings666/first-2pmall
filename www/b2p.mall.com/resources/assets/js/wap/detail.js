@@ -16,7 +16,7 @@
         var sureSkuStatus = false;
 
         $(this).addClass('cur').siblings('span').removeClass('cur');
-console.log($.inArray(type, tmpArr));
+
         if($.inArray( type, tmpArr) == -1){
             tmpArr.push(type);
         }
@@ -24,9 +24,7 @@ console.log($.inArray(type, tmpArr));
             sureSkuStatus = true;
         }
 
-        console.log(sureSkuStatus , tmpArr.length >1 , tmpArr)
-
-        if(sureSkuStatus && tmpArr.length >1){
+        if(sureSkuStatus && tmpArr.length > 1){
             var data = {
                 goods_id: goodsData.goods_id,
                 color_attr_val_id: $('[data-type=color] span.cur').data('id'),
@@ -77,7 +75,6 @@ console.log($.inArray(type, tmpArr));
                 if('err_code' in re){
                     alert(re.msg);
                 }else{
-                    console.log("success", re);
                     var h = '';
 
                     $.each(re, function() {
