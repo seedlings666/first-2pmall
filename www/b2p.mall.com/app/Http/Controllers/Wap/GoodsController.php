@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Wap;
 use App\Http\Controllers\Controller;
 use App\Providers\Goods\GoodsModule;
 use Illuminate\Support\Facades\View;
+use EasyWeChat\Foundation\Application;
 
 class GoodsController extends Controller
 {
@@ -13,7 +14,7 @@ class GoodsController extends Controller
      * 商品详情页
      * @author  jianwei
      */
-    public function getShow($goods_id)
+    public function getShow(Application $wechat_app, $goods_id)
     {
         $goods_details = (new GoodsModule())->getGoodsDetails($goods_id,99999999999999999,1);
         
@@ -25,6 +26,8 @@ class GoodsController extends Controller
         if(isset($goods_details->goodsSkuList)){
             
         }
+        //$js = $wechat_app->js;
+        $goods_details['js'] = $wechat_app->js;
         
         return View::make('wap.index')->with($goods_details);
     }
