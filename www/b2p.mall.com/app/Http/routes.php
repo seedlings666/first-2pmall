@@ -46,7 +46,7 @@ Route::group(['prefix' => 'wap', 'namespace' => 'Wap'], function () {
     //拼团支付
     Route::get('/group/pay', 'BuyController@getPay');
     //创建拼团订单
-    Route::any('/group/order/{type}', 'BuyController@createOrder');
+    Route::any('/group/order/{type}/{pay_sn}', 'BuyController@createOrder');
     //所有拼团订单，包含当前用自己的订单
     Route::any('/group/orders/{type?}', 'BuyController@groupOrders');
 });
