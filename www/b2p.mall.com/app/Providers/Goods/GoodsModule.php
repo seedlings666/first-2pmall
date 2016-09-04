@@ -1034,7 +1034,7 @@ class GoodsModule
         $micro_time_tmp = mb_substr($micro_time,2,null,'utf-8');
         
         //$file_name = date('YmdHis').'_'.'.'.$ext_name;
-        $file_name = $second_time.'_'.$micro_time_tmp.'.'.$ext_name;
+        $file_name = $second_time.'_'.$micro_time_tmp.'_'.mt_rand(1,100000).'.'.$ext_name;
         
         $file_full_name = $path_name.$file_name;
         
