@@ -63,7 +63,9 @@ class WxModule
                     })
                     ->first();
         if (!empty($user_info)) {
-            return (array)$user_info;
+            $user_info = (array)$user_info;
+            $user_info['openid'] = $token['openid'];
+            return $user_info;
         }
 
         $token['access_token'];
