@@ -121,7 +121,7 @@ class WxModule
         }
 
         if (isset($user_info['id'])) {
-            Helper::saveLoginInfo($user_info['id'], $user_info['avatar'], $user_info['nick_name']);
+            Helper::saveLoginInfo($user_info['id'], $user_info['avatar'], $user_info['nick_name'], $user_info['openid']);
             return ;
         }
 
@@ -158,7 +158,7 @@ class WxModule
 
         DB::table($this->tables['user_wx'])->insertGetId($insert);
 
-        Helper::saveLoginInfo($id, $user_info['headimgurl'], $user_info['nickname']);
+        Helper::saveLoginInfo($id, $user_info['headimgurl'], $user_info['nickname'], $user_info['openid']);
         DB::commit();
     }
 

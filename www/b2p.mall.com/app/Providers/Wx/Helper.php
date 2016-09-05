@@ -131,12 +131,13 @@ class Helper
      * @return void
      * @author chentengfeng @create_at 2016-09-03  17:46:41
      */
-    public static function saveLoginInfo($id, $headimgurl, $nick_name)
+    public static function saveLoginInfo($id, $headimgurl, $nick_name, $openid)
     {
         Session::put('user', [
             'id'        => $id,
             'avatar'    => $headimgurl,
-            'nick_name' => $nick_name
+            'nick_name' => $nick_name,
+            'openid'    => $openid,
         ]);
     }
 
