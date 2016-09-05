@@ -426,9 +426,10 @@ class GoodsModule
             
             //删除 sku 数据
             if(!empty($new_goods_sku_id)){
-                App::make('GoodsSkuModel')->where('goods_id',$goods_info->id)->whereNotIn('id',$new_goods_sku_id)->delete();
+                //商品 sku 不得删除
+                //App::make('GoodsSkuModel')->where('goods_id',$goods_info->id)->whereNotIn('id',$new_goods_sku_id)->delete();
             }else {
-                App::make('GoodsSkuModel')->where('goods_id', $goods_info->id)->delete();
+                //App::make('GoodsSkuModel')->where('goods_id', $goods_info->id)->delete();
             }
         }else{
             return Helper::ErrorMessage(10000,'参数错误!');
@@ -458,6 +459,8 @@ class GoodsModule
         //处理商品总库存
         $handle_goods_number = 'UPDATE zo_goods AS G,(SELECT SUM(sku_number) AS all_number,goods_id FROM zo_goods_sku WHERE goods_id = '.$goods_id.' AND is_on_sale = 1) AS S SET G.goods_number = S.all_number WHERE G.id = '.$goods_id.' AND S.goods_id = G.id;';
         
+        //删除多余的属性以及属性值,sku 不得删除
+        
         DB::update($check_goods_on_sale_sql);
         DB::update($handle_buy_price_sql);
         DB::update($handle_goods_number);
@@ -465,12 +468,114 @@ class GoodsModule
         return true;
     }
     
+    /**
+     * 删除多于的属性以及属性值
+     * @author  jianwei
+     * @param   $goods_id    int    商品 id
+     */
+    public function delGoodsExtraAttrValue($goods_id)
+    {
+        if(!is_numeric($goods_id) || $goods_id < 1){
+            return Helper::ErrorMessage(10000);
+        }
+        
+        //获取所有sku_attr_1跟 sku_attr_2值
+        $goods_sku_list = $this->getGoodsSkuList($goods_id,['id','sku_attr_1','sku_attr_2']);
+        
+        $sku_color_attr_id_arr = [];
+        $sku_size_attr_id_arr = [];
+        foreach($goods_sku_list as $lk=>$lv){
+//            $sku_color_attr_id_arr
+        }
+        
+        return $goods_sku_list;
+    }
+    
+    
+    /**
+     * 通过商品 id 的某个属性值,获取另外属性值选项
+     * @author  jianwei
+     * @param   $goods_id   int 商品 id
+     * @param   $attr_type  enum color,size
+     * @param   $attr_id    int 属性值id
+     */
+    public function getGoodsSomeAttrValue($goods_id,$attr_type,$attr_id)
+    {
+        if(!is_numeric($goods_id) || $goods_id < 1 || !in_array($attr_type,['color','size']) || !is_numeric($attr_id) || $attr_id < 0){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+        
+        $GoodsSkuModel = App::make('GoodsSkuModel');
+        
+        $sku_select_columns = ['*'];
+        $goods_sku_obj = $GoodsSkuModel->select($sku_select_columns);
+        
+        $goods_sku_obj->where('goods_id',$goods_id);
+        $goods_sku_obj->where('is_on_sale',1);
+    
+    
+        //保存数据
+        $sku_attr_x_list = null;
+    
+        if($attr_type == 'color'){
+            $goods_sku_obj->where('sku_attr_1',$attr_id);
+            $sku_attr_x_list = $goods_sku_obj->pluck('sku_attr_2');
+        }else{
+            $goods_sku_obj->where('sku_attr_2',$attr_id);
+            $sku_attr_x_list = $goods_sku_obj->pluck('sku_attr_1');
+        }
+        
+        if(count($sku_attr_x_list) < 1){
+            $err_msg = Helper::ErrorMessage(50012, '没找到任何规格!');
+            return $err_msg;
+        }
+        
+        //查找属性值
+        $attr_value_columns = ['id','goods_id','attr_id','value_name'];
+        $sku_attr_value_list = App::make('GoodsAttrValueModel')->select($attr_value_columns)->whereIn('id',$sku_attr_x_list)->get();
+        
+        return $sku_attr_value_list;
+        
+    }
+    
+    /**
+     * 确定一个 sku
+     * @author  jianwei
+     * @param   $goods_id   int 商品 id
+     * @param   $color_attr_val_id  int 颜色属性 id
+     * @param   $size_attr_val_id   int 规格属性 id
+     */
+    public function getSkuByAttr($goods_id,$color_attr_val_id,$size_attr_val_id)
+    {
+        if(!is_numeric($goods_id) || $goods_id < 1 || !is_numeric($color_attr_val_id) || !is_numeric($size_attr_val_id)){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+    
+    
+        $GoodsSkuModel = App::make('GoodsSkuModel');
+    
+        $sku_select_columns = ['*'];
+        $goods_sku_obj = $GoodsSkuModel->select($sku_select_columns);
+    
+        $goods_sku_obj->where('goods_id',$goods_id);
+        //$goods_sku_obj->where('is_on_sale',1);
+        
+        $goods_sku_obj->where('sku_attr_1',$color_attr_val_id);
+        $goods_sku_obj->where('sku_attr_2',$size_attr_val_id);
+        
+        $goods_sku_obj->orderBy('id','desc');
+    
+        $goods_sku_info = $goods_sku_obj->first();
+        
+        return $goods_sku_info;
+    }
+    
     
     /**
      * 各部 goods_id,sku_attr_1,sku_attr_2获取是否已经存在sku数据
      * @author  jianwei
      */
-    public function getSkuByAttr($goods_id,$sku_attr_color_id,$sku_attr_size_id,array $select_columns = ['*'],array $relatives = [])
+    public function checkSkuByAttr($goods_id,$sku_attr_color_id,$sku_attr_size_id,array $select_columns = ['*'],array $relatives = [])
     {
         if(!is_numeric($goods_id) ||
             $goods_id < 1 ||
@@ -482,6 +587,7 @@ class GoodsModule
             return Helper::ErrorMessage(10000,'参数错误!');
         }
         
+        /*
         $GoodsSkuModel = App::make('GoodsSkuModel');
     
         $goods_sku_obj = $GoodsSkuModel->select($select_columns);
@@ -498,6 +604,21 @@ class GoodsModule
         
         if(!empty($goods_sku_info) && !empty($relatives)){
             $goods_sku_info->load($relatives);
+        }
+        */
+    
+        $goods_sku_info = $this->getSkuByAttr($goods_id,$sku_attr_color_id,$sku_attr_size_id);
+        
+        if(isset($goods_sku_info['err_code'])){
+            return $goods_sku_info;
+        }
+        
+        if(empty($goods_sku_info)){
+            return Helper::ErrorMessage(50014,'sku 不存在!');
+        }
+        
+        if($goods_sku_info->is_on_sale == 0){
+            return Helper::ErrorMessage(50015,'该 规格商品已下架!');
         }
         
         return $goods_sku_info;
@@ -803,6 +924,65 @@ class GoodsModule
         return $update_response;
     }
     
+    
+    /**
+     * 获取某个属性的值
+     * @author  jianwei
+     * @param   $goods_id   int     商品 id
+     * @param   $sku_att    int     属性名称?
+     */
+    public function getSkuAttrValue($goods_id,$sku_att)
+    {
+        if(!is_numeric($goods_id) || $goods_id < 1 || !in_array($sku_att,['color','size'])){
+            return Helper::ErrorMessage(10000,'参数错误!');
+        }
+        
+        $sku_list = $this->getGoodsSkuList($goods_id,['id','sku_attr_1','sku_attr_2','is_on_sale']);
+        
+        $sku_attr_arr = array();
+        $goods_attr_id = 0;
+        if($sku_att == 'color'){
+            //获取属性id
+            //颜色属性
+            $goods_color_attr = $this->saveGoodsAttr($goods_id,'颜色');
+            
+            $goods_attr_id = $goods_color_attr->id;
+    
+            foreach($sku_list as $lk=>$lv){
+                if($lv->is_on_sale == 1){
+                    $sku_attr_arr[] = $lv->sku_attr_1;
+                }
+            }
+        }else if($sku_att == 'size'){
+            //尺寸属性
+            $goods_size_attr = $this->saveGoodsAttr($goods_id,'尺寸');
+    
+            $goods_attr_id = $goods_size_attr->id;
+    
+            foreach($sku_list as $lk=>$lv){
+                if($lv->is_on_sale == 1){
+                    $sku_attr_arr[] = $lv->sku_attr_2;
+                }
+            }
+        }
+        
+        if(empty($sku_attr_arr)){
+            $err_msg = Helper::ErrorMessage(50010, '该商品已下架!');
+            return $err_msg;
+        }
+    
+        $select_columns = ['id','goods_id','attr_id','value_name'];
+        $sku_attr_value_list = App::make('GoodsAttrValueModel')->select($select_columns)->where('goods_id',$goods_id)->where('attr_id',$goods_attr_id)->whereIn('id',$sku_attr_arr)->get();
+        
+        if(empty($sku_attr_value_list)){
+            $err_msg = Helper::ErrorMessage(50012, '没找到任何规格!');
+            return $err_msg;
+        }
+        
+        
+        return $sku_attr_value_list;
+    }
+    
     /**
      * 图片文件上传
      * @author  jianwei
@@ -854,7 +1034,7 @@ class GoodsModule
         $micro_time_tmp = mb_substr($micro_time,2,null,'utf-8');
         
         //$file_name = date('YmdHis').'_'.'.'.$ext_name;
-        $file_name = $second_time.'_'.$micro_time_tmp.'.'.$ext_name;
+        $file_name = $second_time.'_'.$micro_time_tmp.'_'.mt_rand(1,100000).'.'.$ext_name;
         
         $file_full_name = $path_name.$file_name;
         

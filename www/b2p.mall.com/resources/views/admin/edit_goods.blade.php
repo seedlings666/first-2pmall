@@ -296,7 +296,7 @@ $(function(){
     var sku_tmp_data = [];
 
     // 如果服务器传回有sku数据就进行赋值;
-    if(serviceSkuList){
+    if(typeof serviceSkuList != 'undefined'){
         for(var i in serviceSkuList){
             var skuData = {
                 self_id: 'zj' + serviceSkuList[i].id,
