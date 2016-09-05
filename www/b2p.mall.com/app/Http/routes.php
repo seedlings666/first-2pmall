@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 // 移动端
-Route::group(['prefix' => 'wap', 'namespace' => 'Wap'], function () {
+Route::group(['prefix' => 'wap', 'namespace' => 'Wap', 'middleware' => 'wxLogin'], function () {
     Route::get('/', function () {
         return view('wap.index');
     });
