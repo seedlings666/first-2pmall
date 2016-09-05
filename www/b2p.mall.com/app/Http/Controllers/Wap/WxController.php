@@ -7,6 +7,7 @@ use App\Providers\Wx\WxModule;
 use App\Providers\Wx\Helper;
 use Request;
 use Config;
+use Session;
 
 /**
  * 微信相关接口
