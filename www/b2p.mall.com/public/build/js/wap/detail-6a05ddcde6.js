@@ -40,7 +40,6 @@
                 if(re.err_code){
                     attrSelectFun(type, id);
                 }else{
-                    console.log("success", re);
                     // 商品价格
                     $('[name=shop_price]').html('&yen;' + parseFloat(re.shop_price).toFixed(2));
 
@@ -49,6 +48,10 @@
 
                     // 商品库存
                     $('[name=stock]').html('库存：'+ re.sku_number +'件');
+
+                    // 订单连接拼接
+                    var payUrl = goodsData.buy_link + '?goods_id=' + goodsData.goods_id + '&sku_id=' + re.id;
+                    $('[name=buy_but]').attr('href', payUrl);
                 }
             })
             .fail(function(re) {
@@ -65,6 +68,9 @@
                 attr_type: type,
                 attr_id: id,
             };
+            // 清除提交订单的连接
+            $('[name=buy_but]').attr('href', 'javascript:void(0);');
+
             $.ajax({
                 url: attrUrl,
                 type: 'POST',
