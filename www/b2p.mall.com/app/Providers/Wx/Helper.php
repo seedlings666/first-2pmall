@@ -166,7 +166,7 @@ class Helper
     public static function wechatUrl()
     {
         $appid = config('wx.appid');
-        $uri = action('Wap\UserController@getShow');
+        $uri = action('Wap\WxController@getUserInfo');
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$uri}&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect";
         return $url;
     }

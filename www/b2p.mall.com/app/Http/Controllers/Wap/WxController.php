@@ -21,8 +21,12 @@ class WxController extends Controller
      * @return void
      * @author chentengfeng @create_at 2016-08-27  23:34:22
      */
-    public function getUserInfo(Input $input,WxModule $module, $controller='', $fun='')
+    public function getUserInfo(Input $input,WxModule $module)
     {
+        dd(Session::get("redirect_url"));
+        return redirect($redirect_url);
+
+        /*
         $redirect_url = $module->redirectUrl($controller, $fun);
 
         $code  = $input->get('code');
@@ -37,6 +41,7 @@ class WxController extends Controller
         }
 
         return redirect($redirect_url);
+         */
     }
 
 
