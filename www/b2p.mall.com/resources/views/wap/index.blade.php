@@ -208,7 +208,7 @@
         <div class="fix_nav">
             <ul>
                 <li>
-                    <a href="{{action('Wap\BuyController@getPay', ['goods_id' => 5, 'sku_id' => 1 , 'goods_number' => 100])}}">
+                    <a href="javascript:void(0);" name="buy_but">
                         提交订单
                     </a>
                 </li>
@@ -225,7 +225,8 @@
                 is_sku : '{{ $goods_details['is_sku'] }}',
                 //当为单品时,那么 sku_id 为 默认 skuid,否则为0
                 sku_id : '{{ isset($default_sku_info) && isset($default_sku_info->id) ? $default_sku_info->id : 0 }}',
-                goods_id : {{ $goods_details['id'] }}
+                goods_id : {{ $goods_details['id'] }},
+                buy_link: '{{action('Wap\BuyController@getPay')}}'
             };
 
             $(function(){
