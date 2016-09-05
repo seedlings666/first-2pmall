@@ -131,12 +131,13 @@ class Helper
      * @return void
      * @author chentengfeng @create_at 2016-09-03  17:46:41
      */
-    public static function saveLoginInfo($id, $headimgurl, $nick_name)
+    public static function saveLoginInfo($id, $headimgurl, $nick_name, $openid)
     {
         Session::put('user', [
             'id'        => $id,
             'avatar'    => $headimgurl,
-            'nick_name' => $nick_name
+            'nick_name' => $nick_name,
+            'openid'    => $openid,
         ]);
     }
 
@@ -165,7 +166,7 @@ class Helper
     public static function wechatUrl()
     {
         $appid = config('wx.appid');
-        $uri = action('Wap\WxController@getUserInfo', ['user', 'show']);
+        $uri = action('Wap\UserController@getShow');
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$uri}&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect";
         return $url;
     }
