@@ -24,7 +24,14 @@ class WxController extends Controller
      */
     public function getUserInfo(Input $input,WxModule $module)
     {
-        dd(Session::get("redirect_url"));
+        $redirect_url = Session::get("redirect_url");
+        if (empty($redirect_url)) {
+            $redirect_url = action('wap\UserController@getShow');
+        } else {
+            Session::forget("redirect_url");
+        }
+
+
         return redirect($redirect_url);
 
         /*
