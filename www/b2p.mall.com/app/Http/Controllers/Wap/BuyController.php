@@ -25,7 +25,9 @@ class BuyController extends Controller
         $input_data = [
             'group_id'     => \Request::get('group_id', 0),
             'sku_id'       => \Request::get('sku_id', 0),
-            'goods_number' => \Request::get('goods_number', 0),
+            // 'goods_number' => \Request::get('goods_number', 0),
+            // 写死暂时不清楚拼团是否可以多件商品
+            'goods_number' => 1,
             'user_id'      => $user_id,
         ];
         $buyModule = new BuyModule();
