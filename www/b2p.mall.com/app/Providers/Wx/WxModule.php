@@ -55,13 +55,15 @@ class WxModule
 
         //检测是否存在对应的openid
         $user_info  = DB::table($this->tables['user'])
-                    ->select('id', 'avatar', 'nick_name')
+                    ->select($this->tables['user'].'.*', $this->tables['user_wx'].'.openid')
                     ->whereExists(function ($query) use ($token) {
                         $query->from($this->tables['user_wx'])
                               ->where('openid', $token['openid'])
                               ->whereRaw($this->tables['user'] . '.id = ' . $this->tables['user_wx'] . '.user_id');
                     })
+                    ->join($this->tables['user'], $this->tables['user_wx'].'id', '=', $this->tables['user_wx'].'.user_id')
                     ->first();
+        \Log::info($user_info->toJson());
         if (!empty($user_info)) {
             $user_info = (array)$user_info;
             $user_info['openid'] = $token['openid'];
