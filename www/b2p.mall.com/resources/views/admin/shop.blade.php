@@ -19,7 +19,7 @@
             <div class="table-header">
                 店铺列表
                 <div class="navbar-buttons navbar-header pull-right">
-                    <a href="{{ url('/admin/shop/create') }}" class="btn btn-pink">新增店铺</a>
+                    <a href="{{ action('Admin\ShopController@postStore') }}" class="btn btn-pink">新增店铺</a>
                 </div>
             </div>
             <div class="dataTables_wrapper form-inline no-footer">
@@ -34,7 +34,8 @@
                             </th>
                             <th class="center">店铺编号</th>
                             <th class="center">店铺名称</th>
-                            <th class="center">负责人</th>
+                            <th class="center">店铺别称</th>
+                            <th class="center">店长</th>
                             <th class="center"><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>开店时间</th>
                             <th class="center">当前状态</th>
                             <th class="center">操作</th>
@@ -42,6 +43,7 @@
                     </thead>
 
                     <tbody>
+                        @foreach ($list as $value)
                         <tr>
                             <td class="center">
                                 <label class="pos-rel">
@@ -49,23 +51,28 @@
                                     <span class="lbl"></span>
                                 </label>
                             </td>
-                            <td class="center">001</td>
-                            <td class="center">店铺名称</td>
-                            <td class="center">李四</td>
-                            <td class="center">2016-08-24 01:11:59</td>
+                            <td class="center">{{$value->id}}</td>
+                            <td class="center">{{$value->name}}</td>
+                            <td class="center">{{$value->alias}}</td>
+                            <td class="center">{{$value->shopkeeper_name}}</td>
+                            <td class="center">{{$value->created_at}}</td>
                             <td class="center">
-                                <span class="label label-sm label-warning">已付款</span>
+                                @if ($value->status == 1)
+                                <span class="label label-sm label-info">开店</span>
+                                @else
+                                <span class="label label-sm label-warning">闭店</span>
+                                @endif
                             </td>
 
                             <td class="center">
                                 <div class="hidden-sm hidden-xs btn-group">
-                                    <a title="查看" href="{{url('/admin/order/info')}}" class="btn btn-xs btn-success">
+                                    <!-- <a title="查看" href="{{url('/admin/order/info')}}" class="btn btn-xs btn-success">
                                         <i class="ace-icon fa fa-search bigger-120"></i>
-                                    </a>
-
-                                    <!-- <a title="编辑" class="btn btn-xs btn-info">
-                                        <i class="ace-icon fa fa-pencil bigger-120"></i>
                                     </a> -->
+
+                                    <a title="编辑" class="btn btn-xs btn-info" href="{{action('Admin\ShopController@getEdit', [$value->id])}}">
+                                        <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                    </a>
 
                                     <!-- <button class="btn btn-xs btn-danger">
                                         <i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -77,37 +84,13 @@
                                 </div>
                             </td>
                         </tr>
+                    @endforeach
                     </tbody>
                 </table>
 
                 <!-- PAGE CONTENT ENDS -->
                 <div class="row">
-                    <div class="col-xs-6">
-                        <div class="dataTables_info" role="status" aria-live="polite">
-                            显示 1 - 10 共 2 条数据
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="dataTables_paginate paging_simple_numbers" id="dynamic-table_paginate">
-                            <ul class="pagination">
-                                <li class="paginate_button previous disabled" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_previous">
-                                    <a href="#">上一页</a>
-                                </li>
-                                <li class="paginate_button active" aria-controls="dynamic-table" tabindex="0">
-                                    <a href="#">1</a>
-                                </li>
-                                <li class="paginate_button " aria-controls="dynamic-table" tabindex="0">
-                                    <a href="#">2</a>
-                                </li>
-                                <li class="paginate_button " aria-controls="dynamic-table" tabindex="0">
-                                    <a href="#">3</a>
-                                </li>
-                                <li class="paginate_button next" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_next">
-                                    <a href="#">下一页</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    {{$list->links()}}
                 </div>
             </div><!-- /.col -->
         </div><!-- /.row -->

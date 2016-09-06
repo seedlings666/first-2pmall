@@ -38,5 +38,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('ManageModel', 'App\Providers\Manage\Models\Manage');
         $this->app->bind('ManageShopRelationModel', 'App\Providers\Manage\Models\ManageShopRelation');
         $this->app->bind('ShopModel', 'App\Providers\Manage\Models\Shop');
+        $this->app->bind('UserModel', 'App\Providers\Manage\Models\User');
     }
 }

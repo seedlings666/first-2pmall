@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class ManageShopRelation
  * @author chentengfeng @create_at 2016-09-06  08:19:25
  */
-class ManageShopRelation
+class ManageShopRelation extends Model
 {
     use SoftDeletes;
     public $table = 'zo_manage_shop_relation';

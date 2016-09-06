@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Manage
+ * Class Shop
  * @author chentengfeng @create_at 2016-09-06  08:19:25
  */
-class Manage extends Model
+class User extends Model
 {
     use SoftDeletes;
-    public $table = 'zo_manage';
+    public $table = 'zo_users';
+
 }

@@ -61,9 +61,8 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
         return view('admin.index');
     });
 
-    Route::get('/shop', function(){
-        return view('admin.shop');
-    });
+    Route::controller('/shop', 'ShopController');
+    Route::controller('/user', 'UserController');
 
     Route::get('/shop/create', function(){
         return view('admin.shop_create');
@@ -81,9 +80,6 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
     Route::get('/order/info/{id}', 'OrderController@getInfo');
     Route::get('/order_statistical', function() {
         return view('admin.order_statistical');
-    });
-    Route::get('/user', function () {
-        return view('admin.user');
     });
     Route::get('/competence', function () {
         return view('admin.competence');
