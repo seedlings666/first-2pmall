@@ -76,7 +76,8 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
     Route::get('/login', function() {
         return view('admin.login');
     });
-    Route::get('/order', 'OrderController@getOrder');
+    Route::controller('/order', 'OrderController');
+    //Route::get('/order', 'OrderController@getOrder');
     Route::get('/order/info/{id}', 'OrderController@getInfo');
     Route::get('/order_statistical', function() {
         return view('admin.order_statistical');
