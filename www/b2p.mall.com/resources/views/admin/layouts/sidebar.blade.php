@@ -69,7 +69,7 @@
     </li>
 
     <li class="{{ Request::path() == 'admin/shop_user' ? 'active' : '' }}">
-        <a href="{{ url('/admin/shop_user') }}">
+        <a href="{{ action('Admin\ManageController@getIndex') }}">
             <i class="menu-icon fa fa-users"></i>
             <span class="menu-text"> 店员管理 </span>
         </a>

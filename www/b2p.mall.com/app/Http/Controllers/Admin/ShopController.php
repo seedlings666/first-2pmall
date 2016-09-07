@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\Manage\ManageModule;
 use App\Providers\Manage\ShopModule;
 use \Illuminate\Http\Request;
+use Session;
 
 /**
  * 店铺
@@ -74,7 +75,11 @@ class ShopController  extends Controller
     public function getEdit(ShopModule $module, $shop_id)
     {
         $show = $module->show($shop_id);
-        return view('admin.shop_edit')->with(compact('show'));
+        $manag_list = [];
+        if ($show->manageShopRelation && !$show->manageShopRelation->isEmpty()) {
+            $manag_list = $show->manageShopRelation->lists('manage')->lists('nick_name', 'id');
+        }
+        return view('admin.shop_edit')->with(compact('show', 'manag_list'));
     }
 
 
@@ -92,6 +97,7 @@ class ShopController  extends Controller
             'name'    => $request->get('name'),
             'alias'   => $request->get('alias'),
             'status'  => $request->get('status'),
+            'shopkeeper_id' => $request->get('shopkeeper_id'),
         ];
 
         $rs = $module->store($params);

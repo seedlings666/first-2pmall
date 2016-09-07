@@ -60,18 +60,18 @@
 
                                             <div class="space-6"></div>
 
-                                            <form action="" method="POST">
+                                            <form action="{{route('admin-login')}}" method="POST">
                                                 <fieldset>
                                                     <label class="block clearfix">
                                                         <span class="block input-icon input-icon-right">
-                                                            <input type="text" class="form-control" placeholder="用户名" />
+                                                            <input type="text" class="form-control" placeholder="用户名" name="user_name"/>
                                                             <i class="ace-icon fa fa-user"></i>
                                                         </span>
                                                     </label>
 
                                                     <label class="block clearfix">
                                                         <span class="block input-icon input-icon-right">
-                                                            <input type="password" class="form-control" placeholder="密码" />
+                                                            <input type="password" class="form-control" placeholder="密码" name="password"/>
                                                             <i class="ace-icon fa fa-lock"></i>
                                                         </span>
                                                     </label>

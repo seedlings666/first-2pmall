@@ -17,9 +17,9 @@ class ManageModule
      * @return void
      * @author chentengfeng @create_at 2016-09-06  21:35:39
      */
-    private function toolEncrypt($password)
+    public function toolEncrypt($password)
     {
-        return substr(md($password), 0, -2);
+        return substr(md5($password), 0, -2);
     }
 
     /**
@@ -59,7 +59,7 @@ class ManageModule
         $builder = App::make('ManageModel')->select();
 
 
-        return $builder->paginate($page_number);
+        return $builder->paginate($condition['page_number']);
     }
 
 
@@ -77,11 +77,13 @@ class ManageModule
         }
 
         $select = [
-            'id',
-            'address',
-            'name',
-            'shopkeeper_id',
+            'work_number',
+            'user_name',
+            'nick_name',
+            'mobile_phone',
+            'role_id',
             'status',
+            'id',
         ];
 
         return App::make('ManageModel')->select($select)->find($id);
@@ -103,7 +105,7 @@ class ManageModule
             'password'     => ['sometimes','required'],
             'nick_name'    => ['required'],
             'mobile_phone' => ['required','integer'],
-            'role_id'      => ['required','integer','min:1'],
+            'role_id'      => ['required','integer','min:0'],
             'status'       => ['required','boolean','in:0,1'],
         );
 
@@ -124,7 +126,7 @@ class ManageModule
         $model = App::make('ManageModel');
 
         if (isset($params['id'])) {
-            $model = $model->find('id', $params['id']);
+            $model = $model->find($params['id']);
             if (empty($model)) {
                 return Helper::error(80003, '查找不到对应的用户');
             }
@@ -136,10 +138,14 @@ class ManageModule
         $model->mobile_phone = $params['mobile_phone'];
         $model->role_id      = $params['role_id'];
         $model->status       = $params['status'];
-        $model->password     = $this->toolEncrypt($params['password']);
+        if (isset($params['password'])) {
+            $model->password     = $this->toolEncrypt($params['password']);
+        }
         if (!$model->save()) {
             return Helper::error(80002, '用户信息保存失败');
         }
+
+        return $model;
     }
 
 
@@ -156,6 +162,9 @@ class ManageModule
         }
 
         $model = App::make('ManageShopRelationModel');
+
+        $exist = $model->where('user_id', $user_id);
+        $exist->delete();
 
         $model->user_id = $user_id;
         $model->shop_id = $shop_id;

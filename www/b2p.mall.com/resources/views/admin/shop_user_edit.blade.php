@@ -20,14 +20,15 @@
     <div class="row">
         <div class="col-xs-12 form-horizontal">
             <!-- PAGE CONTENT BEGINS -->
-            <form role="form" id="validation-form" method="post" action="{{action('Admin\ManageController@postStore')}}">
+            <form role="form" id="validation-form" method="post" action="{{action('Admin\ManageController@postEdit')}}">
+                <input type="hidden" name="id" value="{{$show->id}}" >
                 <!-- #section:elements.form -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right" for="goods_name"> 工号 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_name" name="work_number" placeholder="工号" class="col-xs-5" />
+                            <input type="text" id="goods_name" name="work_number" placeholder="工号" class="col-xs-5" value="{{$show->work_number}}" />
                         </div>
                     </div>
                 </div>
@@ -36,7 +37,7 @@
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_name" name="user_name" placeholder="登录名称" class="col-xs-5" />
+                            <input type="text" id="goods_name" name="user_name" placeholder="登录名称" class="col-xs-5" value="{{$show->user_name}}"/>
                         </div>
                     </div>
                 </div>
@@ -45,7 +46,7 @@
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_name" name="nick_name" placeholder="昵称" class="col-xs-5" />
+                            <input type="text" id="goods_name" name="nick_name" placeholder="昵称" class="col-xs-5" value="{{$show->nick_name}}"/>
                         </div>
                     </div>
                 </div>
@@ -54,7 +55,7 @@
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_name" name="mobile_phone" placeholder="手机号码" class="col-xs-5" />
+                            <input type="text" id="goods_name" name="mobile_phone" placeholder="手机号码" class="col-xs-5" value="{{$show->mobile_phone}}"/>
                         </div>
                     </div>
                 </div>
@@ -69,14 +70,15 @@
                 </div>
 
 
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right" for="market_price"> 当前状态 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
                             <select name="status">
-                                <option value="1" >开店</option>
-                                <option value="0" >闭店</option>
+                                <option value="1" @if ($show->status == 1) selected="selected" @endif>开店</option>
+                                <option value="0" @if ($show->status == 0) selected="selected" @endif>闭店</option>
                             </select>
                         </div>
                     </div>
@@ -89,7 +91,7 @@
                         <div class="clearfix">
                             <select name="shop_id">
                             @foreach ($shop_list as $value)
-                                <option value="{{$value->id}}" >{{$value->name}}</option>
+                                <option value="{{$value->id}}" @if($value->id == $show->manageShopRelation->shop_id) selected="selected" @endif>{{$value->name}}</option>
                             @endforeach
                             </select>
                         </div>

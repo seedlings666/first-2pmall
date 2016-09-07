@@ -52,7 +52,7 @@ Route::group(['prefix' => 'wap', 'namespace' => 'Wap', 'middleware' => 'wxLogin'
 });
 
 // 管理后台
-Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
+Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'adminLogin'], function () {
 
     //后台商品模块
     Route::controller('/goods','GoodsController');
@@ -63,15 +63,12 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
 
     Route::controller('/shop', 'ShopController');
     Route::controller('/user', 'UserController');
+    Route::controller('/manage', 'ManageController');
 
     Route::get('/shop/create', function(){
         return view('admin.shop_create');
     });
 
-    // 店员管理
-    Route::get('/shop_user', function() {
-        return view('admin.shop_user');
-    });
 
     // 新曾店员
     Route::get('/shop_user/create', function() {
@@ -89,10 +86,10 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
     });
 
 
-    Route::post('/login', 'ManageController@postLog');
 });
 
 //登录页面
-Route::get('/login', function() {
+Route::get('admin/login', ['as' => 'login', function() {
     return view('admin.login');
-});
+}]);
+Route::post('admin/login', 'Admin\ManageController@postLogin')->name('admin-login');
