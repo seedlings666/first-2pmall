@@ -133,6 +133,7 @@ class GoodsModule
             $goods_sku_condition['shop_price'] = $goods_info->shop_price;
             $goods_sku_condition['market_price'] = $goods_info->market_price;
             $goods_sku_condition['sku_number'] = $goods_info->goods_number;
+            $goods_sku_condition['is_on_sale'] = $goods_info->is_on_sale;
             $goods_sku_condition['sku_attr_1'] = 0;
             $goods_sku_condition['sku_attr_2'] = 0;
     
@@ -300,6 +301,16 @@ class GoodsModule
             return Helper::ErrorMessage(50008,'商品不得转换单品与多规格属性!');
         }
         
+        //修改商品数据
+        $goods_info->goods_name = $goods_content['goods_name'];
+        $goods_info->goods_desc = $goods_content['goods_desc'];
+        $goods_info->shop_price = $goods_content['shop_price'];
+        $goods_info->market_price = $goods_content['market_price'];
+        $goods_info->goods_number = $goods_content['goods_number'];
+        $goods_info->is_on_sale = $goods_content['is_on_sale'];
+        $goods_info->content = $goods_content['content'];
+        $goods_info->save();
+        
         //图片处理
         //修改图片的 goods_id
     
@@ -321,17 +332,17 @@ class GoodsModule
         //处理 sku
         //不为 sku 时,那么生成一条默认 sku 数据到 sku
         $save_goods_sku_response = array();
-        if($goods_content['is_sku'] == 0) {
+        if($goods_info->is_sku == 0) {
             //创建单品
             //查询是否已经有默认 sku 数据
             $default_sku_info = $this->getSkuByAttr($goods_id,0,0);
             if(isset($default_sku_info->id)){
-                $GoodsSkuModel = App::make('GoodsSkuModel');
-                $GoodsSkuModel->shop_price = $goods_info->shop_price;
-                $GoodsSkuModel->market_price = $goods_info->market_price;
-                $GoodsSkuModel->sku_number = $goods_info->sku_number;
-                $GoodsSkuModel->save();
-                $save_goods_sku_response[] = $GoodsSkuModel;
+                $default_sku_info->shop_price = $goods_info->shop_price;
+                $default_sku_info->market_price = $goods_info->market_price;
+                $default_sku_info->sku_number = $goods_info->goods_number;
+                $default_sku_info->is_on_sale = $goods_info->is_on_sale;
+                $default_sku_info->save();
+                $save_goods_sku_response[] = $default_sku_info;
             }else{
                 $goods_sku_condition = array();
                 $goods_sku_condition['goods_id'] = $goods_info->id;
@@ -339,6 +350,7 @@ class GoodsModule
                 $goods_sku_condition['shop_price'] = $goods_info->shop_price;
                 $goods_sku_condition['market_price'] = $goods_info->market_price;
                 $goods_sku_condition['sku_number'] = $goods_info->goods_number;
+                $goods_sku_condition['is_on_sale'] = $goods_info->is_on_sale;
                 $goods_sku_condition['sku_attr_1'] = 0;
                 $goods_sku_condition['sku_attr_2'] = 0;
                 $save_goods_sku_response[] = $this->saveGoodsSku($goods_sku_condition);
