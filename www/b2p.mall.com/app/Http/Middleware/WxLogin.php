@@ -4,7 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App;
+use Session;
 use App\Providers\Wx\WxModule;
+use App\Providers\Wx\Helper;
 
 /**
  * 登录过滤
@@ -26,19 +28,12 @@ class WxLogin
             $module->saveUserInfo($request->get('code'));
             return $next($request);
         }
-        ////重定向到微信授权
-        //if (!Session::has('user')) {
-            //$call = url()->getRequest()->getRouteResolver();
-            //$route = $call();
-            //$info = explode('@', last(explode('\\', $route_path->getActionName())));
-            //$controller = lcfirst(str_replace('Controller', '',  $info[0]));
-            //$fun = lcfirst(str_replace(['get', 'post'], '',  $info[1]));
-            //$params = $route->parameters();
-            //dd($params);
-            //dd($route);
 
-            //return redirect();
-        //}
+        //重定向到微信授权
+        if (!Session::has('user')) {
+            Session::put('redirect_url', url()->getRequest()->getRequestUri());
+            return redirect(Helper::wechatUrl());
+        }
 
         return $next($request);
     }

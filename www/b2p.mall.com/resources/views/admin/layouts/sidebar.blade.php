@@ -51,7 +51,7 @@
     </li>
 
     <li class="{{ Request::path() == 'admin/order_statistical' ? 'active' : '' }}">
-        <a href="{{ url('/admin/order_statistical') }}">
+        <a href="{{ action('Admin\OrderController@getStatistic') }}">
             <i class="menu-icon fa fa-bar-chart-o"></i>
             <span class="menu-text"> 订单统计 </span>
         </a>

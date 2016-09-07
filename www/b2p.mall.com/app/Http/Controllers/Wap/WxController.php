@@ -7,6 +7,7 @@ use App\Providers\Wx\WxModule;
 use App\Providers\Wx\Helper;
 use Request;
 use Config;
+use Session;
 
 /**
  * 微信相关接口
@@ -21,8 +22,19 @@ class WxController extends Controller
      * @return void
      * @author chentengfeng @create_at 2016-08-27  23:34:22
      */
-    public function getUserInfo(Input $input,WxModule $module, $controller='', $fun='')
+    public function getUserInfo(Input $input,WxModule $module)
     {
+        $redirect_url = Session::get("redirect_url");
+        if (empty($redirect_url)) {
+            $redirect_url = action('wap\UserController@getShow');
+        } else {
+            Session::forget("redirect_url");
+        }
+
+
+        return redirect($redirect_url);
+
+        /*
         $redirect_url = $module->redirectUrl($controller, $fun);
 
         $code  = $input->get('code');
@@ -37,6 +49,7 @@ class WxController extends Controller
         }
 
         return redirect($redirect_url);
+         */
     }
 
 

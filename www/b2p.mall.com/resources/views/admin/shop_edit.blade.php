@@ -20,14 +20,15 @@
     <div class="row">
         <div class="col-xs-12 form-horizontal">
             <!-- PAGE CONTENT BEGINS -->
-            <form role="form" id="validation-form" method="post" action="{{action('Admin\ShopController@postStore')}}">
+            <form role="form" id="validation-form" method="post" action="{{action('Admin\ShopController@postEdit')}}">
+                <input type="hidden"  name="id" class="col-xs-5" value="{{$show->id}}"/>
                 <!-- #section:elements.form -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right" for="goods_name"> 店铺名称 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_name" name="name" placeholder="店铺名称" class="col-xs-5"/>
+                            <input type="text" id="goods_name" name="name" placeholder="店铺名称" class="col-xs-5" value="{{$show->name}}"/>
                         </div>
                     </div>
                 </div>
@@ -37,7 +38,7 @@
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_desc" name="alias" placeholder="别称" class="col-xs-5" />
+                            <input type="text" id="goods_desc" name="alias" placeholder="别称" class="col-xs-5" value="{{$show->alias}}"/>
                         </div>
                     </div>
                 </div>
@@ -47,7 +48,7 @@
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_desc" name="address" placeholder="地址" class="col-xs-5" />
+                            <input type="text" id="goods_desc" name="address" placeholder="地址" class="col-xs-5" value="{{$show->address}}"/>
                         </div>
                     </div>
                 </div>
@@ -58,8 +59,8 @@
                     <div class="col-sm-10">
                         <div class="clearfix">
                             <select name="status">
-                                <option value="1" >开店</option>
-                                <option value="0" >闭店</option>
+                                <option value="1" @if ($show->status == 1) selected="selected" @endif>开店</option>
+                                <option value="0" @if($show->status == 0) selected="selected" @endif>闭店</option>
                             </select>
                         </div>
                     </div>

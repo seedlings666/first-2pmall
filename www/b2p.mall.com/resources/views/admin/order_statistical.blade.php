@@ -44,6 +44,7 @@ var d1 = [];
 for (var i = 1; i < 32; i ++ ) {
     d1.push([gd(2016, 8, i), Math.floor(Math.random() * 2000)]);
 }
+console.log(d1);
 
 var d2 = [];
 for (var i = 1; i < 32; i ++ ) {
@@ -53,8 +54,8 @@ for (var i = 1; i < 32; i ++ ) {
 // 图标
 var sales_charts = $('#sales-charts').css({'width':'100%' , 'height':'500px'});
 $.plot("#sales-charts", [
-    { label: "销量", data: d1 },
-    { label: "金额", data: d2 }
+    { label: "销量", data: {!!json_encode($count)!!} },
+    { label: "金额", data: {!!json_encode($sales)!!} }
 ], {
     shadowSize: 1,
     series: {

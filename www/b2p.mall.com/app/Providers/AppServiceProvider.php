@@ -33,5 +33,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('GoodsAttrModel','App\GoodsAttr');
         //商品属性模型
         $this->app->bind('GoodsAttrValueModel','App\GoodsAttrValue');
+
+
+        $this->app->bind('ManageModel', 'App\Providers\Manage\Models\Manage');
+        $this->app->bind('ManageShopRelationModel', 'App\Providers\Manage\Models\ManageShopRelation');
+        $this->app->bind('ShopModel', 'App\Providers\Manage\Models\Shop');
+        $this->app->bind('UserModel', 'App\Providers\Manage\Models\User');
     }
 }

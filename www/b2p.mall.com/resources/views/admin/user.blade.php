@@ -18,20 +18,11 @@
             <!-- PAGE CONTENT BEGINS -->
             <div class="table-header">
                 用户列表
-                <div class="navbar-buttons navbar-header pull-right">
-                    <a href="{{ url('/admin/user/add') }}" class="btn btn-pink">新增用户</a>
-                </div>
             </div>
             <div class="dataTables_wrapper form-inline no-footer">
                 <table id="simple-table" class="table table-bordered table-hover dataTable">
                     <thead>
                         <tr>
-                            <th class="center">
-                                <label class="pos-rel">
-                                    <input type="checkbox" class="ace" />
-                                    <span class="lbl"></span>
-                                </label>
-                            </th>
                             <th class="center">用户ID</th>
                             <th class="center">用户名</th>
                             <th class="center">积分</th>
@@ -44,71 +35,29 @@
                     </thead>
 
                     <tbody>
+                    @foreach ($list as $value)
                         <tr>
                             <td class="center">
-                                <label class="pos-rel">
-                                    <input type="checkbox" class="ace" />
-                                    <span class="lbl"></span>
-                                </label>
+                                {{$value->id}}
                             </td>
-
-                            <td class="center">
-                                001
-                            </td>
-                            <td class="center">superman</td>
-                            <td class="center">20000</td>
-                            <td class="center">2016-08-24 23:57:03</td>
+                            <td class="center">{{$value->nick_name}}</td>
+                            <td class="center">{{$value->points}}</td>
+                            <td class="center">{{date('Y-m-d H:i:s', $value->reg_time)}}</td>
                             <td class="center">
                                 <div class="hidden-sm hidden-xs btn-group">
-                                    <button class="btn btn-xs btn-success">
-                                        <i class="ace-icon fa fa-check bigger-120"></i>
-                                    </button>
-
-                                    <button class="btn btn-xs btn-info">
-                                        <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                    </button>
-
-                                    <button class="btn btn-xs btn-danger">
-                                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                    </button>
-
-                                    <a class="btn btn-xs btn-warning" title="推送消息">
+                                    <!-- <a class="btn btn-xs btn-warning" title="推送消息">
                                         <i class="ace-icon fa fa-bullhorn bigger-120"></i>
-                                    </a>
+                                    </a> -->
                                 </div>
                             </td>
                         </tr>
+                    @endforeach
                     </tbody>
                 </table>
 
                 <!-- PAGE CONTENT ENDS -->
                 <div class="row">
-                    <div class="col-xs-6">
-                        <div class="dataTables_info" role="status" aria-live="polite">
-                            显示 1 - 10 共 2 条数据
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="dataTables_paginate paging_simple_numbers" id="dynamic-table_paginate">
-                            <ul class="pagination">
-                                <li class="paginate_button previous disabled" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_previous">
-                                    <a href="#">上一页</a>
-                                </li>
-                                <li class="paginate_button active" aria-controls="dynamic-table" tabindex="0">
-                                    <a href="#">1</a>
-                                </li>
-                                <li class="paginate_button " aria-controls="dynamic-table" tabindex="0">
-                                    <a href="#">2</a>
-                                </li>
-                                <li class="paginate_button " aria-controls="dynamic-table" tabindex="0">
-                                    <a href="#">3</a>
-                                </li>
-                                <li class="paginate_button next" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_next">
-                                    <a href="#">下一页</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    {{$list->links()}}
                 </div>
             </div><!-- /.col -->
         </div><!-- /.row -->
