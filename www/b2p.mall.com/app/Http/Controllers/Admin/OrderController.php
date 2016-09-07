@@ -46,22 +46,16 @@ class OrderController extends Controller
                 $value->total_price,
             ];
         }
-        $sales[] = [
-            strtotime('2016-08-09'),
-            123,
-        ];
-        $sales[] = [
-            strtotime('2016-08-10'),
-            232,
-        ];
-        $count[] = [
-            strtotime('2016-08-09'),
-            234
-        ];
-        $count[] = [
-            strtotime('2016-08-10'),
-            434
-        ];
+        for($i = 1; $i < 10; $i++) {
+            $sales[] = [
+                (time() + 3600 * 12 * $i).'000',
+                123 + $i * 10,
+            ];
+            $count[] = [
+                (time() + 3600 * 12 * $i).'000',
+                232 + $i * 10,
+            ];
+        }
 
         return view('admin.order_statistical')->with(compact('sales', 'count'));
     }
