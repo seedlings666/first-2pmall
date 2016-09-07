@@ -67,11 +67,16 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'adminLo
     Route::get('/shop/create', function(){
         return view('admin.shop_create');
     });
-    /**
-    Route::get('/goods/add', function() {
-        return view('admin.add_goods');
+
+    // 店员管理
+    Route::get('/shop_user', function() {
+        return view('admin.shop_user');
     });
-     */
+
+    // 新曾店员
+    Route::get('/shop_user/create', function() {
+        return view('admin.shop_user_create');
+    });
 
     Route::controller('/order', 'OrderController');
     //Route::get('/order', 'OrderController@getOrder');
