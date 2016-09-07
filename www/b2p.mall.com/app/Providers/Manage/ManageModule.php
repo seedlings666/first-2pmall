@@ -23,6 +23,20 @@ class ManageModule
     }
 
     /**
+     * 检测用户是否登录
+     *
+     * @return void
+     * @author chentengfeng @create_at 2016-09-07  12:34:26
+     */
+    public function checkPassword($user_name, $password)
+    {
+        return App::make('ManageModel')->select()
+                    ->where('user_name', $user_name)
+                    ->where('password', $this->toolEncrypt($password))
+                    ->first();
+    }
+
+    /**
      *  列表
      *
      * @return void

@@ -73,9 +73,6 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
     });
      */
 
-    Route::get('/login', function() {
-        return view('admin.login');
-    });
     Route::controller('/order', 'OrderController');
     //Route::get('/order', 'OrderController@getOrder');
     Route::get('/order/info/{id}', 'OrderController@getInfo');
@@ -85,4 +82,12 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin'], function () {
     Route::get('/competence', function () {
         return view('admin.competence');
     });
+
+
+    Route::post('/login', 'ManageController@postLog');
+});
+
+//登录页面
+Route::get('/login', function() {
+    return view('admin.login');
 });

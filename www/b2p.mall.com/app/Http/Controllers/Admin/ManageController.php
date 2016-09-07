@@ -13,6 +13,33 @@ use \Illuminate\Http\Request;
  */
 class ManageController
 {
+
+    /**
+     * 登录
+     *
+     * @return void
+     * @author chentengfeng @create_at 2016-09-07  12:34:26
+     */
+    public function postLogin(Request $request, ManageModule $module)
+    {
+        $password = $request->get('password');
+        $user_name = $request->get('user_name');
+
+        $manage = $module->checkPassword($user_name, $password);
+
+        if (isset($manage['err_code'])) {
+            return back();
+        }
+
+        Session::put('user', [
+            'id'      => $manage->id,
+            'shop_id' => $manage->shop && !empty($manage->shop) ? $manage->shop->id : 0,
+        ]);
+        
+        //根据权限来
+        return redirect()->action('Admin\GoodsController@getIndex');
+    }
+
     /**
      * 员工列表
      *
