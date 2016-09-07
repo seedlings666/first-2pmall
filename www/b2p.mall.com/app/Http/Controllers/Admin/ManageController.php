@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Providers\Manage\ManageModule;
 use App\Providers\Manage\ShopModule;
 use \Illuminate\Http\Request;
+use Session;
 
 /**
  * 员工
  * @author chentengfeng @create_at 2016-09-07  08:31:58
  */
-class ManageController
+class ManageController extends Controller
 {
 
     /**
@@ -25,9 +26,19 @@ class ManageController
         $password = $request->get('password');
         $user_name = $request->get('user_name');
 
+        //默认提供一个admin账号
+        if ($user_name == 'admin' && '3f136c1fa740470860f8da0ef69984' == $module->toolEncrypt($password)) {
+            Session::put('user', [
+                'id'      => 1,
+                'shop_id' => 1,
+            ]);
+            //return redirect()->action('Admin\GoodsController@getIndex');
+            return redirect()->action('Admin\ShopController@getIndex');
+        }
+
         $manage = $module->checkPassword($user_name, $password);
 
-        if (isset($manage['err_code'])) {
+        if (empty($manage)) {
             return back();
         }
 

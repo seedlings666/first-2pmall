@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\Manage\ManageModule;
 use App\Providers\Manage\ShopModule;
 use \Illuminate\Http\Request;
+use Session;
 
 /**
  * 店铺

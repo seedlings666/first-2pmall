@@ -17,9 +17,9 @@ class ManageModule
      * @return void
      * @author chentengfeng @create_at 2016-09-06  21:35:39
      */
-    private function toolEncrypt($password)
+    public function toolEncrypt($password)
     {
-        return substr(md($password), 0, -2);
+        return substr(md5($password), 0, -2);
     }
 
     /**
