@@ -7,6 +7,7 @@ use App\Providers\Manage\ManageModule;
 use App\Providers\Manage\ShopModule;
 use \Illuminate\Http\Request;
 use Session;
+use DB;
 
 /**
  * 员工
@@ -66,7 +67,7 @@ class ManageController extends Controller
 
         $list = $module->index($condition);
 
-        return view('')->with(compact('list'));
+        return view('admin.shop_user')->with(compact('list'));
     }
 
     /**
@@ -78,7 +79,7 @@ class ManageController extends Controller
     public function getStore(ShopModule $module_shop)
     {
         $shop_list = $module_shop->simpleList();
-        return view('')->with(compact('shop_list'));
+        return view('admin.shop_user_create')->with(compact('shop_list'));
     }
 
     /**
@@ -95,16 +96,26 @@ class ManageController extends Controller
             'password'     => $request->get('password'),
             'nick_name'    => $request->get('nick_name'),
             'mobile_phone' => $request->get('mobile_phone'),
-            'role_id'      => $request->get('role_id'),
+            'role_id'      => $request->get('role_id', 0),
             'status'       => $request->get('status')
         ];
 
+        DB::beginTransaction();
         $rs = $module->store($params);
         if (isset($rs['err_code'])) {
+            DB::rollBack();
             return back();
         }
 
-        return redirect()->action('Manage\ManageController@getIndex');
+        $rs = $module->joinShop($rs->id, $request->get('shop_id'));
+        if (isset($rs['err_code'])) {
+            DB::rollBack();
+            return back();
+        }
+
+        DB::commit();
+
+        return redirect()->action('Admin\ManageController@getIndex');
     }
 
     /**
@@ -113,11 +124,12 @@ class ManageController extends Controller
      * @return void
      * @author chentengfeng @create_at 2016-09-07  08:31:58
      */
-    public function getEdit(Request $request, ManageModule $module, $manage_id)
+    public function getEdit(Request $request, ManageModule $module,ShopModule $module_shop, $manage_id)
     {
         $shop_list = $module_shop->simpleList();
-        $show = $module_shop->show($manage_id);
-        return view('')->with(compact('shop_list'));
+        $show = $module->show($manage_id);
+        //dd($show->toArray());
+        return view('admin.shop_user_edit')->with(compact('shop_list', 'show'));
     }
 
     /**
@@ -126,7 +138,7 @@ class ManageController extends Controller
      * @return void
      * @author chentengfeng @create_at 2016-09-07  08:31:58
      */
-    public function postEdit()
+    public function postEdit(Request $request, ManageModule $module, ShopModule $module_shop)
     {
         $params = [
             'id'           => $request->get('id'),
@@ -134,18 +146,28 @@ class ManageController extends Controller
             'user_name'    => $request->get('user_name'),
             'nick_name'    => $request->get('nick_name'),
             'mobile_phone' => $request->get('mobile_phone'),
-            'role_id'      => $request->get('role_id'),
+            'role_id'      => $request->get('role_id', 0),
             'status'       => $request->get('status')
         ];
         if (!empty($request->get('password'))) {
             $params['password'] = $request->get('password');
         }
 
+        DB::beginTransaction();
         $rs = $module->store($params);
         if (isset($rs['err_code'])) {
+            DB::rollBack();
             return back();
         }
 
-        return redirect()->action('Manage\ManageController@getIndex');
+        $rs = $module->joinShop($rs->id, $request->get('shop_id'));
+        if (isset($rs['err_code'])) {
+            DB::rollBack();
+            return back();
+        }
+
+        DB::commit();
+
+        return redirect()->action('Admin\ManageController@getIndex');
     }
 }

@@ -63,15 +63,12 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'adminLo
 
     Route::controller('/shop', 'ShopController');
     Route::controller('/user', 'UserController');
+    Route::controller('/manage', 'ManageController');
 
     Route::get('/shop/create', function(){
         return view('admin.shop_create');
     });
 
-    // 店员管理
-    Route::get('/shop_user', function() {
-        return view('admin.shop_user');
-    });
 
     // 新曾店员
     Route::get('/shop_user/create', function() {
