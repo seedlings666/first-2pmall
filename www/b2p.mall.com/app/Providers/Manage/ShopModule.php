@@ -39,6 +39,17 @@ class ShopModule
     }
 
     /**
+     * 名称+id
+     *
+     * @return void
+     * @author chentengfeng @create_at 2016-09-07  08:31:58
+     */
+    public function simpleList()
+    {
+        return App::make('ShopModel')->select('id', 'name')->get();
+    }
+
+    /**
      * 店铺详情
      *
      * @return void

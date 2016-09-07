@@ -86,7 +86,7 @@ class ManageModule
             'id'           => ['sometimes', 'required','integer','min:1'],
             'work_number'  => ['required'],
             'user_name'    => ['required'],
-            'password'     => ['required'],
+            'password'     => ['sometimes','required'],
             'nick_name'    => ['required'],
             'mobile_phone' => ['required','integer'],
             'role_id'      => ['required','integer','min:1'],
