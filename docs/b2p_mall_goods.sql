@@ -32,23 +32,13 @@ CREATE TABLE `zo_goods` (
   `is_on_sale` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否上架售卖,1=>是,0=>否，默认为1',
   `shop_price` decimal(16,2) NOT NULL DEFAULT '0.00' COMMENT '商品的售卖价格,取值于 sku 表的最低价格',
   `market_price` decimal(16,2) NOT NULL DEFAULT '0.00' COMMENT ' 商品市场价格，取值于 ski 中 shop_price 相对应数据的 market_price',
-  `content` varchar(45) DEFAULT NULL COMMENT '商品的详情',
+  `content` text COMMENT '商品的详情',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '数据创建时间，',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '数据最后修改时间',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '数据删除时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='商品表';
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `zo_goods`
---
-
-LOCK TABLES `zo_goods` WRITE;
-/*!40000 ALTER TABLE `zo_goods` DISABLE KEYS */;
-INSERT INTO `zo_goods` VALUES (1,10,1,'测试商品名称-567552121','商品描述',100,0,120.50,260.60,'contentcontentcontentcontentcontentcontentcon','2016-08-28 05:00:38','2016-08-28 05:00:38',NULL);
-/*!40000 ALTER TABLE `zo_goods` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `zo_goods_attr`
@@ -65,18 +55,8 @@ CREATE TABLE `zo_goods_attr` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '数据最后修改时间',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '数据删除时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='商品属性表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='商品属性表';
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `zo_goods_attr`
---
-
-LOCK TABLES `zo_goods_attr` WRITE;
-/*!40000 ALTER TABLE `zo_goods_attr` DISABLE KEYS */;
-INSERT INTO `zo_goods_attr` VALUES (1,1,'颜色','2016-08-28 05:00:38','2016-08-28 05:00:38',NULL),(2,1,'尺寸','2016-08-28 05:00:38','2016-08-28 05:00:38',NULL);
-/*!40000 ALTER TABLE `zo_goods_attr` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `zo_goods_attr_value`
@@ -94,18 +74,8 @@ CREATE TABLE `zo_goods_attr_value` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '数据最后修改时间',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '数据删除时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='商品属性值表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='商品属性值表';
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `zo_goods_attr_value`
---
-
-LOCK TABLES `zo_goods_attr_value` WRITE;
-/*!40000 ALTER TABLE `zo_goods_attr_value` DISABLE KEYS */;
-INSERT INTO `zo_goods_attr_value` VALUES (1,1,1,'red','2016-08-28 05:00:38','2016-08-28 05:00:38',NULL),(2,1,2,'10寸','2016-08-28 05:00:38','2016-08-28 05:00:38',NULL),(3,1,1,'blue','2016-08-28 05:00:38','2016-08-28 05:00:38',NULL),(4,1,2,'20寸','2016-08-28 05:00:38','2016-08-28 05:00:38',NULL);
-/*!40000 ALTER TABLE `zo_goods_attr_value` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `zo_goods_images`
@@ -131,18 +101,8 @@ CREATE TABLE `zo_goods_images` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '数据最后修改时间',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '数据删除时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `zo_goods_images`
---
-
-LOCK TABLES `zo_goods_images` WRITE;
-/*!40000 ALTER TABLE `zo_goods_images` DISABLE KEYS */;
-INSERT INTO `zo_goods_images` VALUES (1,1,163493,933.00,1270.00,'png','image/png','拼团.png','/usr/local/var/www/waibao/first-2pmall/www/b2p.mall.com/public/file/images/goods/2016/8/','20160828130037.png','','/file/images/goods/2016/8/20160828130037.png','2016-08-28 05:00:37','2016-08-28 05:00:38',NULL),(2,0,163493,933.00,1270.00,'png','image/png','拼团.png','/usr/local/var/www/waibao/first-2pmall/www/b2p.mall.com/public/file/images/goods/2016/8/','20160828133916.png','','/file/images/goods/2016/8/20160828133916.png','2016-08-28 05:39:17','2016-08-28 05:39:17',NULL),(3,0,163493,933.00,1270.00,'png','image/png','拼团.png','/usr/local/var/www/waibao/first-2pmall/www/b2p.mall.com/public/file/images/goods/2016/8/','20160828135113.png','','/file/images/goods/2016/8/20160828135113.png','2016-08-28 05:51:13','2016-08-28 05:51:13',NULL);
-/*!40000 ALTER TABLE `zo_goods_images` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `zo_goods_sku`
@@ -165,18 +125,8 @@ CREATE TABLE `zo_goods_sku` (
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '数据删除时间',
   `is_on_sale` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '是否上架,0=>否,1=>是，默认为1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `zo_goods_sku`
---
-
-LOCK TABLES `zo_goods_sku` WRITE;
-/*!40000 ALTER TABLE `zo_goods_sku` DISABLE KEYS */;
-INSERT INTO `zo_goods_sku` VALUES (1,1,'sku名称',120.10,200.20,10,1,2,'2016-08-28 05:00:38','2016-08-28 05:07:27',NULL,0),(2,1,'sku名称2',120.50,260.60,100,3,4,'2016-08-28 05:00:38','2016-08-28 05:18:42',NULL,1);
-/*!40000 ALTER TABLE `zo_goods_sku` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -187,4 +137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-28 22:19:48
+-- Dump completed on 2016-09-08 22:28:25
