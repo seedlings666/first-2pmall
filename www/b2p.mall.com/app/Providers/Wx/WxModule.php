@@ -3,6 +3,7 @@
 namespace App\Providers\Wx;
 
 use App\Providers\Wx\Helper;
+use Illuminate\Http\RedirectResponse;
 use DB;
 use stdClass;
 
@@ -68,6 +69,12 @@ class WxModule
             return $user_info;
         }
 
+        //找不到该用户需要授权登录
+        if (isset($token['openid']) && empty($userinfo)) {
+            return redirect(Helper::wechatUrl());
+        }
+
+
         $token['access_token'];
         $token['openid'];
         $info_url = "https://api.weixin.qq.com/sns/userinfo?access_token={$token['access_token']}&openid={$token['openid']}&lang=zh_CN";
@@ -117,6 +124,11 @@ class WxModule
         $user_info = $this->toolWxInfo($code);
         if (isset($user_info['err_code'])) {
             Helper::log('user', json_encode($user_info));
+            return $user_info;
+        }
+
+        //重定向
+        if ($user_info instanceof RedirectResponse) {
             return $user_info;
         }
 
