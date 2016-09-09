@@ -42,6 +42,10 @@ Route::group(['prefix' => 'wap', 'namespace' => 'Wap', 'middleware' => 'wxLogin'
         return view('wap.orderList');
     });
 
+    Route::get('/error', function () {
+        return view('wap.error');
+    });
+
 
     //拼团支付
     Route::get('/group/pay', 'BuyController@getPay');
