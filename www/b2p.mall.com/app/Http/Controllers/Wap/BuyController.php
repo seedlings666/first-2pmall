@@ -98,14 +98,14 @@ class BuyController extends Controller
             $wx_user             = (array) \DB::table('zo_user_weixin')->where('openid', $openid)->first();
             $log_data['user_id'] = array_get($wx_user, 'user_id', 0);
             $payModule           = new PayModule();
-            $payModule->log($log_data);
+            $pay_log             = $payModule->log($log_data);
             //刷出缓冲，响应微信
             $response->send();
         } else {
             //如果是页面回调通知，则需要平台自己加密解密操作
             $log_data['user_id'] = \Session::get('user.id', 0);
             $payModule           = new PayModule();
-            $payModule->log($log_data);
+            $pay_log             = $payModule->log($log_data);
         }
 
         //创建订单

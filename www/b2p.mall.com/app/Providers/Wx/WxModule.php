@@ -122,7 +122,8 @@ class WxModule
     public function saveUserInfo($code)
     {
         $user_info = $this->toolWxInfo($code);
-        if (isset($user_info['err_code'])) {
+        //避免返回Redirect对象导致报错
+        if (is_array($user_info) && isset($user_info['err_code'])) {
             Helper::log('user', json_encode($user_info));
             return $user_info;
         }
@@ -204,6 +205,3 @@ class WxModule
     }
      */
 }
-
-
-

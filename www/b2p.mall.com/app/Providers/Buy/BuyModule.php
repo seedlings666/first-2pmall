@@ -38,8 +38,8 @@ class BuyModule
             return ['err_code' => '400704', 'err_msg' => '商品参数错误!'];
         }
         //商品已下架或关闭
-        if ($goods_res['is_on_sale'] !== 1) {
-            // if ($sku_res['is_on_sale'] !== 1 || $goods_res['is_on_sale'] !== 1) {
+        if ($goods_res['is_on_sale'] != 1) {
+            // if ($sku_res['is_on_sale'] != 1 || $goods_res['is_on_sale'] != 1) {
             return ['err_code' => '400701', 'err_msg' => '商品已下架!'];
         }
         //商品库存不足,该判断暂未明确是否需要
@@ -71,7 +71,7 @@ class BuyModule
         }
         $goods_res = (array) DB::table('zo_goods')->whereRaw('`deleted_at` is null')
             ->whereIn('id', $goods_ids)
-            ->get(['id', 'shop_id']);
+            ->get(['id', 'shop_id', 'goods_name']);
         if (!$goods_res) {
             return ['err_code' => '400724', '商品参数错误!'];
         }
@@ -501,22 +501,22 @@ class BuyModule
         $in_order_goods      = [];
         foreach ($goods_res as $val) {
             //防止出现脏数据
-            if (empty($attach_goods[$val['sku_id']]['goods_number'])) {
+            if (empty($attach_goods[$val['id']]['goods_number'])) {
                 return ['err_code' => '400717', 'err_msg' => '订单创建失败!'];
             }
-            $goods_number = $attach_goods[$val['sku_id']]['goods_number'];
-            $sale_price   = $attach_goods[$val['sku_id']]['sale_price'];
-            $buy_price    = $attach_goods[$val['sku_id']]['buy_price'];
+            $goods_number = $attach_goods[$val['id']]['goods_number'];
+            $sale_price   = $attach_goods[$val['id']]['sale_price'];
+            $buy_price    = $attach_goods[$val['id']]['buy_price'];
             $order_goods  = [
                 'order_id'     => 0,
                 'store_id'     => $val['goods']['shop_id'],
                 'goods_id'     => $val['goods_id'],
-                'sku_id'       => $val['sku_id'],
+                'sku_id'       => $val['id'],
                 'goods_number' => $goods_number,
                 'sale_price'   => $sale_price,
                 'buy_price'    => $buy_price,
-                'goods_title'  => $val['sku_name'],
-                'goods_spec'   => '',
+                'goods_title'  => $val['goods']['goods_name'],
+                'goods_spec'   => $val['sku_name'],
                 'goods_img'    => (!empty($val['imgs'][0]['url_links']) ? $val['imgs'][0]['url_links'] : ''),
             ];
             $in_order_goods[]  = $order_goods;
