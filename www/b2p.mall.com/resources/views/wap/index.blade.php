@@ -80,20 +80,20 @@
             </div>
 
             @if(isset($goods_details['is_sku']) && $goods_details['is_sku'] == 1)
-                <div class="goods_sku_box" name="sku_box" data-url="{{url('/wap/goods/attr-value')}}" data-type="color">
+                <div class="goods_sku_box sku_box" data-url="{{url('/wap/goods/attr-value')}}" data-type="color">
                     颜色：
                     @if(!empty($color_attr) && count($color_attr) > 0)
                         @foreach($color_attr as $ak=>$av)
-                            <span data-id="{{ $av->id }}" data-attr-id="{{ $av->attr_id }}">{{ $av->value_name }}</span>
+                            <a href="javascript:void(0);" data-id="{{ $av->id }}" data-attr-id="{{ $av->attr_id }}">{{ $av->value_name }}</a>
                         @endforeach
                     @endif
                 </div>
 
-                <div class="goods_sku_box" name="sku_box" data-url="{{url('/wap/goods/attr-value')}}" data-type="size">
+                <div class="goods_sku_box sku_box" data-url="{{url('/wap/goods/attr-value')}}" data-type="size">
                     规格：
                     @if(!empty($size_attr) && count($size_attr) > 0)
                         @foreach($size_attr as $sk=>$sv)
-                            <span data-id="{{ $sv->id }}" data-attr-id="{{ $sv->attr_id }}">{{ $sv->value_name }}</span>
+                            <a href="javascript:void(0);" data-id="{{ $sv->id }}" data-attr-id="{{ $sv->attr_id }}">{{ $sv->value_name }}</a>
                         @endforeach
                     @endif
                 </div>
