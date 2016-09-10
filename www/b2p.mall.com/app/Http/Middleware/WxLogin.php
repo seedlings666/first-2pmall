@@ -7,6 +7,7 @@ use App;
 use Session;
 use App\Providers\Wx\WxModule;
 use App\Providers\Wx\Helper;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * 登录过滤
@@ -25,7 +26,10 @@ class WxLogin
     {
         if ($request->has('code')) {
             $module = App::make(App\Providers\Wx\WxModule::class);
-            $module->saveUserInfo($request->get('code'));
+            $rs = $module->saveUserInfo($request->get('code'));
+            if ($rs instanceof RedirectResponse) {
+                return $rs;
+            }
             return $next($request);
         }
 
