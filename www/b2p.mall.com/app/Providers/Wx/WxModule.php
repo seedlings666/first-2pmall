@@ -73,9 +73,7 @@ class WxModule
         if (stripos($token['scope'], 'snsapi_userinfo') === false) {
             return redirect(Helper::wechatUrl());
         }
-
-        $token['access_token'];
-        $token['openid'];
+        
         $info_url = "https://api.weixin.qq.com/sns/userinfo?access_token={$token['access_token']}&openid={$token['openid']}&lang=zh_CN";
         $user_info = json_decode(Helper::curlGet($info_url), true);
         if (isset($user_info['errcode'])) {
