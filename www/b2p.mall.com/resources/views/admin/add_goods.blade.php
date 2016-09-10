@@ -383,8 +383,14 @@ $(function(){
                 data: a
             })
             .done(function(json){
+                console.log(json);
+                if(typeof json.err_code != 'undefined'){
+                        alert(json.msg);
+                        return false;
+                }
                 alert('新建商品成功！')
                 window.location.href = "{{ url('/admin/goods') }}";
+                return true;
             })
             .fail(function(re){
                 alert(re.msg);
