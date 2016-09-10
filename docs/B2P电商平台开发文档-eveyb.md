@@ -72,11 +72,14 @@ $res = Order::joinGroup($input_date);
 
 ** zo_orders **
 ```sql
-Create Table: CREATE TABLE `zo_orders` (
+DROP TABLE IF EXISTS `zo_orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zo_orders` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `group_rp` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '拼团顺序：1拼团第一单,2为拼团第二单',
   `order_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '订单状态:0初始,1创建订单成功,2拼团成功',
-  `pay_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '支付状态:0初始,1支付中,2支付成功',
+  `pay_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '支付状态:0初始,1支付中,2支付成功,3返还现金',
   `group_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '拼团id,使用拼团第一单的order_id',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
   `order_sn` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '订单编号',
@@ -98,32 +101,91 @@ Create Table: CREATE TABLE `zo_orders` (
   KEY `zo_orders_order_sn_index` (`order_sn`),
   KEY `zo_orders_pay_sn_index` (`pay_sn`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 ```
 
 ** zo_pay_sn **
 ```sql
-Create Table: CREATE TABLE `zo_pay_sn` (
+DROP TABLE IF EXISTS `zo_pay_sn`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zo_pay_sn` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `group_rp` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '拼团顺序：1拼团第一单,2为拼团第二单',
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '订单编号状态:0初始,1该编号已被订单使用',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
   `group_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '拼团id,使用拼团第一单的order_id',
   `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单id',
   `pay_sn` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '支付编号,用于订单支付时所用编号',
   `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `attach` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '支付编号,附属数据',
   PRIMARY KEY (`id`),
   UNIQUE KEY `zo_pay_sn_pay_sn_unique` (`pay_sn`),
   KEY `zo_pay_sn_group_rp_index` (`group_rp`),
   KEY `zo_pay_sn_status_index` (`status`),
+  KEY `zo_pay_sn_user_id_index` (`user_id`),
   KEY `zo_pay_sn_group_id_index` (`group_id`),
   KEY `zo_pay_sn_order_id_index` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+```
+
+** zo_pay_sn_tmp **
+```sql
+DROP TABLE IF EXISTS `zo_pay_sn_tmp`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zo_pay_sn_tmp` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `pay_sn_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '支付编号',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `attach` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '临时支付编号,附属数据，用于多用于对一个支付编号所用',
+  PRIMARY KEY (`id`),
+  KEY `zo_pay_sn_tmp_pay_sn_id_index` (`pay_sn_id`),
+  KEY `zo_pay_sn_tmp_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+```
+
+** zo_pay_log **
+```sql
+DROP TABLE IF EXISTS `zo_pay_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zo_pay_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '类型:0初始,1支付,2退款',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '支付:0初始,1支付成功,2退款成功',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
+  `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单id',
+  `pay_sn` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '支付编号,用于订单支付和退款时所用编号',
+  `pay_code` char(16) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '支付方式代码',
+  `data` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '记录数据',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `zo_pay_log_type_index` (`type`),
+  KEY `zo_pay_log_status_index` (`status`),
+  KEY `zo_pay_log_user_id_index` (`user_id`),
+  KEY `zo_pay_log_order_id_index` (`order_id`),
+  KEY `zo_pay_log_pay_sn_index` (`pay_sn`),
+  KEY `zo_pay_log_pay_code_index` (`pay_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 ```
 
 ** zo_order_goods **
 ```sql
-Create Table: CREATE TABLE `zo_order_goods` (
+DROP TABLE IF EXISTS `zo_order_goods`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zo_order_goods` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单id',
   `store_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺id',
@@ -142,7 +204,8 @@ Create Table: CREATE TABLE `zo_order_goods` (
   KEY `zo_order_goods_order_id_index` (`order_id`),
   KEY `zo_order_goods_goods_id_index` (`goods_id`),
   KEY `zo_order_goods_sku_id_index` (`sku_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 ```
 
 
