@@ -33,11 +33,13 @@
                     <div class="order_time">{{ $order['created_at'] }}</div>
                     <div class="goods_info">
                         <div class="goods_img">
+                            <a href="{{ $order['goods_url'] }}">
                             <img src="{{asset('images/goods_img.jpg')}}" alt="商品名称">
+                            </a>
                         </div>
 
                         <div class="goods_name">
-                            <p>{{ $order['orderGoods'][0]['goods_title'] }}</p>
+                            <p>{{ $order['orderGoods'][0]['goods_title'] }} {{ $order['orderGoods'][0]['goods_spec'] }}</p>
                             <p>数量：{{ $order['orderGoods'][0]['goods_number'] }}</p>
                             <p>&nbsp;<!-- 库存：1000件 --></p>
                         </div>

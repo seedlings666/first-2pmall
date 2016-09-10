@@ -15,7 +15,7 @@ use Illuminate\Http\RedirectResponse;
  */
 class WxLogin
 {
-	/**
+    /**
      * 返回请求过滤器
      *
      * @param \Illuminate\Http\Request $request

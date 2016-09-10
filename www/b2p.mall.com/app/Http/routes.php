@@ -11,12 +11,19 @@
 |
  */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+$wap_route = ['prefix' => '/', 'namespace' => 'Wap', 'middleware' => 'wxLogin'];
+if (App::environment('local')) {
+    \Session::put('user', [
+        'id'        => env('LOCAL_USER_ID'),
+        'openid'    => env('LOCAL_OPEN_ID'),
+        'avatar'    => env('LOCAL_AVATAR'),
+        'nick_name' => env('LOCAL_NICK_NAME'),
+    ]);
+    $wap_route['middleware'] = [];
+}
 
 // 移动端
-Route::group(['prefix' => 'wap', 'namespace' => 'Wap', 'middleware' => 'wxLogin'], function () {
+Route::group($wap_route, function () {
     Route::get('/', function () {
         return view('wap.index');
     });
@@ -25,39 +32,42 @@ Route::group(['prefix' => 'wap', 'namespace' => 'Wap', 'middleware' => 'wxLogin'
     Route::controller('/goods', 'GoodsController');
 
     //微信
-    Route::controller('/wx','WxController');
+    Route::controller('/wx', 'WxController');
 
     //用户
-    Route::controller('/user','UserController');
+    Route::controller('/user', 'UserController');
 
-    Route::get('/user', function () {
-        return view('wap.userInfo');
+    // Route::get('/user', function () {
+    //     return view('wap.userInfo');
+    // });
+
+    // Route::get('/order', function () {
+    //     return view('wap.order');
+    // });
+
+    // Route::get('/order/list', function () {
+    //     return view('wap.orderList');
+    // });
+
+    Route::get('/error', function () {
+        return view('wap.error');
     });
-
-    Route::get('/order', function () {
-        return view('wap.order');
-    });
-
-    Route::get('/order/list', function () {
-        return view('wap.orderList');
-    });
-
 
     //拼团支付
     Route::get('/group/pay', 'BuyController@getPay');
-    //创建拼团订单
-    Route::any('/group/order/{type}/{pay_sn}', 'BuyController@createOrder');
     //所有拼团订单，包含当前用自己的订单
     Route::any('/group/orders/{type?}', 'BuyController@groupOrders');
 });
+//创建拼团订单,单独出来避免微信回调获取不到
+Route::any('/group/order/{type}/{pay_sn}', 'Wap\BuyController@createOrder');
 
 // 管理后台
-Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'adminLogin'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'adminLogin'], function () {
 
     //后台商品模块
-    Route::controller('/goods','GoodsController');
+    Route::controller('/goods', 'GoodsController');
 
-    Route::get('/', function() {
+    Route::get('/', function () {
         return view('admin.index');
     });
 
@@ -65,31 +75,28 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'adminLo
     Route::controller('/user', 'UserController');
     Route::controller('/manage', 'ManageController');
 
-    Route::get('/shop/create', function(){
+    Route::get('/shop/create', function () {
         return view('admin.shop_create');
     });
 
-
     // 新曾店员
-    Route::get('/shop_user/create', function() {
+    Route::get('/shop_user/create', function () {
         return view('admin.shop_user_create');
     });
 
     Route::controller('/order', 'OrderController');
     //Route::get('/order', 'OrderController@getOrder');
     Route::get('/order/info/{id}', 'OrderController@getInfo');
-    Route::get('/order_statistical', function() {
+    Route::get('/order_statistical', function () {
         return view('admin.order_statistical');
     });
     Route::get('/competence', function () {
         return view('admin.competence');
     });
-
-
 });
 
 //登录页面
-Route::get('admin/login', ['as' => 'login', function() {
+Route::get('admin/login', ['as' => 'login', function () {
     return view('admin.login');
 }]);
 Route::post('admin/login', 'Admin\ManageController@postLogin')->name('admin-login');

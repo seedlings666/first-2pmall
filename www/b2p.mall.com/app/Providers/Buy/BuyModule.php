@@ -38,8 +38,8 @@ class BuyModule
             return ['err_code' => '400704', 'err_msg' => '商品参数错误!'];
         }
         //商品已下架或关闭
-        if ($goods_res['is_on_sale'] !== 1) {
-            // if ($sku_res['is_on_sale'] !== 1 || $goods_res['is_on_sale'] !== 1) {
+        if ($goods_res['is_on_sale'] != 1) {
+            // if ($sku_res['is_on_sale'] != 1 || $goods_res['is_on_sale'] != 1) {
             return ['err_code' => '400701', 'err_msg' => '商品已下架!'];
         }
         //商品库存不足,该判断暂未明确是否需要
@@ -71,7 +71,7 @@ class BuyModule
         }
         $goods_res = (array) DB::table('zo_goods')->whereRaw('`deleted_at` is null')
             ->whereIn('id', $goods_ids)
-            ->get(['id', 'shop_id']);
+            ->get(['id', 'shop_id', 'goods_name']);
         if (!$goods_res) {
             return ['err_code' => '400724', '商品参数错误!'];
         }
@@ -389,7 +389,17 @@ class BuyModule
             'user_id'    => $user_id,
             'goods_list' => $goods_list,
         ];
-        return $this->joinGroupPaySN($pay_sn_data);
+        $res = $this->joinGroupPaySN($pay_sn_data);
+        if (isset($res['err_code'])) {
+            return $res;
+        }
+        $total_fee = 0.00;
+        foreach ($goods_list as $goods) {
+            $buy_price = $group_rp == 1 ? $goods['sale_price'] : $goods['buy_price'];
+            $total_fee = $total_fee + ($buy_price * $goods['goods_number']);
+        }
+        $res['total_fee'] = $total_fee;
+        return $res;
     }
 
     /**
@@ -501,22 +511,22 @@ class BuyModule
         $in_order_goods      = [];
         foreach ($goods_res as $val) {
             //防止出现脏数据
-            if (empty($attach_goods[$val['sku_id']]['goods_number'])) {
+            if (empty($attach_goods[$val['id']]['goods_number'])) {
                 return ['err_code' => '400717', 'err_msg' => '订单创建失败!'];
             }
-            $goods_number = $attach_goods[$val['sku_id']]['goods_number'];
-            $sale_price   = $attach_goods[$val['sku_id']]['sale_price'];
-            $buy_price    = $attach_goods[$val['sku_id']]['buy_price'];
+            $goods_number = $attach_goods[$val['id']]['goods_number'];
+            $sale_price   = $attach_goods[$val['id']]['sale_price'];
+            $buy_price    = $attach_goods[$val['id']]['buy_price'];
             $order_goods  = [
                 'order_id'     => 0,
                 'store_id'     => $val['goods']['shop_id'],
                 'goods_id'     => $val['goods_id'],
-                'sku_id'       => $val['sku_id'],
+                'sku_id'       => $val['id'],
                 'goods_number' => $goods_number,
                 'sale_price'   => $sale_price,
                 'buy_price'    => $buy_price,
-                'goods_title'  => $val['sku_name'],
-                'goods_spec'   => '',
+                'goods_title'  => $val['goods']['goods_name'],
+                'goods_spec'   => $val['sku_name'],
                 'goods_img'    => (!empty($val['imgs'][0]['url_links']) ? $val['imgs'][0]['url_links'] : ''),
             ];
             $in_order_goods[]  = $order_goods;
@@ -645,7 +655,7 @@ class BuyModule
     {
         $user_id            = $input_data['user_id'];
         $order_fields       = ['id', 'user_id', 'group_id', 'group_rp', 'order_amount', 'order_status', 'pay_status', 'created_at'];
-        $order_goods_fields = ['id', 'goods_id', 'order_id', 'goods_title', 'sale_price', 'buy_price', 'goods_number', 'goods_img'];
+        $order_goods_fields = ['id', 'goods_id', 'order_id', 'goods_title', 'goods_spec', 'sale_price', 'buy_price', 'goods_number', 'goods_img'];
         $order_res          = DB::table('zo_orders')->whereRaw('`deleted_at` is null');
         if (!empty($input_data['by_user'])) {
             $order_res = $order_res->where('user_id', $input_data['by_user']);
@@ -703,14 +713,17 @@ class BuyModule
             if ($is_group_rp1 && $is_order_status2 && $val['pay_status'] != 3) {
                 $val['wait_cashback'] = 1;
             }
+
+            $params = [
+                'id' => $val['orderGoods'][0]['goods_id'],
+            ];
             //加入拼团链接地址,使用商品详情加上group_id
             if ($is_group_rp1 && $is_order_status1 && !$is_expired && $user_id != $val['user_id']) {
                 // if (true) {
-                $params = [
-                    'id' => $val['orderGoods'][0]['goods_id'],
-                ];
                 $val['join_group'] = action('Wap\GoodsController@getShow', $params) . '?group_id=' . $val['group_id'];
             }
+            $val['goods_url'] = action('Wap\GoodsController@getShow', $params)
+                . ($is_group_rp1 ? '?group_id=' . $val['group_id'] : '');
         }
 
         return ['order_list' => $order_list, 'next_page' => $next_page];
