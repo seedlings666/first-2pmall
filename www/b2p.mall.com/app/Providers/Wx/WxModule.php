@@ -69,12 +69,11 @@ class WxModule
             return $user_info;
         }
 
-        //找不到该用户需要授权登录,查看作用域
-        if (strpos($token['scope'], 'snsapi_userinfo') === false){
+        //找不到该用户需要授权登录
+        if (stripos($token['scope'], 'snsapi_userinfo') === false) {
             return redirect(Helper::wechatUrl());
         }
-
-
+        
         $info_url = "https://api.weixin.qq.com/sns/userinfo?access_token={$token['access_token']}&openid={$token['openid']}&lang=zh_CN";
         $user_info = json_decode(Helper::curlGet($info_url), true);
         if (isset($user_info['errcode'])) {

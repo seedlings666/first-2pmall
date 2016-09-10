@@ -21,7 +21,7 @@ class CreatePayLogTable extends Migration
             $table->tinyInteger('status')
                 ->unsigned()
                 ->default(0)
-                ->comment('支付:0初始,1支付成功,2退款成功');
+                ->comment('支付:0初始,1支付成功,2退款成功,4支付失败');
             $table->integer('user_id')->unsigned()->default(0)->comment('用户id');
             $table->integer('order_id')->unsigned()->default(0)->comment('订单id');
             $table->bigInteger('pay_sn')
