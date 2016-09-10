@@ -70,10 +70,9 @@ class WxModule
         }
 
         //找不到该用户需要授权登录
-        if (isset($token['openid']) && empty($userinfo)) {
+        if (stripos($token['scope'], 'snsapi_userinfo') === false) {
             return redirect(Helper::wechatUrl());
         }
-
 
         $token['access_token'];
         $token['openid'];

@@ -76,25 +76,39 @@ class BuyController extends Controller
         $log_data = [
             //1为支付，2为退款
             'type'   => 1,
-            //1为支付成功，2为退款成功
+            //1为支付成功，2为退款成功，4为支付失败
             'status' => 1,
             'pay_sn' => $pay_sn,
             'data'   => \Request::getContent(),
         ];
 
         if ($type == 'notify') {
-            $wechat   = app('wechat');
-            $openid   = '';
-            $response = $wechat->payment->handleNotify(function ($notify, $successful) use (&$openid) {
+            $wechat      = app('wechat');
+            $openid      = '';
+            $pay_success = false;
+            $response    = $wechat->payment->handleNotify(function ($notify, $successful) use (&$openid, &$pay_success) {
                 $openid = $notify->openid;
+                // 验证用户是否支付成功
+                if ($successful) {
+                    $pay_success = true;
+                }
                 return true;
             });
             $wx_user             = (array) \DB::table('zo_user_weixin')->where('openid', $openid)->first();
             $log_data['user_id'] = array_get($wx_user, 'user_id', 0);
-            $payModule           = new PayModule();
-            $pay_log             = $payModule->log($log_data);
+
+            if ($pay_success !== true) {
+                $log_data['status'] = 4;
+            }
+            $payModule = new PayModule();
+            $pay_log   = $payModule->log($log_data);
             //刷出缓冲，响应微信
             $response->send();
+
+            //支付失败后续流程不再进行
+            if ($pay_success === false) {
+                return 'paid fail';
+            }
         } else {
             //如果是页面回调通知，则需要平台自己加密解密操作
             $log_data['user_id'] = \Session::get('user.id', 0);
