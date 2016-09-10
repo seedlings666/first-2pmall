@@ -4,18 +4,17 @@
  * @date    2016-08-19 01:07:00
  * @version 1.0
  */
-'use strict';
-(function($, undefined){
+$(function(){
     // sku选择
     var tmpArr = [];
-    $('body').on('click', '[name=sku_box] span', function(){
+    $('body').on('click', '.sku_box a', function(){
         var id = $(this).data('id');
         var attrUrl = $(this).parents('#goods_main_box').data('atr-url');
         var sureUrl = $(this).parents('#goods_main_box').data('url');
         var type = $(this).parent().data('type');
         var sureSkuStatus = false;
 
-        $(this).addClass('cur').siblings('span').removeClass('cur');
+        $(this).addClass('cur').siblings('a').removeClass('cur');
 
         if($.inArray( type, tmpArr) == -1){
             tmpArr.push(type);
@@ -27,8 +26,8 @@
         if(sureSkuStatus && tmpArr.length > 1){
             var data = {
                 goods_id: goodsData.goods_id,
-                color_attr_val_id: $('[data-type=color] span.cur').data('id'),
-                size_attr_val_id: $('[data-type=size] span.cur').data('id')
+                color_attr_val_id: $('[data-type=color] a.cur').data('id'),
+                size_attr_val_id: $('[data-type=size] a.cur').data('id')
             };
             $.ajax({
                 url: sureUrl,
@@ -84,7 +83,7 @@
                     var h = '';
 
                     $.each(re, function() {
-                        h += '<span data-id="'+ this.id +'" data-attr-id="'+ this.attr_id +'">'+ this.value_name +'</span>';
+                        h += '<a data-id="'+ this.id +'" data-attr-id="'+ this.attr_id +'">'+ this.value_name +'</a>';
                     });
 
                     if(type == 'size'){
@@ -104,5 +103,5 @@
             });
         }
     });
-})(jQuery);
+});
 //# sourceMappingURL=detail.js.map
