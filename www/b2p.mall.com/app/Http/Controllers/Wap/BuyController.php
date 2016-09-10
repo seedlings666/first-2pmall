@@ -128,9 +128,10 @@ class BuyController extends Controller
         $pay_log->save();
 
         //进行拼团第一单退款操作，增加用户的退款日志
-        /**
-         * @todo
-         */
+        if ($res['group_rp'] != 1) {
+            $payModule = new PayModule();
+            $payModule->refundByOrderId($res['group_id']);
+        }
 
         return $pay_sn;
     }
