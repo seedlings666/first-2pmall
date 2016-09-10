@@ -11,8 +11,19 @@
 |
  */
 
+$wap_route = ['prefix' => '/', 'namespace' => 'Wap', 'middleware' => 'wxLogin'];
+if (App::environment('local')) {
+    \Session::put('user', [
+        'id'        => env('LOCAL_USER_ID'),
+        'openid'    => env('LOCAL_OPEN_ID'),
+        'avatar'    => env('LOCAL_AVATAR'),
+        'nick_name' => env('LOCAL_NICK_NAME'),
+    ]);
+    $wap_route['middleware'] = [];
+}
+
 // 移动端
-Route::group(['prefix' => '/', 'namespace' => 'Wap', 'middleware' => 'wxLogin'], function () {
+Route::group($wap_route, function () {
     Route::get('/', function () {
         return view('wap.index');
     });
@@ -47,7 +58,7 @@ Route::group(['prefix' => '/', 'namespace' => 'Wap', 'middleware' => 'wxLogin'],
     //所有拼团订单，包含当前用自己的订单
     Route::any('/group/orders/{type?}', 'BuyController@groupOrders');
 });
-//创建拼团订单
+//创建拼团订单,单独出来避免微信回调获取不到
 Route::any('/group/order/{type}/{pay_sn}', 'Wap\BuyController@createOrder');
 
 // 管理后台

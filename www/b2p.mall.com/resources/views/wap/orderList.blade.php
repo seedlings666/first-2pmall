@@ -33,7 +33,9 @@
                     <div class="order_time">{{ $order['created_at'] }}</div>
                     <div class="goods_info">
                         <div class="goods_img">
+                            <a href="{{ $order['goods_url'] }}">
                             <img src="{{asset('images/goods_img.jpg')}}" alt="商品名称">
+                            </a>
                         </div>
 
                         <div class="goods_name">

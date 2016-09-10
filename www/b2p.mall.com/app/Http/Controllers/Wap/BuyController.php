@@ -17,7 +17,7 @@ class BuyController extends Controller
      */
     public function getPay()
     {
-        // http://b2p.mall.dev:8080/wap/group/pay?goods_id=1&sku_id=2&goods_number=3
+        // http://b2p.mall.dev:8080/group/pay?goods_id=23&sku_id=12
 
         $goods_id = \Request::get('goods_id', 0);
         $user_id  = \Session::get('user.id');
@@ -35,18 +35,12 @@ class BuyController extends Controller
         if (isset($res['err_code'])) {
             return $res;
         }
-        $pay_sn    = $res['pay_sn']['pay_sn'];
-        $total_fee = 0.00;
-        $attach    = json_decode($res['pay_sn']['attach'], 1);
-        foreach ($attach['goods'] as $goods) {
-            $total_fee = $total_fee + ($goods['buy_price'] * $goods['goods_number']);
-        }
-
+        $pay_sn = $res['pay_sn']['pay_sn'];
         //创建微信支付
         $pay_data = [
             'openid'       => \Session::get('user.openid'),
             'out_trade_no' => $pay_sn,
-            'total_fee'    => $total_fee * 100,
+            'total_fee'    => $res['total_fee'] * 100,
             'notify_url'   => action('Wap\BuyController@createOrder', ['notify', $pay_sn]),
         ];
         $payModule   = new PayModule();
