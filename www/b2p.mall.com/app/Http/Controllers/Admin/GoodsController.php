@@ -26,7 +26,7 @@ class GoodsController extends Controller
         $is_system = Session::get('is_system');
         
         //商品 id
-        $shop_id = Session::get('user.shop_id',0);
+        $shop_id = Session::get('admin_user.shop_id',0);
         
         if($is_system != 1){
             $condition['shop_id'] = $shop_id;
@@ -110,7 +110,7 @@ class GoodsController extends Controller
 
         $data = json_encode($data);
         $goods_content = (array)json_decode($data,true);
-        $goods_content['shop_id'] = Session::get('user.shop_id');
+        $goods_content['shop_id'] = Session::get('admin_user.shop_id');
 //        $goods_content['shop_id'] = 10;
 //
 //        echo json_encode($goods_content);
@@ -141,7 +141,7 @@ class GoodsController extends Controller
     {
         $shop_id = Input::get('shop_id',0);
         $is_system = Input::get('is_system',0);
-        Session::set('user.shop_id',$shop_id);
+        Session::set('admin_user.shop_id',$shop_id);
         Session::set('is_system',$is_system);
         
         return Response::json([
@@ -157,7 +157,7 @@ class GoodsController extends Controller
     public function anyDelete()
     {
         //店铺 id
-        $shop_id = Session::get('user.shop_id',0);
+        $shop_id = Session::get('admin_user.shop_id',0);
         
         //是否系统管理员
         $is_system = Session::get('is_system',0);
@@ -178,7 +178,7 @@ class GoodsController extends Controller
     {
         //$goods_id = Input::get('goods_id',0);
         
-        $shop_id = Session::get('user.shop_id',0);
+        $shop_id = Session::get('admin_user.shop_id',0);
         
         $is_system = Session::get('is_system',0);
         
@@ -259,7 +259,7 @@ class GoodsController extends Controller
     
         $data = json_encode($data);
         $goods_content = (array)json_decode($data,true);
-        $goods_content['shop_id'] = Session::get('user.shop_id');
+        $goods_content['shop_id'] = Session::get('admin_user.shop_id');
 //        $goods_content['shop_id'] = 10;
 //
 //        echo json_encode($goods_content);
@@ -286,7 +286,7 @@ class GoodsController extends Controller
      */
     public function getEdit($goods_id)
     {
-        $shop_id = Session::get('user.shop_id',0);
+        $shop_id = Session::get('admin_user.shop_id',0);
         
         $is_system = Session::get('is_system',0);
         
