@@ -32,7 +32,7 @@ class OrderController extends Controller
         $select = DB::raw("count(*) as order_count, sum(order_amount) as total_price, DATE_FORMAT(created_at, '%Y%m%d') as date");
         $list = Order::select($select)->where('created_at', '>', $start_time)
                     ->where('pay_status', 2)
-                    //->where('shop_id', Session::get('shop_id', 0))
+                    //->where('shop_id', Session::get('admin_user.shop_id', 0))
                     ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y%m%d")'))
                     ->orderBy('id')
                     ->get();

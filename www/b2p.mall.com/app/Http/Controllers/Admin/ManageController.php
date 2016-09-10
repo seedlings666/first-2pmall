@@ -29,7 +29,7 @@ class ManageController extends Controller
 
         //默认提供一个admin账号
         if ($user_name == 'admin' && '3f136c1fa740470860f8da0ef69984' == $module->toolEncrypt($password)) {
-            Session::put('user', [
+            Session::put('admin_user', [
                 'id'      => 1,
                 'shop_id' => 1,
             ]);
@@ -43,7 +43,7 @@ class ManageController extends Controller
             return back();
         }
 
-        Session::put('user', [
+        Session::put('admin_user', [
             'id'      => $manage->id,
             'shop_id' => $manage->shop && !empty($manage->shop) ? $manage->shop->id : 0,
         ]);
