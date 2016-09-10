@@ -576,6 +576,7 @@ class BuyModule
             $group_id      = $pay_sn_res['group_id'];
             $up_order_data = [
                 //如果是拼团第二单，则需要更新订单状态为2，表示拼团已完成
+                'group_id'     => $group_id,
                 'order_status' => 2,
                 'order_sn'     => self::genrateOrderSN($order_id),
             ];
