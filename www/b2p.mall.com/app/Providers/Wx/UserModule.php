@@ -46,4 +46,23 @@ class UserModule
 
         return $user_info;
     }
+
+    /**
+     * 积分修改
+     * @param $point 可正负
+     *
+     * @return int
+     * @author chentengfeng @create_at 2016-09-11  15:12:11
+     */
+    public function pointsChange($user_id, $points)
+    {
+        if (empty($user_id) || !is_numeric($user_id) || $user_id < 1 || !is_numeric($points)) {
+            return 0;
+        }
+
+        return DB::update(
+            "update {$this->tables['user']} set points=points+{$points} where id = ?",
+            [$user_id]
+        );
+    }
 }
