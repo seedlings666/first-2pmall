@@ -12,7 +12,7 @@ use DB;
 class BuyModule
 {
 
-    public $plan = 'B';
+    public $plan = 'A';
 
     /**
      * 检查商品是否可以购买
