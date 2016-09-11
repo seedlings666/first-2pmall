@@ -209,7 +209,7 @@
             <ul>
                 <li>
                 @if (isset($default_sku_info) && isset($default_sku_info->id))
-                    <a href="{{action('Wap\BuyController@getPay')}}/?goods_id={{ $goods_details['id'] }}&sku_id={{ $default_sku_info->id }}" name="buy_but">
+                    <a href="{{action('Wap\BuyController@getPay')}}/?goods_id={{ $goods_details['id'] }}&sku_id={{ $default_sku_info->id }}">
                         提交订单
                     </a>
                 @else
