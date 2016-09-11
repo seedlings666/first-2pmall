@@ -34,17 +34,17 @@
 			// });
 			// //分享给朋友
              wx.onMenuShareAppMessage({
-                 title: {{$goods_details -> goods_name}}, // 分享标题
-                 desc: {{$goods_details -> goods_name}}, // 分享描述
-                 link: {{url($request->getRequestUri())}}, // 分享链接
-                 imgUrl: {{ $sv['url_links'] }}, // 分享图标
+                 title: '{{ $goods_details->goods_name }}', // 分享标题
+                 desc: '{{ $goods_details->goods_name }}', // 分享描述
+                 link: '{{ url($request->getRequestUri()) }}', // 分享链接
+                 imgUrl: '{{ !empty($goods_images[0]) ? $goods_images[0]['url_links'] : '' }}', // 分享图标
                  success: function () {
                      // 用户确认分享后执行的回调函数
                  },
                  cancel: function () {
                      // 用户取消分享后执行的回调函数
                  }
-			// });
+			});
 		</script>
     </head>
 
@@ -209,7 +209,7 @@
             <ul>
                 <li>
                 @if (isset($default_sku_info) && isset($default_sku_info->id))
-                    <a href="{{action('Wap\BuyController@getPay')}}/?goods_id={{ $goods_details['id'] }}&sku_id={{ $default_sku_info->id }}" name="buy_but">
+                    <a href="{{action('Wap\BuyController@getPay')}}/?goods_id={{ $goods_details['id'] }}&sku_id={{ $default_sku_info->id }}{!! $request->get('group_id') ? '&group_id='.$request->get('group_id') : '' !!}">
                         提交订单
                     </a>
                 @else
@@ -232,6 +232,9 @@
                 //当为单品时,那么 sku_id 为 默认 skuid,否则为0
                 sku_id : '{{ isset($default_sku_info) && isset($default_sku_info->id) ? $default_sku_info->id : 0 }}',
                 goods_id : {{ $goods_details['id'] }},
+            @if($request->get('group_id'))
+                group_id : {{ $request->get('group_id') }},
+            @endif
                 buy_link: '{{action('Wap\BuyController@getPay')}}/'
             };
 

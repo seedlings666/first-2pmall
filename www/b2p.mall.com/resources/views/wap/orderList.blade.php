@@ -19,7 +19,8 @@
     </head>
 
     <body>
-        <div class="main_warp order_tab_box">
+
+        <div class="main_warp order_tab_box" data-next-page="{{$response_data['next_page']}}">
             <ul id="order_tab">
                 <li class="on">我的订单</li>
                 <li>全部订单</li>
@@ -27,56 +28,60 @@
         </div>
 
         <div class="main_warp order_content_box">
-            <ul id="order_content">
-            @foreach($response_data['order_list'] as $order)
-                <li>
-                    <div class="order_time">{{ $order['created_at'] }}</div>
-                    <div class="goods_info">
-                        <div class="goods_img">
-                            <a href="{{ $order['goods_url'] }}">
-                            <img src="{{asset('images/goods_img.jpg')}}" alt="商品名称">
-                            </a>
-                        </div>
+            @if(!$response_data['order_list'])
+                <p class="no_order">暂无订单！</p>
+            @else
+                <ul id="order_content">
+                    @foreach($response_data['order_list'] as $order)
+                        <li>
+                            <div class="order_time">{{ $order['created_at'] }}</div>
+                            <div class="goods_info">
+                                <div class="goods_img">
+                                    <a href="{{ $order['goods_url'] }}">
+                                        <img src="{{asset('images/goods_img.jpg')}}" alt="商品名称">
+                                    </a>
+                                </div>
 
-                        <div class="goods_name">
-                            <p>{{ $order['orderGoods'][0]['goods_title'] }} {{ $order['orderGoods'][0]['goods_spec'] }}</p>
-                            <p>数量：{{ $order['orderGoods'][0]['goods_number'] }}</p>
-                            <p>&nbsp;<!-- 库存：1000件 --></p>
-                        </div>
+                                <div class="goods_name">
+                                    <p>{{ $order['orderGoods'][0]['goods_title'] }} {{ $order['orderGoods'][0]['goods_spec'] }}</p>
+                                    <p>数量：{{ $order['orderGoods'][0]['goods_number'] }}</p>
+                                    <p>&nbsp;<!-- 库存：1000件 --></p>
+                                </div>
 
-                        <div class="goods_price">
-                            <span>&yen;<big id="goods_price">{{ $order['orderGoods'][0]['buy_price'] }}</big>/件</span>
-                        </div>
-                    </div>
-                    <div class="goods_sum">
-                        共1件商品
-                        <span>实付：<big id="pay_price">&yen;{{ $order['order_amount'] }}</big></span>
-                    </div>
-                    <div class="order_status">
-                        <!-- <span>待支付</span> -->
-                        <!-- <a href="" class="go_to_buy">去支付</a> -->
-                        <!-- <a href="">取消订单</a> -->
-                        @if($order['is_share'])
-                        <a href="" class="share_pt">分享拼团</a>
-                        @endif
-                        @if($order['join_group'])
-                        <a href="{{ $order['join_group'] }}" class="join_pt">加入拼团</a>
-                        @endif
-                    </div>
+                                <div class="goods_price">
+                                    <span>&yen;<big id="goods_price">{{ $order['orderGoods'][0]['buy_price'] }}</big>/件</span>
+                                </div>
+                            </div>
+                            <div class="goods_sum">
+                                共1件商品
+                                <span>实付：<big id="pay_price">&yen;{{ $order['order_amount'] }}</big></span>
+                            </div>
+                            <div class="order_status">
+                                <!-- <span>待支付</span> -->
+                                <!-- <a href="" class="go_to_buy">去支付</a> -->
+                                <!-- <a href="">取消订单</a> -->
+                                @if($order['is_share'])
+                                    <a href="" class="share_pt">分享拼团</a>
+                                @endif
+                                @if($order['join_group'])
+                                    <a href="{{ $order['join_group'] }}" class="join_pt">加入拼团</a>
+                                @endif
+                            </div>
 
-                    @if($order['is_end'])
-                    <div class="is_over">
-                        拼团已结束
-                    </div>
-                    @endif
-                    @if($order['wait_cashback'])
-                    <div class="backtrack_money">
-                        等待返回拼团优惠金
-                    </div>
-                    @endif
-                </li>
-            @endforeach
-            </ul>
+                            @if($order['is_end'])
+                            <div class="is_over">
+                                拼团已结束
+                            </div>
+                            @endif
+                            @if($order['wait_cashback'])
+                            <div class="backtrack_money">
+                                等待返回拼团优惠金
+                            </div>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
 
         <script src="{{ elixir('js/jquery.js') }}"></script>
