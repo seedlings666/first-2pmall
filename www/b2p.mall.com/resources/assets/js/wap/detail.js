@@ -4,7 +4,7 @@
  * @date    2016-08-19 01:07:00
  * @version 1.0
  */
-$(function(){
+(function($, undefined){
     // sku选择
     var tmpArr = [];
     $('body').on('click', '.sku_box a', function(){
@@ -103,4 +103,4 @@ $(function(){
             });
         }
     });
-});
+})(jQuery);
