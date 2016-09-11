@@ -14,7 +14,7 @@
   "css/admin/sunburst.css": "css/admin/sunburst-575b44ab40.css",
   "css/wap/base.css": "css/wap/base-6e78563168.css",
   "css/wap/index.css": "css/wap/index-0d3da326ac.css",
-  "css/wap/order.css": "css/wap/order-57dd0cfedf.css",
+  "css/wap/order.css": "css/wap/order-f2d409e0bf.css",
   "css/wap/orderList.css": "css/wap/orderList-e5babc5c3c.css",
   "css/wap/userInfo.css": "css/wap/userInfo-7feb6c32bb.css",
   "js/admin/ace-elements.js": "js/admin/ace-elements-383886c36e.js",
@@ -74,7 +74,7 @@
   "js/wap/base.js": "js/wap/base-be0b7c58ba.js",
   "js/wap/detail.js": "js/wap/detail-4fd4c136fe.js",
   "js/wap/order.js": "js/wap/order-f0cafbb8b8.js",
-  "js/wap/orderList.js": "js/wap/orderList-d94898103e.js",
+  "js/wap/orderList.js": "js/wap/orderList-b7f9e338c6.js",
   "js/wap/swipeSlide.js": "js/wap/swipeSlide-cbaa62c1ae.js",
   "js/wap/userInfo.js": "js/wap/userInfo-19a2738da7.js"
 }
