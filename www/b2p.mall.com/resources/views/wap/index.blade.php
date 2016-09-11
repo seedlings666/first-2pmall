@@ -34,10 +34,10 @@
 			// });
 			// //分享给朋友
              wx.onMenuShareAppMessage({
-                 title: {{$goods_details -> goods_name}}, // 分享标题
-                 desc: {{$goods_details -> goods_name}}, // 分享描述
-                 link: {{url($request->getRequestUri())}}, // 分享链接
-                 imgUrl: {{ $sv['url_links'] }}, // 分享图标
+                 title: {{ $goods_details->goods_name }}, // 分享标题
+                 desc: {{ $goods_details->goods_name }}, // 分享描述
+                 link: {{ url($request->getRequestUri()) }}, // 分享链接
+                 imgUrl: {{ !empty($goods_images[0]) ? $goods_images[0]['url_links'] : '' }}, // 分享图标
                  success: function () {
                      // 用户确认分享后执行的回调函数
                  },
