@@ -19,7 +19,7 @@
 
 		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
-			// wx.config({{--!! $js->config(array('onMenuShareTimeline', 'onMenuShareAppMessage'), true) !!--}});
+			// wx.config({{--!! $js->config(array('onMenuShareTimeline', 'onMenuShareAppMessage')) !!--}});
 			// //分享到朋友圈
 			// wx.onMenuShareTimeline({
 			// 	title: '这是分享到朋友圈的标题', // 分享标题
@@ -33,17 +33,17 @@
 			// 	}
 			// });
 			// //分享给朋友
-			// wx.onMenuShareAppMessage({
-			// 	title: '这是分享朋友的标题', // 分享标题
-			// 	desc: '这是分享朋友的描述', // 分享描述
-			// 	link: '这是分享朋友的链接', // 分享链接
-			// 	imgUrl: '这是分享朋友的图片', // 分享图标
-			// 	success: function () {
-			// 		// 用户确认分享后执行的回调函数
-			// 	},
-			// 	cancel: function () {
-			// 		// 用户取消分享后执行的回调函数
-			// 	}
+             wx.onMenuShareAppMessage({
+                 title: {{$goods_details -> goods_name}}, // 分享标题
+                 desc: {{$goods_details -> goods_name}}, // 分享描述
+                 link: {{url($request->getRequestUri())}}, // 分享链接
+                 imgUrl: {{ $sv['url_links'] }}, // 分享图标
+                 success: function () {
+                     // 用户确认分享后执行的回调函数
+                 },
+                 cancel: function () {
+                     // 用户取消分享后执行的回调函数
+                 }
 			// });
 		</script>
     </head>

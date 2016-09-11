@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Laravel</title>
+        <title>个人中心</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
         <meta name="format-detection" content="telephone=no" />
@@ -18,7 +18,8 @@
         <link rel="stylesheet" href="{{ elixir('css/wap/userInfo.css') }}">
 		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
-			wx.config({!! $js->config(array('onMenuShareTimeline', 'onMenuShareAppMessage'), true) !!});
+            /*
+			wx.config({!! $js->config(array('onMenuShareTimeline', 'onMenuShareAppMessage')) !!});
             wx.ready(function () {
                 //分享到朋友圈
                 wx.onMenuShareTimeline({
@@ -46,6 +47,7 @@
                         // 用户取消分享后执行的回调函数
                     }
                 });
+                */
             });
 		</script>
     </head>

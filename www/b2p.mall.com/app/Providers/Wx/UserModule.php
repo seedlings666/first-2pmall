@@ -33,12 +33,12 @@ class UserModule
      */
     public function userInfo($id)
     {
-        if (empty($id) && !is_numeric($id) && $id < 1) {
+        if (empty($id) || !is_numeric($id) || $id < 1) {
             return Helper::error(10000, '参数错误');
         }
         $user_info  = DB::table($this->tables['user'])
                     ->select('id', 'points', 'nick_name', 'avatar')
-                    ->first();
+                    ->find($id);
 
         if (empty($user_info->avatar)) {
             $user_info->avatar = config('wechat.avatar');
