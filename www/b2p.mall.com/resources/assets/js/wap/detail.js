@@ -7,7 +7,7 @@
 (function($, undefined){
     // sku选择
     var tmpArr = [];
-    $('body').on('click', '.sku_box a', function(){
+    $('.sku_box a').on('click', function(){
         var id = $(this).data('id');
         var attrUrl = $(this).parents('#goods_main_box').data('atr-url');
         var sureUrl = $(this).parents('#goods_main_box').data('url');
@@ -19,6 +19,7 @@
         if($.inArray( type, tmpArr) == -1){
             tmpArr.push(type);
         }
+
         if(tmpArr.length >= 2){
             sureSkuStatus = true;
         }
@@ -70,6 +71,9 @@
             // 清除提交订单的连接
             $('[name=buy_but]').attr('href', 'javascript:void(0);');
 
+            // 添加默认样式
+            $('[data-type='+ type +'] a').removeClass('invalid');
+
             $.ajax({
                 url: attrUrl,
                 type: 'POST',
@@ -80,19 +84,25 @@
                 if('err_code' in re){
                     alert(re.msg);
                 }else{
-                    var h = '';
-
-                    $.each(re, function() {
-                        h += '<a data-id="'+ this.id +'" data-attr-id="'+ this.attr_id +'">'+ this.value_name +'</a>';
-                    });
-
                     if(type == 'size'){
-                        $('[data-type=color]').html('颜色：' + h);
+                        // 添加默认样式
+                        $('[data-type=color] a').addClass('invalid').removeClass('cur');
+
+                        // 去掉可组合的无效样式
+                        $.each(re, function() {
+                            $('[data-type=color]').find('#sku_item_' + this.id).removeClass('invalid');
+                        });
                         // tmpArr.splice($.inArray('color', tmpArr), 1);
                     }
 
                     if(type == 'color'){
-                        $('[data-type=size]').html('规格：' + h);
+                        // 添加默认样式
+                        $('[data-type=size] a').addClass('invalid').removeClass('cur');
+
+                        // 去掉可组合的无效样式
+                        $.each(re, function() {
+                            $('[data-type=size]').find('#sku_item_' + this.id).removeClass('invalid');
+                        });
                         // tmpArr.splice($.inArray('size', tmpArr), 1);
                     }
 

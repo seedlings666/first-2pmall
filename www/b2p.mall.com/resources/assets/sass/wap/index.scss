@@ -113,6 +113,11 @@
                 margin-right: 0;
             }
 
+            &.invalid{
+                border-style: dashed;
+                color: #d2d2d2;
+            }
+
             &.cur{
                 background-color: #ff5555;
                 border-color: #ff5555;
