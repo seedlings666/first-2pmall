@@ -20,10 +20,10 @@
 
     <body>
 
-        <div class="main_warp order_tab_box" data-next-page="{{$response_data['next_page']}}">
-            <ul id="order_tab">
-                <li class="on">我的订单</li>
-                <li>全部订单</li>
+        <div class="main_warp order_tab_box">
+            <ul id="order_tab" data-url="{{action('Wap\BuyController@groupOrders')}}" data-next-page="{{$response_data['next_page']}}">
+                <li class="on" data-type="my_orders">我的订单</li>
+                <li data-type="all_orders">全部订单</li>
             </ul>
         </div>
 
