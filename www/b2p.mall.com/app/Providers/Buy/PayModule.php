@@ -67,7 +67,7 @@ class PayModule
             return $order_id;
         }
         $orderRes = Order::where('id', $order_id)
-            ->first(['id', 'user_id', 'order_status', 'group_rp', 'pay_sn', 'order_amount', 'group_preferential_amount']);
+            ->first(['id', 'user_id', 'order_status', 'pay_status', 'group_rp', 'pay_sn', 'order_amount', 'group_preferential_amount']);
         if (!$orderRes) {
             \Log::info('[' . $order_id . ']该订单--不存在');
             return $order_id;
@@ -87,6 +87,9 @@ class PayModule
         $wechat    = app('wechat');
         $refundRes = $wechat->payment->refund('' . $orderRes->pay_sn, '' . $orderRes->pay_sn, $total_fee, $refund_fee);
         if (strtoupper($refundRes->return_code) == 'SUCCESS') {
+            //返回拼团第一单优惠金额
+            $orderRes->pay_status = 3;
+            $orderRes->save();
             //退款成功
             $status = 2;
         } else {
