@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use EasyWeChat\Foundation\Application;
+use Illuminate\Http\Request;
 
 class GoodsController extends Controller
 {
@@ -76,7 +77,7 @@ class GoodsController extends Controller
      * 商品详情页
      * @author  jianwei
      */
-    public function getShow(Application $wechat_app, $goods_id)
+    public function getShow(Application $wechat_app, Request $request, $goods_id)
     {
         //$goods_id = Input::get('goods_id',0);
     
@@ -137,7 +138,7 @@ class GoodsController extends Controller
         //$js = $wechat_app->js;
         $goods_details['js'] = $wechat_app->js;
         
-        return View::make('wap.index')->with($goods_details)->with(['color_attr'=>$color_attr_arr,'size_attr'=>$size_attr_arr])->with(['default_sku_info'=>$default_sku_info]);
+        return View::make('wap.index')->with($goods_details)->with(['color_attr'=>$color_attr_arr,'size_attr'=>$size_attr_arr])->with(['default_sku_info'=>$default_sku_info, 'request' => $request]);
     }
     
     
