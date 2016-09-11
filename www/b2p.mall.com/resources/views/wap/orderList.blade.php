@@ -38,7 +38,7 @@
                             <div class="goods_info">
                                 <div class="goods_img">
                                     <a href="{{ $order['goods_url'] }}">
-                                        <img src="{{asset('images/goods_img.jpg')}}" alt="商品名称">
+                                        <img src="{{ $order['orderGoods'][0]['goods_img_url'] }}" alt="{{ $order['orderGoods'][0]['goods_title'] }}">
                                     </a>
                                 </div>
 
