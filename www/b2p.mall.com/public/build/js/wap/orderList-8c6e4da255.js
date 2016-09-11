@@ -70,7 +70,7 @@ var order_list = {
             var loadDistance = winHeight + scrollTopVal;
 
             // 当文档高度等于加载距离是进行加载并且判断是否可以进行ajax请求
-            if(loadDistance == docHeight && status){
+            if(loadDistance == docHeight && status && nextPage != ''){
                 // 将加载状态设置为不可加载，以避免重复请求
                 status = false;
                 // 改变提示文字
@@ -85,16 +85,11 @@ var order_list = {
                 .done(function(re) {
                     var h = _this._dataPj(re);
 
-                    // 判断是否有下一页
-                    if(re.response_data.next_page == null){
-                        // 改变提示文字
-                        $('#load_point').html('没有更多的数据了！');
-                    }
+                    // 将加载状态设置为可加载
+                    status = true;
                     // 将拼接的html放到页面容器中
                     $('#order_content').append(h);
                     console.log("success", re);
-                    // 将加载状态设置为可加载
-                    status = true;
                 })
                 .fail(function() {
                     // 将加载状态设置为可加载
@@ -103,6 +98,9 @@ var order_list = {
                     $('#load_point').html('加载失败！请刷新页面重新加载！');
                     console.log("error");
                 });
+            }else{
+                // 改变提示文字
+                $('#load_point').html('没有更多的数据了！');
             }
         });
     },
@@ -119,7 +117,7 @@ var order_list = {
                     '<div class="goods_info">'+
                         '<div class="goods_img">'+
                             '<a href="'+ this.goods_url + '">'+
-                                '<img src="'+ (this.img_src ? this.img_src : '') +'" alt="'+ this.orderGoods[0].goods_title +'">'+
+                                '<img src="'+ this.orderGoods[0].goods_img_url +'" alt="'+ this.orderGoods[0].goods_title +'">'+
                             '</a>'+
                         '</div>'+
 
