@@ -13,6 +13,7 @@ var order_list = {
     },
     tabSwitch: function(){
         $('#order_tab li').on('click', function(){
+            
             $(this).addClass('on').siblings('li').removeClass('on');
         });
     }
