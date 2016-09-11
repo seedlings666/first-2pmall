@@ -79,6 +79,9 @@
       color: #999; }
       .goods_detail .goods_sku_box a:last-child {
         margin-right: 0; }
+      .goods_detail .goods_sku_box a.invalid {
+        border-style: dashed;
+        color: #d2d2d2; }
       .goods_detail .goods_sku_box a.cur {
         background-color: #ff5555;
         border-color: #ff5555;

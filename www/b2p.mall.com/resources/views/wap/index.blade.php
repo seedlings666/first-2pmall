@@ -84,7 +84,7 @@
                     颜色：
                     @if(!empty($color_attr) && count($color_attr) > 0)
                         @foreach($color_attr as $ak=>$av)
-                            <a href="javascript:void(0);" data-id="{{ $av->id }}" data-attr-id="{{ $av->attr_id }}">{{ $av->value_name }}</a>
+                            <a href="javascript:void(0);" data-id="{{ $av->id }}" id="sku_item_{{ $av->id }}">{{ $av->value_name }}</a>
                         @endforeach
                     @endif
                 </div>
@@ -93,7 +93,7 @@
                     规格：
                     @if(!empty($size_attr) && count($size_attr) > 0)
                         @foreach($size_attr as $sk=>$sv)
-                            <a href="javascript:void(0);" data-id="{{ $sv->id }}" data-attr-id="{{ $sv->attr_id }}">{{ $sv->value_name }}</a>
+                            <a href="javascript:void(0);" data-id="{{ $sv->id }}" id="sku_item_{{ $sv->id }}">{{ $sv->value_name }}</a>
                         @endforeach
                     @endif
                 </div>
