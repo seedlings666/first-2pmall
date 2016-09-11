@@ -40,7 +40,9 @@ class GoodsModule
             $goods_obj->where('goods_name', 'LIKE', '%' . $condition['goods_name'] . '%');
         }
         
-        $goods_list = $goods_obj->paginate();
+        $page_size = isset($condition['page_size']) && is_numeric($condition['page_size']) ? $condition['page_size'] : 10;
+        //$goods_list = $goods_obj->paginate($page_size);
+        $goods_list = $goods_obj->paginate($page_size);
         
         return  $goods_list;
     }
