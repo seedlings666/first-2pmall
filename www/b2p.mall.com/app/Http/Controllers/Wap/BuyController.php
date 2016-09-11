@@ -110,6 +110,8 @@ class BuyController extends Controller
                 return 'paid fail';
             }
         } else {
+            //暂时禁止通过callbak,跳转回来
+            return 'Invalid Request';
             //如果是页面回调通知，则需要平台自己加密解密操作
             $log_data['user_id'] = \Session::get('user.id', 0);
             $payModule           = new PayModule();
@@ -118,7 +120,7 @@ class BuyController extends Controller
 
         //创建订单
         $buyModule = new BuyModule();
-        $res       = $buyModule->createOrder(['pay_sn' => $pay_sn]);
+        $res       = $buyModule->createOrder(['pay_sn' => $pay_sn, 'user_id' => $log_data['user_id']]);
         if (isset($res['err_code'])) {
             \Log::info('paid', $res);
             return $pay_sn;
