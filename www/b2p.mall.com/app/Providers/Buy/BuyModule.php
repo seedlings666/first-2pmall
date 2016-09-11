@@ -679,6 +679,7 @@ class BuyModule
         $order_goods_result = DB::table('zo_order_goods')->whereIn('order_id', $order_ids)->get($order_goods_fields);
         $order_goods_list   = [];
         foreach ($order_goods_result as $value) {
+            $value->goods_img_url                 = asset($value->goods_img);
             $order_goods_list[$value->order_id][] = (array) $value;
         }
         foreach ($order_list as $key => &$val) {
