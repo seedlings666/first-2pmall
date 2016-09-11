@@ -67,7 +67,7 @@
                 <span class=""></span>
             </div>
         </div>
-        <div class="goods_detail main_warp" id="goods_main_box" data-atr-url="{{url('/wap/goods/attr-value')}}" data-url="{{ url('wap/goods/check-sku') }}">
+        <div class="goods_detail main_warp" id="goods_main_box" data-atr-url="{{url('goods/attr-value')}}" data-url="{{ url('goods/check-sku') }}">
             <h1>{{$goods_details -> goods_name}}</h1>
             <p class="gd_introduction">{{$goods_details -> goods_desc}}</p>
             <div class="goods_price_box">
@@ -80,7 +80,7 @@
             </div>
 
             @if(isset($goods_details['is_sku']) && $goods_details['is_sku'] == 1)
-                <div class="goods_sku_box sku_box" data-url="{{url('/wap/goods/attr-value')}}" data-type="color">
+                <div class="goods_sku_box sku_box" data-type="color">
                     颜色：
                     @if(!empty($color_attr) && count($color_attr) > 0)
                         @foreach($color_attr as $ak=>$av)
@@ -89,7 +89,7 @@
                     @endif
                 </div>
 
-                <div class="goods_sku_box sku_box" data-url="{{url('/wap/goods/attr-value')}}" data-type="size">
+                <div class="goods_sku_box sku_box" data-type="size">
                     规格：
                     @if(!empty($size_attr) && count($size_attr) > 0)
                         @foreach($size_attr as $sk=>$sv)
