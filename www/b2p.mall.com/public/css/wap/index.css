@@ -71,14 +71,15 @@
     padding: 15px 0; }
   .goods_detail .goods_sku_box {
     padding-bottom: 15px; }
-    .goods_detail .goods_sku_box span {
+    .goods_detail .goods_sku_box a {
       display: inline-block;
       padding: 5px;
       border: 1px solid #e5e5e5;
-      margin-right: 5px; }
-      .goods_detail .goods_sku_box span:last-child {
+      margin-right: 5px;
+      color: #999; }
+      .goods_detail .goods_sku_box a:last-child {
         margin-right: 0; }
-      .goods_detail .goods_sku_box span.cur {
+      .goods_detail .goods_sku_box a.cur {
         background-color: #ff5555;
         border-color: #ff5555;
         color: #fff; }
