@@ -74,6 +74,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::controller('/shop', 'ShopController');
     Route::controller('/user', 'UserController');
     Route::controller('/manage', 'ManageController');
+    Route::controller('/wx', 'WxController');
 
     Route::get('/shop/create', function () {
         return view('admin.shop_create');
