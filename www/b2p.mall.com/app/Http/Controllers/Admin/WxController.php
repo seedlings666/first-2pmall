@@ -51,7 +51,7 @@ class WxController extends Controller
             ),
         ];
 
-        $app->menu->add($buttons);
+        $wechat_app->menu->add($buttons);
         return '菜单生成成功';
     }
 }
