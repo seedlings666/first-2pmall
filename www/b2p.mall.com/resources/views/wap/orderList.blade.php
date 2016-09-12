@@ -20,10 +20,10 @@
 
     <body>
 
-        <div class="main_warp order_tab_box" data-next-page="{{$response_data['next_page']}}">
-            <ul id="order_tab">
-                <li class="on">我的订单</li>
-                <li>全部订单</li>
+        <div class="main_warp order_tab_box">
+            <ul id="order_tab" data-url="{{action('Wap\BuyController@groupOrders')}}">
+                <li class="on" data-type="my_orders">我的订单</li>
+                <li data-type="all_orders">全部订单</li>
             </ul>
         </div>
 
@@ -31,7 +31,7 @@
             @if(!$response_data['order_list'])
                 <p class="no_order">暂无订单！</p>
             @else
-                <ul id="order_content">
+                <ul id="order_content" data-next-page="{{$response_data['next_page']}}">
                     @foreach($response_data['order_list'] as $order)
                         <li>
                             <div class="order_time">{{ $order['created_at'] }}</div>
@@ -81,6 +81,7 @@
                         </li>
                     @endforeach
                 </ul>
+                <div class="load_text" id="load_point">查看更多数据</div>
             @endif
         </div>
 
