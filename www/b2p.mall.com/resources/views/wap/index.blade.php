@@ -54,9 +54,7 @@
                 @if(isset($goods_images) && is_array($goods_images) && count($goods_images) > 0)
                     @foreach($goods_images as $sk=>$sv)
                         <li>
-                            <a href="###">
-                                <img src="{{ $sv['url_links'] }}" alt="{{ $sv['file_name'] }}">
-                            </a>
+                            <img src="{{ $sv['url_links'] }}" alt="{{ $sv['file_name'] }}">
                         </li>
                     @endforeach
                 @endif
@@ -100,7 +98,14 @@
             @endif
 
             <div class="hint_box">
-                *开团并邀请2人参团，人数不足自动退款。
+                <div class="hb_inline_box">
+                    <div class="hb_title">
+                        <span>拼团规则</span>
+                    </div>
+                    <div class="hb_derail">
+                        *开团并邀请2人参团，人数不足自动退款。
+                    </div>
+                </div>
             </div>
 
             <div class="photo_details">
