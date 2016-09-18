@@ -162,6 +162,8 @@ return [
         Overtrue\LaravelWechat\ServiceProvider::class,
         //DebugBar
         Barryvdh\Debugbar\ServiceProvider::class,
+        //角色权限
+        Zizaco\Entrust\EntrustServiceProvider::class,
 
     ],
 
@@ -212,6 +214,7 @@ return [
         'Image' =>  Intervention\Image\Facades\Image::class,
         'Wechat' => Overtrue\LaravelWechat\Facade::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
     ],
 
 ];
