@@ -127,15 +127,33 @@
     }
 
     .hint_box{
+        text-align: left;
         background: #e1e1e1;
-        padding: 10px;
+        padding: 15px 0;
+
+        .hb_title{
+            font-size: 16px;
+            span{
+                padding-bottom: 5px;
+                border-bottom: 1px solid #ff5555;
+            }
+        }
+
+        .hb_inline_box{
+            background: #fff;
+            padding: 10px;
+        }
+
+        .hb_derail{
+            padding: 10px 0;
+        }
     }
 
     .photo_details{
         text-align: left;
         padding: 10px;
         .pd_title{
-            font-size: 18px;
+            font-size: 16px;
             span{
                 padding-bottom: 5px;
                 border-bottom: 1px solid #ff5555;
@@ -150,11 +168,11 @@
         }
     }
 
+    margin-bottom: 50px;
 }
 
 .recommend_goods{
     margin-top: 10px;
-    margin-bottom: 50px;
     background: #fff;
     color: #888;
 
