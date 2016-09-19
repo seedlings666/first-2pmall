@@ -4,7 +4,6 @@ namespace App\Providers\Manage\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 /**
  * Class Manage
@@ -12,7 +11,7 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  */
 class Manage extends Model
 {
-    use SoftDeletes, EntrustUserTrait;
+    use SoftDeletes;
     public $table = 'zo_manage';
 
     /**
