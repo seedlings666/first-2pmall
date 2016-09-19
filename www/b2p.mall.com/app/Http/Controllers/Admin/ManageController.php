@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Providers\Manage\ManageModule;
 use App\Providers\Manage\ShopModule;
-use \Illuminate\Http\Request;
-use Session;
 use DB;
+use Session;
+use \Illuminate\Http\Request;
 
 /**
  * 员工
@@ -24,7 +24,7 @@ class ManageController extends Controller
      */
     public function postLogin(Request $request, ManageModule $module)
     {
-        $password = $request->get('password');
+        $password  = $request->get('password');
         $user_name = $request->get('user_name');
 
         //默认提供一个admin账号
@@ -43,11 +43,12 @@ class ManageController extends Controller
             return back();
         }
 
+        $shop_id = $manage->manageShopRelation && !empty($manage->manageShopRelation) ? $manage->manageShopRelation->id : 0;
         Session::put('admin_user', [
             'id'      => $manage->id,
-            'shop_id' => $manage->shop && !empty($manage->shop) ? $manage->shop->id : 0,
+            'shop_id' => $shop_id,
         ]);
-        
+
         //根据权限来
         return redirect()->action('Admin\GoodsController@getIndex');
     }
@@ -61,7 +62,7 @@ class ManageController extends Controller
     public function getIndex(Request $request, ManageModule $module)
     {
         $condition = [
-            'page' => $request->get('page', 1),
+            'page'        => $request->get('page', 1),
             'page_number' => $request->get('page_number', 15),
         ];
 
@@ -97,7 +98,7 @@ class ManageController extends Controller
             'nick_name'    => $request->get('nick_name'),
             'mobile_phone' => $request->get('mobile_phone'),
             'role_id'      => $request->get('role_id', 0),
-            'status'       => $request->get('status')
+            'status'       => $request->get('status'),
         ];
 
         DB::beginTransaction();
@@ -124,10 +125,10 @@ class ManageController extends Controller
      * @return void
      * @author chentengfeng @create_at 2016-09-07  08:31:58
      */
-    public function getEdit(Request $request, ManageModule $module,ShopModule $module_shop, $manage_id)
+    public function getEdit(Request $request, ManageModule $module, ShopModule $module_shop, $manage_id)
     {
         $shop_list = $module_shop->simpleList();
-        $show = $module->show($manage_id);
+        $show      = $module->show($manage_id);
         //dd($show->toArray());
         return view('admin.shop_user_edit')->with(compact('shop_list', 'show'));
     }
@@ -147,7 +148,7 @@ class ManageController extends Controller
             'nick_name'    => $request->get('nick_name'),
             'mobile_phone' => $request->get('mobile_phone'),
             'role_id'      => $request->get('role_id', 0),
-            'status'       => $request->get('status')
+            'status'       => $request->get('status'),
         ];
         if (!empty($request->get('password'))) {
             $params['password'] = $request->get('password');
