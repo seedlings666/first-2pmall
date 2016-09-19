@@ -43,6 +43,9 @@ class ManageController extends Controller
             return back();
         }
 
+        //认证登录
+        \Auth::guard('admin')->loginUsingId($manage->id);
+
         $shop_id = $manage->manageShopRelation && !empty($manage->manageShopRelation) ? $manage->manageShopRelation->id : 0;
         Session::put('admin_user', [
             'id'      => $manage->id,

@@ -32,6 +32,8 @@
 </div><!-- /.sidebar-shortcuts -->
 
 <ul class="nav nav-list">
+
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/goods' ? 'active' : '' }}">
         <a href="{{ url('/admin/goods') }}">
             <i class="menu-icon fa fa-inbox"></i>
@@ -40,7 +42,9 @@
 
         <b class="arrow"></b>
     </li>
+    @endability
 
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/order' ? 'active' : '' }}">
         <a href="{{ url('/admin/order') }}">
             <i class="menu-icon fa fa-list"></i>
@@ -49,7 +53,9 @@
 
         <b class="arrow"></b>
     </li>
+    @endability
 
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/order_statistical' ? 'active' : '' }}">
         <a href="{{ action('Admin\OrderController@getStatistic') }}">
             <i class="menu-icon fa fa-bar-chart-o"></i>
@@ -58,7 +64,9 @@
 
         <b class="arrow"></b>
     </li>
+    @endability
 
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/shop' ? 'active' : '' }}">
         <a href="{{ url('/admin/shop') }}">
             <i class="menu-icon fa fa-users"></i>
@@ -67,7 +75,9 @@
 
         <b class="arrow"></b>
     </li>
+    @endability
 
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/shop_user' ? 'active' : '' }}">
         <a href="{{ action('Admin\ManageController@getIndex') }}">
             <i class="menu-icon fa fa-users"></i>
@@ -76,7 +86,9 @@
 
         <b class="arrow"></b>
     </li>
-
+    @endability
+    
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/user' ? 'active' : '' }}">
         <a href="{{ url('/admin/user') }}">
             <i class="menu-icon fa fa-users"></i>
@@ -85,7 +97,9 @@
 
         <b class="arrow"></b>
     </li>
+    @endability
 
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/competence' ? 'active' : '' }}">
         <a href="{{ url('/admin/competence') }}">
             <i class="menu-icon fa fa-cogs"></i>
@@ -94,6 +108,7 @@
 
         <b class="arrow"></b>
     </li>
+    @endability
 </ul><!-- /.nav-list -->
 
 <!-- #section:basics/sidebar.layout.minimize -->
