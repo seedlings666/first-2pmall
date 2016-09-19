@@ -33,7 +33,7 @@
 
 <ul class="nav nav-list">
 
-    @ability(['admin', 'owner'], '')
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/goods' ? 'active' : '' }}">
         <a href="{{ url('/admin/goods') }}">
             <i class="menu-icon fa fa-inbox"></i>
@@ -44,7 +44,7 @@
     </li>
     @endability
 
-    @ability(['admin', 'owner'], '')
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/order' ? 'active' : '' }}">
         <a href="{{ url('/admin/order') }}">
             <i class="menu-icon fa fa-list"></i>
@@ -55,7 +55,7 @@
     </li>
     @endability
 
-    @ability(['admin', 'owner'], '')
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/order_statistical' ? 'active' : '' }}">
         <a href="{{ action('Admin\OrderController@getStatistic') }}">
             <i class="menu-icon fa fa-bar-chart-o"></i>
@@ -66,7 +66,7 @@
     </li>
     @endability
 
-    @ability(['admin', 'owner'], '')
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/shop' ? 'active' : '' }}">
         <a href="{{ url('/admin/shop') }}">
             <i class="menu-icon fa fa-users"></i>
@@ -77,7 +77,7 @@
     </li>
     @endability
 
-    @ability(['admin', 'owner'], '')
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/shop_user' ? 'active' : '' }}">
         <a href="{{ action('Admin\ManageController@getIndex') }}">
             <i class="menu-icon fa fa-users"></i>
@@ -88,7 +88,7 @@
     </li>
     @endability
     
-    @ability(['admin', 'owner'], '')
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/user' ? 'active' : '' }}">
         <a href="{{ url('/admin/user') }}">
             <i class="menu-icon fa fa-users"></i>
@@ -99,7 +99,7 @@
     </li>
     @endability
 
-    @ability(['admin', 'owner'], '')
+    @ability('admin,owner', '')
     <li class="{{ Request::path() == 'admin/competence' ? 'active' : '' }}">
         <a href="{{ url('/admin/competence') }}">
             <i class="menu-icon fa fa-cogs"></i>

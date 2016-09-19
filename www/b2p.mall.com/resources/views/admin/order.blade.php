@@ -96,27 +96,7 @@
                             显示 1 - 10 共 2 条数据
                         </div>
                     </div>
-                    <div class="col-xs-6">
-                        <div class="dataTables_paginate paging_simple_numbers" id="dynamic-table_paginate">
-                            <ul class="pagination">
-                                <li class="paginate_button previous disabled" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_previous">
-                                    <a href="#">上一页</a>
-                                </li>
-                                <li class="paginate_button active" aria-controls="dynamic-table" tabindex="0">
-                                    <a href="#">1</a>
-                                </li>
-                                <li class="paginate_button " aria-controls="dynamic-table" tabindex="0">
-                                    <a href="#">2</a>
-                                </li>
-                                <li class="paginate_button " aria-controls="dynamic-table" tabindex="0">
-                                    <a href="#">3</a>
-                                </li>
-                                <li class="paginate_button next" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_next">
-                                    <a href="#">下一页</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <div class="col-xs-6">{{ $res_data->appends(request()->all())->render() }}</div>
                 </div>
             </div><!-- /.col -->
         </div><!-- /.row -->

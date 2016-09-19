@@ -84,10 +84,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::get('/shop_user/create', function () {
         return view('admin.shop_user_create');
     });
-
+    
     Route::controller('/order', 'OrderController');
-    //Route::get('/order', 'OrderController@getOrder');
-    Route::get('/order/info/{id}', 'OrderController@getInfo');
     Route::get('/order_statistical', function () {
         return view('admin.order_statistical');
     });

@@ -78,4 +78,10 @@ return [
 
     'prefix' => 'laravel',
 
+    /**
+     * 看起来像是PRedis缓存生效时间
+     * Zizaco/entrust缓存时间，单位为分，暂未发现其他模块使用该配置
+     */
+    'ttl' => 120,
+
 ];

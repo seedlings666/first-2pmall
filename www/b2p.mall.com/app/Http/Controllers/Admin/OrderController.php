@@ -8,15 +8,28 @@ use DB;
 
 class OrderController extends Controller
 {
-    public function getOrder()
+    public function getIndex()
     {
-        $res_data = Order::with('orderGoods')->orderBy('id', 'desc')->get();
+        $orderObj = Order::with('orderGoods');
+        if (!$this->isAdmin()) {
+            $orderObj = $orderObj->whereHas('orderGoods', function ($query) {
+                $query->where('store_id', \Session::get('admin_user.shop_id'));
+            });
+        }
+
+        $res_data = $orderObj->orderBy('id', 'desc')->paginate(1);
         return view('admin.order', compact('res_data'));
     }
 
     public function getInfo($id)
     {
-        $res_data = Order::with('orderGoods')->where('id', $id)->first();
+        $orderObj = Order::with('orderGoods')->where('id', $id)->first();
+        if (!$this->isAdmin()) {
+            $orderObj = $orderObj->whereHas('orderGoods', function ($query) {
+                $query->where('store_id', \Session::get('admin_user.shop_id'));
+            });
+        }
+        $res_data = $orderObjs->first();
         return view('admin.order_info', compact('res_data'));
     }
 
@@ -29,33 +42,33 @@ class OrderController extends Controller
     public function getStatistic()
     {
         $start_time = date('Y-m-d H:i:s', strtotime('-30 day'));
-        $select = DB::raw("count(*) as order_count, sum(order_amount) as total_price, DATE_FORMAT(created_at, '%Y%m%d') as date");
-        $list = Order::select($select)->where('created_at', '>', $start_time)
-                    ->where('pay_status', 2)
-                    //->where('shop_id', Session::get('admin_user.shop_id', 0))
-                    ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y%m%d")'))
-                    ->orderBy('id')
-                    ->get();
+        $select     = DB::raw("count(*) as order_count, sum(order_amount) as total_price, DATE_FORMAT(created_at, '%Y%m%d') as date");
+        $list       = Order::select($select)->where('created_at', '>', $start_time)
+            ->where('pay_status', 2)
+        //->where('shop_id', Session::get('admin_user.shop_id', 0))
+            ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y%m%d")'))
+            ->orderBy('id')
+            ->get();
 
         $sales = [];
         $count = [];
         foreach ($list as $value) {
             $sales[] = [
                 strtotime($value->date) . '000',
-                $value->order_count
+                $value->order_count,
             ];
             $count[] = [
                 strtotime($value->date) . '000',
                 $value->total_price,
             ];
         }
-        for($i = 1; $i < 10; $i++) {
+        for ($i = 1; $i < 10; $i++) {
             $sales[] = [
-                (time() + 3600 * 12 * $i).'000',
+                (time() + 3600 * 12 * $i) . '000',
                 123 + $i * 10,
             ];
             $count[] = [
-                (time() + 3600 * 12 * $i).'000',
+                (time() + 3600 * 12 * $i) . '000',
                 232 + $i * 10,
             ];
         }
