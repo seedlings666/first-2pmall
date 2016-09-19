@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
-class Manage extends Model
+class Manage extends Authenticatable
 {
     use EntrustUserTrait;
     public $table = 'zo_manage';
