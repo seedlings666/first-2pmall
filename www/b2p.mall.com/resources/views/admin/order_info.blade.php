@@ -31,14 +31,16 @@
                     </thead>
 
                     <tbody>
+                    @if($res_data['orderGoods'])
                         <tr>
                             <td class="center" width="150">
-                                <img width="100" src="{{asset('images/goods_img.jpg')}}">
+                                <img width="100" src="{{asset($res_data['orderGoods']['goods_img'])}}">
                             </td>
-                            <td>测试商品</td>
-                            <td class="center">&yen;500.00</td>
-                            <td class="center">10</td>
+                            <td>{{ $res_data['orderGoods']['goods_title'] }} {{ $res_data['orderGoods']['goods_spec'] }}</td>
+                            <td class="center">&yen;{{ $res_data['orderGoods']['buy_price'] }}</td>
+                            <td class="center">{{ $res_data['orderGoods']['goods_number'] }}</td>
                         </tr>
+                    @endif
                     </tbody>
                 </table>
             </div><!-- /.col -->
@@ -51,15 +53,15 @@
                     <tbody>
                         <tr>
                             <td class="center" width="100">订单编号：</td>
-                            <td>10054483546185</td>
+                            <td>{{ $res_data['order_sn'] }}</td>
                             <td class="center" width="100">收货人：</td>
-                            <td>张三</td>
+                            <td>{{ array_get($res_data, 'userWeixin.nickname') }}</td>
                             <td class="center" width="100">联系方式：</td>
-                            <td>13800138000</td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td class="center">下单时间：</td>
-                            <td>2016-08-27 13:56:12</td>
+                            <td>{{ $res_data['created_at'] }}</td>
                             <td class="center"></td>
                             <td></td>
                             <td class="center"></td>
@@ -77,17 +79,17 @@
                     <tbody>
                         <tr>
                             <td class="center" width="100">支付编号：</td>
-                            <td>1000000025465548</td>
+                            <td>{{ $res_data['pay_sn'] }}</td>
                             <td class="center" width="100">支付方式：</td>
                             <td>微信支付</td>
                             <td class="center" width="100">订单状态：</td>
-                            <td><strong class="red">已收货</strong></td>
+                            <td><strong class="red">{{ $res_data['order_status_label'] }}</strong></td>
                         </tr>
                         <tr>
                             <td class="center">优惠金额：</td>
-                            <td><strong class="red">&yen;100</strong></td>
+                            <td><strong class="red">&yen;{{ $res_data['preferential_amount'] }}</strong></td>
                             <td class="center">订单金额：</td>
-                            <td><strong class="red">&yen;100000</strong></td>
+                            <td><strong class="red">&yen;{{ $res_data['order_amount'] }}</strong></td>
                             <td class="center"></td>
                             <td></td>
                         </tr>

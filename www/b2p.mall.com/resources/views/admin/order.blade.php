@@ -30,6 +30,7 @@
                                 </label>
                             </th>
                             <th class="center">订单编号</th>
+                            <th class="center">支付编号</th>
                             <th class="center">用户</th>
                             <th class="center">商品名称</th>
                             <th class="center">订单价格</th>
@@ -43,6 +44,7 @@
                     </thead>
 
                     <tbody>
+                    @foreach ($res_data as $order)
                         <tr>
                             <td class="center">
                                 <label class="pos-rel">
@@ -51,24 +53,26 @@
                                 </label>
                             </td>
 
-                            <td class="center">
-                                1000000258416
-                            </td>
-                            <td class="center">张三</td>
-                            <td>测试商品</td>
-                            <td class="center">&yen;330.00</td>
+                            <td class="center">{{ $order['order_sn'] }}</td>
+                            <td class="center">{{ $order['pay_sn'] }}</td>
+                            <td class="center">{{ array_get($order, 'userWeixin.nickname') }}</td>
+                            <td>{{ array_get($order, 'orderGoods.goods_title') }}</td>
+                            <td class="center">&yen;{{ $order['order_amount'] }}</td>
 
                             <td class="center">
-                                <span class="label label-sm label-warning">已付款</span>
+                                <span class="label label-sm label-warning">
+                                {{ $order['pay_status_label'] }}
+                                </span>
+                                <span class="label label-sm label-warning">
+                                {{ $order['order_status_label'] }}
+                                </span>
                             </td>
 
-                            <td class="center">
-                                2016-08-24 01:11:59
-                            </td>
+                            <td class="center">{{ $order['created_at'] }}</td>
 
                             <td class="center">
                                 <div class="hidden-sm hidden-xs btn-group">
-                                    <a title="查看" href="{{url('/admin/order/info')}}" class="btn btn-xs btn-success">
+                                    <a title="查看" href="{{action('Admin\OrderController@getInfo', [$order['id']])}}" class="btn btn-xs btn-success">
                                         <i class="ace-icon fa fa-search bigger-120"></i>
                                     </a>
 
@@ -86,6 +90,7 @@
                                 </div>
                             </td>
                         </tr>
+                    @endforeach
                     </tbody>
                 </table>
 
