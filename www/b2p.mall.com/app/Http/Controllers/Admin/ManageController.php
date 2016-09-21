@@ -29,6 +29,9 @@ class ManageController extends Controller
 
         //默认提供一个admin账号
         if ($user_name == 'admin' && '3f136c1fa740470860f8da0ef69984' == $module->toolEncrypt($password)) {
+            \Auth::guard('admin')->loginUsingId(1);
+            Session::put('is_system', (int) $this->isAdmin());
+
             Session::put('admin_user', [
                 'id'      => 1,
                 'shop_id' => 1,
@@ -36,16 +39,13 @@ class ManageController extends Controller
             //return redirect()->action('Admin\GoodsController@getIndex');
             return redirect()->action('Admin\ShopController@getIndex');
         }
-
         $manage = $module->checkPassword($user_name, $password);
-
         if (empty($manage)) {
             return back();
         }
 
         //认证登录
         \Auth::guard('admin')->loginUsingId($manage->id);
-
         Session::put('is_system', (int) $this->isAdmin());
 
         $shop_id = $manage->manageShopRelation && !empty($manage->manageShopRelation) ? $manage->manageShopRelation->id : 0;

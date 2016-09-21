@@ -37,18 +37,6 @@ Route::group($wap_route, function () {
     //用户
     Route::controller('/user', 'UserController');
 
-    // Route::get('/user', function () {
-    //     return view('wap.userInfo');
-    // });
-
-    // Route::get('/order', function () {
-    //     return view('wap.order');
-    // });
-
-    // Route::get('/order/list', function () {
-    //     return view('wap.orderList');
-    // });
-
     Route::get('/error', function () {
         return view('wap.error');
     });
@@ -84,14 +72,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::get('/shop_user/create', function () {
         return view('admin.shop_user_create');
     });
-    
+
     Route::controller('/order', 'OrderController');
     Route::get('/order_statistical', function () {
         return view('admin.order_statistical');
     });
-    Route::get('/competence', function () {
-        return view('admin.competence');
-    });
+    Route::controller('/permission', 'PermissionController');
 });
 
 //登录页面
