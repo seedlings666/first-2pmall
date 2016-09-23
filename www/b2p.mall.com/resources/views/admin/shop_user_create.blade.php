@@ -80,7 +80,7 @@
                             </select>
                         </div>
                     </div>
-                <div>
+                </div>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right" > 店铺 </label>
@@ -94,26 +94,26 @@
                             </select>
                         </div>
                     </div>
-                <div>
+                </div>
+                <!-- /section:elements.form -->
+                <div class="space-4"></div>
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button class="btn btn-info" type="submit" name="submit_from">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            提交
+                        </button>
+                        
+                        &nbsp; &nbsp; &nbsp;
+                        <a href="{{url('/admin')}}" class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            取消
+                        </a>
+                    </div>
+                </div>
             </form>
 
-            <!-- /section:elements.form -->
-            <div class="space-4"></div>
-
-            <div class="clearfix form-actions">
-                <div class="col-md-offset-3 col-md-9">
-                    <button class="btn btn-info" type="submit" name="submit_from">
-                        <i class="ace-icon fa fa-check bigger-110"></i>
-                        提交
-                    </button>
-
-                    &nbsp; &nbsp; &nbsp;
-                    <a href="{{url('/admin')}}" class="btn" type="reset">
-                        <i class="ace-icon fa fa-undo bigger-110"></i>
-                        取消
-                    </a>
-                </div>
-            </div>
         </div><!-- /.row -->
     </div>
 </div><!-- /.page-content -->

@@ -69,9 +69,10 @@ class ManageController extends Controller
         $condition = [
             'page'        => $request->get('page', 1),
             'page_number' => $request->get('page_number', 15),
+            'shop_id'     => Session::get('admin_user.shop_id'),
         ];
 
-        $list = $module->index($condition);
+        $list = $module->index($condition, $this->isSystem());
 
         return view('admin.shop_user')->with(compact('list'));
     }

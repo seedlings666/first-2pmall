@@ -2,8 +2,8 @@
 
 namespace App\Providers\Manage;
 
-use Validator;
 use App;
+use Validator;
 
 /**
  * 管理员
@@ -31,9 +31,9 @@ class ManageModule
     public function checkPassword($user_name, $password)
     {
         return App::make('ManageModel')->select()
-                    ->where('user_name', $user_name)
-                    ->where('password', $this->toolEncrypt($password))
-                    ->first();
+            ->where('user_name', $user_name)
+            ->where('password', $this->toolEncrypt($password))
+            ->first();
     }
 
     /**
@@ -42,27 +42,29 @@ class ManageModule
      * @return void
      * @author chentengfeng @create_at 2016-09-06  12:25:58
      */
-    public function index(array $condition=[])
+    public function index(array $condition = [], $isSystem = false)
     {
         $rule = array(
-            'page' => ['sometimes', 'required','integer','min:1'],
-            'page_number' => ['sometimes', 'required','integer','min:1'],
+            'page'        => ['sometimes', 'required', 'integer', 'min:1'],
+            'page_number' => ['sometimes', 'required', 'integer', 'min:1'],
         );
-        
+
         $validate = Validator::make($condition, $rule);
-        
+
         //校验
-        if($validate->fails()){
-            return Helper::error(10000,'参数错误!',$validate->messages());
+        if ($validate->fails()) {
+            return Helper::error(10000, '参数错误!', $validate->messages());
         }
 
         $builder = App::make('ManageModel')->select();
-
+        if ($isSystem !== true) {
+            $builder = $builder->whereHas('manageShopRelation', function ($query) use ($condition) {
+                $query->where('shop_id', $condition['shop_id']);
+            });
+        }
 
         return $builder->paginate($condition['page_number']);
     }
-
-
 
     /**
      * 详情
@@ -89,7 +91,6 @@ class ManageModule
         return App::make('ManageModel')->select($select)->find($id);
     }
 
-
     /**
      * 保存
      *
@@ -99,14 +100,14 @@ class ManageModule
     public function store(array $params)
     {
         $rule = array(
-            'id'           => ['sometimes', 'required','integer','min:1'],
+            'id'           => ['sometimes', 'required', 'integer', 'min:1'],
             'work_number'  => ['required'],
             'user_name'    => ['required'],
-            'password'     => ['sometimes','required'],
+            'password'     => ['sometimes', 'required'],
             'nick_name'    => ['required'],
-            'mobile_phone' => ['required','integer'],
-            'role_id'      => ['required','integer','min:0'],
-            'status'       => ['required','boolean','in:0,1'],
+            'mobile_phone' => ['required', 'integer'],
+            'role_id'      => ['required', 'integer', 'min:0'],
+            'status'       => ['required', 'boolean', 'in:0,1'],
         );
 
         //用户名称唯一
@@ -115,12 +116,12 @@ class ManageModule
             $unique_name .= ",{$params['id']}";
         }
         $rule['user_name'][] = $unique_name;
-        
+
         $validate = Validator::make($params, $rule);
-        
+
         //校验
-        if($validate->fails()){
-            return Helper::error(10000,'参数错误!',$validate->messages());
+        if ($validate->fails()) {
+            return Helper::error(10000, '参数错误!', $validate->messages());
         }
 
         $model = App::make('ManageModel');
@@ -139,7 +140,7 @@ class ManageModule
         $model->role_id      = $params['role_id'];
         $model->status       = $params['status'];
         if (isset($params['password'])) {
-            $model->password     = $this->toolEncrypt($params['password']);
+            $model->password = $this->toolEncrypt($params['password']);
         }
         if (!$model->save()) {
             return Helper::error(80002, '用户信息保存失败');
@@ -147,7 +148,6 @@ class ManageModule
 
         return $model;
     }
-
 
     /**
      * 保存店铺与用户的关系
@@ -195,7 +195,6 @@ class ManageModule
         }
     }
 
-
     /**
      * 用户关系列表
      *
@@ -211,9 +210,9 @@ class ManageModule
         $model = App::make('ManageShopRelationModel');
 
         $relation = $model->select('id', 'user_id', 'shop_id')
-                            ->with('manage')
-                            ->where('shop_id', $shop_id)
-                            ->get();
+            ->with('manage')
+            ->where('shop_id', $shop_id)
+            ->get();
 
         return $relation->lists('manage');
     }

@@ -23,31 +23,31 @@
             <form role="form" id="validation-form" method="post" action="{{action('Admin\ShopController@postStore')}}">
                 <!-- #section:elements.form -->
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="goods_name"> 店铺名称 </label>
+                    <label class="col-sm-2 control-label no-padding-right" for="shop_name"> 店铺名称 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_name" name="name" placeholder="店铺名称" class="col-xs-5"/>
+                            <input type="text" id="shop_name" name="name" placeholder="店铺名称" class="col-xs-5"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="goods_desc"> 别称 </label>
+                    <label class="col-sm-2 control-label no-padding-right" for="alias"> 别称 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_desc" name="alias" placeholder="别称" class="col-xs-5" />
+                            <input type="text" id="alias" name="alias" placeholder="别称" class="col-xs-5" />
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="goods_desc"> 地址 </label>
+                    <label class="col-sm-2 control-label no-padding-right" for="address"> 地址 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_desc" name="address" placeholder="地址" class="col-xs-5" />
+                            <input type="text" id="address" name="address" placeholder="地址" class="col-xs-5" />
                         </div>
                     </div>
                 </div>
@@ -61,6 +61,46 @@
                                 <option value="1" >开店</option>
                                 <option value="0" >闭店</option>
                             </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="nick_name"> 商家称呼 </label>
+
+                    <div class="col-sm-10">
+                        <div class="clearfix">
+                            <input type="text" id="nick_name" name="nick_name" placeholder="商家称呼" class="col-xs-5" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="user_name"> 商家账号 </label>
+
+                    <div class="col-sm-10">
+                        <div class="clearfix">
+                            <input type="text" id="user_name" name="user_name" placeholder="商家账号" class="col-xs-5" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="password"> 商家密码 </label>
+
+                    <div class="col-sm-10">
+                        <div class="clearfix">
+                            <input type="password" id="password" name="password" placeholder="商家密码" class="col-xs-5" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="mobile_phone"> 商家手机 </label>
+
+                    <div class="col-sm-10">
+                        <div class="clearfix">
+                            <input type="text" id="mobile_phone" name="mobile_phone" placeholder="商家手机" class="col-xs-5" />
                         </div>
                     </div>
                 </div>
