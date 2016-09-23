@@ -30,17 +30,13 @@ Route::group($wap_route, function () {
 
     //商品模块控制器
     Route::controller('/goods', 'GoodsController');
-
     //微信
     Route::controller('/wx', 'WxController');
-
     //用户
     Route::controller('/user', 'UserController');
-
     Route::get('/error', function () {
         return view('wap.error');
     });
-
     //拼团支付
     Route::get('/group/pay', 'BuyController@getPay');
     //所有拼团订单，包含当前用自己的订单
@@ -51,32 +47,19 @@ Route::any('/group/order/{type}/{pay_sn}', 'Wap\BuyController@createOrder');
 
 // 管理后台
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'adminLogin'], function () {
-
     //后台商品模块
     Route::controller('/goods', 'GoodsController');
-
     Route::get('/', function () {
         return view('admin.index');
     });
-
     Route::controller('/shop', 'ShopController');
     Route::controller('/user', 'UserController');
     Route::controller('/manage', 'ManageController');
     Route::controller('/wx', 'WxController');
-
-    Route::get('/shop/create', function () {
-        return view('admin.shop_create');
-    });
-
-    // 新曾店员
-    Route::get('/shop_user/create', function () {
-        return view('admin.shop_user_create');
-    });
-
     Route::controller('/order', 'OrderController');
-    Route::get('/order_statistical', function () {
-        return view('admin.order_statistical');
-    });
+    // Route::get('/order_statistical', function () {
+    //     return view('admin.order_statistical');
+    // });
     Route::controller('/permission', 'PermissionController');
 });
 

@@ -2,9 +2,9 @@
 
 namespace App\Providers\Manage;
 
+use App;
 use App\Providers\Manage\Helper;
 use Validator;
-use App;
 
 /**
  * Class ShopModule
@@ -21,19 +21,18 @@ class ShopModule
     public function index(array $condition)
     {
         $rule = array(
-            'page' => ['sometimes', 'required','integer','min:1'],
-            'page_number' => ['sometimes', 'required','integer','min:1'],
+            'page'        => ['sometimes', 'required', 'integer', 'min:1'],
+            'page_number' => ['sometimes', 'required', 'integer', 'min:1'],
         );
-        
+
         $validate = Validator::make($condition, $rule);
-        
+
         //校验
-        if($validate->fails()){
-            return Helper::error(10000,'参数错误!',$validate->messages());
+        if ($validate->fails()) {
+            return Helper::error(10000, '参数错误!', $validate->messages());
         }
 
         $builder = App::make('ShopModel')->select()->with('shopkeeper');
-
 
         return $builder->paginate($condition['page_number']);
     }
@@ -82,12 +81,12 @@ class ShopModule
     public function store(array $params)
     {
         $rule = array(
-            'id'            => ['sometimes', 'required','integer','min:1'],
+            'id'            => ['sometimes', 'required', 'integer', 'min:1'],
             'address'       => ['required'],
             'name'          => ['required'],
             'alias'         => ['required'],
-            'shopkeeper_id' => ['sometimes', 'required','integer','min:1'],
-            'status'        => ['required','boolean','in:0,1'],
+            'shopkeeper_id' => ['sometimes', 'required', 'integer', 'min:1'],
+            'status'        => ['required', 'boolean', 'in:0,1'],
         );
 
         //店铺名称唯一
@@ -96,12 +95,12 @@ class ShopModule
             $unique_name .= ",{$params['id']}";
         }
         $rule['name'][] = $unique_name;
-        
+
         $validate = Validator::make($params, $rule);
-        
+
         //校验
-        if($validate->fails()){
-            return Helper::error(10000,'参数错误!',$validate->messages());
+        if ($validate->fails()) {
+            return Helper::error(10000, '参数错误!', $validate->messages());
         }
 
         $model = App::make('ShopModel');
@@ -124,5 +123,6 @@ class ShopModule
         if (!$model->save()) {
             return Helper::error(80001, '店铺资料保存失败');
         }
+        return $model;
     }
 }
