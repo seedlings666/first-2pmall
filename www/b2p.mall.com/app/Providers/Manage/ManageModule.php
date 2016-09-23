@@ -42,7 +42,7 @@ class ManageModule
      * @return void
      * @author chentengfeng @create_at 2016-09-06  12:25:58
      */
-    public function index(array $condition = [])
+    public function index(array $condition = [], $isSystem = false)
     {
         $rule = array(
             'page'        => ['sometimes', 'required', 'integer', 'min:1'],
@@ -57,6 +57,11 @@ class ManageModule
         }
 
         $builder = App::make('ManageModel')->select();
+        if ($isSystem !== true) {
+            $builder = $builder->whereHas('manageShopRelation', function ($query) use ($condition) {
+                $query->where('shop_id', $condition['shop_id']);
+            });
+        }
 
         return $builder->paginate($condition['page_number']);
     }
