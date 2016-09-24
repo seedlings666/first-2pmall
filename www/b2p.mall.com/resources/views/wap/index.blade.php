@@ -212,9 +212,10 @@
 
         <div class="fix_nav">
             <ul>
-                <!-- <li>
+                @if(!$request->get('group_id'))
+                <li>
                     @if (isset($default_sku_info) && isset($default_sku_info->id))
-                        <a href="{{action('Wap\BuyController@getPay')}}/?goods_id={{ $goods_details['id'] }}&sku_id={{ $default_sku_info->id }}{!! $request->get('group_id') ? '&group_id='.$request->get('group_id') : '' !!}">
+                        <a href="{{action('Wap\BuyController@getPay')}}/?goods_id={{ $goods_details['id'] }}&sku_id={{ $default_sku_info->id }}{!! $group_id ? '&group_id='.$group_id : '' !!}">
                             提交订单
                         </a>
                     @else
@@ -222,12 +223,14 @@
                             提交订单
                         </a>
                     @endif
-                </li> -->
+                </li>
+                @else
                 <li>
                     <a href="javascript:void(0);" name="group_end">
                         提交订单
                     </a>
                 </li>
+                @endif
             </ul>
         </div>
 
@@ -242,11 +245,11 @@
                 //当为单品时,那么 sku_id 为 默认 skuid,否则为0
                 sku_id : '{{ isset($default_sku_info) && isset($default_sku_info->id) ? $default_sku_info->id : 0 }}',
                 goods_id : {{ $goods_details['id'] }},
-            @if($request->get('group_id'))
-                group_id : {{ $request->get('group_id') }},
+            @if($group_id)
+                group_id : {{ $group_id }},
             @endif
-                buy_link: '{{action('Wap\BuyController@getPay')}}/',
-                is_group: true
+                buy_link: '{{action('Wap\BuyController@getPay')}}',
+                is_group: {{ $groupEnd ? 'true' : 'false' }}
             };
 
             $(function(){
