@@ -9,10 +9,10 @@
     <!-- /section:settings.box -->
     <div class="page-header">
         <h1>
-            新增店员
+            编辑店员
             <small>
                 <i class="ace-icon fa fa-angle-double-right"></i>
-                新增店员基础数据
+                编辑店员基础数据
             </small>
         </h1>
     </div><!-- /.page-header -->
@@ -24,6 +24,24 @@
                 <input type="hidden" name="id" value="{{$show->id}}" >
                 <!-- #section:elements.form -->
                 <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" > 店铺 </label>
+
+                    <div class="col-sm-10">
+                        <div class="clearfix">
+                            @if($is_system)
+                            <select name="shop_id">
+                            @else
+                            <select disabled="true" name="shop_id">
+                            @endif
+                            @foreach ($shop_list as $value)
+                                <option value="{{$value->id}}" @if($value->id == $show->manageShopRelation->shop_id) selected="selected" @endif>{{$value->name}}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right" for="goods_name"> 工号 </label>
 
                     <div class="col-sm-10">
@@ -33,11 +51,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="goods_name"> 登录名称 </label>
+                    <label class="col-sm-2 control-label no-padding-right" for="goods_name"> 登录帐号 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_name" name="user_name" placeholder="登录名称" class="col-xs-5" value="{{$show->user_name}}"/>
+                            <input type="text" id="goods_name" name="user_name" placeholder="登录帐号" class="col-xs-5" value="{{$show->user_name}}"/>
                         </div>
                     </div>
                 </div>
@@ -77,27 +95,12 @@
                     <div class="col-sm-10">
                         <div class="clearfix">
                             <select name="status">
-                                <option value="1" @if ($show->status == 1) selected="selected" @endif>开店</option>
-                                <option value="0" @if ($show->status == 0) selected="selected" @endif>闭店</option>
+                                <option value="1" @if ($show->status == 1) selected="selected" @endif>在职</option>
+                                <option value="0" @if ($show->status == 0) selected="selected" @endif>离职</option>
                             </select>
                         </div>
                     </div>
-                <div>
-
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" > 店铺 </label>
-
-                    <div class="col-sm-10">
-                        <div class="clearfix">
-                            <select name="shop_id">
-                            @foreach ($shop_list as $value)
-                                <option value="{{$value->id}}" @if($value->id == $show->manageShopRelation->shop_id) selected="selected" @endif>{{$value->name}}</option>
-                            @endforeach
-                            </select>
-                        </div>
-                    </div>
-                <div>
-            </form>
+                </div>
 
             <!-- /section:elements.form -->
             <div class="space-4"></div>
@@ -116,6 +119,8 @@
                     </a>
                 </div>
             </div>
+
+        </form>
         </div><!-- /.row -->
     </div>
 </div><!-- /.page-content -->

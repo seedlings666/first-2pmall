@@ -23,6 +23,41 @@
             <form role="form" id="validation-form" method="post" action="{{action('Admin\ManageController@postStore')}}">
                 <!-- #section:elements.form -->
                 <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" > 店铺 </label>
+
+                    <div class="col-sm-10">
+                        <div class="clearfix">
+                            @if($is_system)
+                            <select name="shop_id">
+                            @else
+                            <select disabled="true" name="shop_id">
+                            @endif
+                            @foreach ($shop_list as $value)
+                                @if($value->id == $shop_id)
+                                <option selected="selected" value="{{$value->id}}" >{{$value->name}}</option>
+                                @else
+                                <option value="{{$value->id}}" >{{$value->name}}</option>
+                                @endif
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+              <!--   <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="market_price"> 当前状态 </label>
+
+                    <div class="col-sm-10">
+                        <div class="clearfix">
+                            <select disabled="true" name="status">
+                                <option value="1" >开店</option>
+                                <option value="0" >闭店</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right" for="goods_name"> 工号 </label>
 
                     <div class="col-sm-10">
@@ -32,11 +67,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="goods_name"> 登录名称 </label>
+                    <label class="col-sm-2 control-label no-padding-right" for="goods_name"> 登录帐号 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <input type="text" id="goods_name" name="user_name" placeholder="登录名称" class="col-xs-5" />
+                            <input type="text" id="goods_name" name="user_name" placeholder="登录帐号" class="col-xs-5" />
                         </div>
                     </div>
                 </div>
@@ -68,33 +103,6 @@
                     </div>
                 </div>
 
-
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="market_price"> 当前状态 </label>
-
-                    <div class="col-sm-10">
-                        <div class="clearfix">
-                            <select name="status">
-                                <option value="1" >开店</option>
-                                <option value="0" >闭店</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" > 店铺 </label>
-
-                    <div class="col-sm-10">
-                        <div class="clearfix">
-                            <select name="shop_id">
-                            @foreach ($shop_list as $value)
-                                <option value="{{$value->id}}" >{{$value->name}}</option>
-                            @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
                 <!-- /section:elements.form -->
                 <div class="space-4"></div>
 
@@ -104,7 +112,7 @@
                             <i class="ace-icon fa fa-check bigger-110"></i>
                             提交
                         </button>
-                        
+
                         &nbsp; &nbsp; &nbsp;
                         <a href="{{url('/admin')}}" class="btn" type="reset">
                             <i class="ace-icon fa fa-undo bigger-110"></i>

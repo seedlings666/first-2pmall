@@ -86,7 +86,9 @@ class ManageController extends Controller
     public function getStore(ShopModule $module_shop)
     {
         $shop_list = $module_shop->simpleList();
-        return view('admin.shop_user_create')->with(compact('shop_list'));
+        $shop_id   = Session::get('admin_user.shop_id');
+        $is_system = $this->isSystem();
+        return view('admin.shop_user_create')->with(compact('shop_list', 'shop_id', 'is_system'));
     }
 
     /**
@@ -104,7 +106,7 @@ class ManageController extends Controller
             'nick_name'    => $request->get('nick_name'),
             'mobile_phone' => $request->get('mobile_phone'),
             'role_id'      => $request->get('role_id', 0),
-            'status'       => $request->get('status'),
+            'status'       => 1,
         ];
 
         DB::beginTransaction();
@@ -114,12 +116,15 @@ class ManageController extends Controller
             return back();
         }
 
-        $rs = $module->joinShop($rs->id, $request->get('shop_id'));
+        $manage_id = $rs->id;
+        $shop_id   = $this->isSystem() ? $request->get('shop_id') : Session::get('admin_user.shop_id');
+        $rs        = $module->joinShop($rs->id, $shop_id);
         if (isset($rs['err_code'])) {
             DB::rollBack();
             return back();
         }
-
+        \App\Models\Manage::find($manage_id, ['id'])
+            ->attachRole(\App\Models\Role::where('name', 'shop-staff')->first(['id']));
         DB::commit();
 
         return redirect()->action('Admin\ManageController@getIndex');
@@ -135,8 +140,11 @@ class ManageController extends Controller
     {
         $shop_list = $module_shop->simpleList();
         $show      = $module->show($manage_id);
-        //dd($show->toArray());
-        return view('admin.shop_user_edit')->with(compact('shop_list', 'show'));
+        $is_system = $this->isSystem();
+        if (!$is_system && Session::get('admin_user.shop_id') != $show->manageShopRelation->shop_id) {
+            \App::abort(404);
+        }
+        return view('admin.shop_user_edit')->with(compact('shop_list', 'show', 'is_system'));
     }
 
     /**
@@ -159,6 +167,10 @@ class ManageController extends Controller
         if (!empty($request->get('password'))) {
             $params['password'] = $request->get('password');
         }
+        $shop_id = $this->isSystem() ? $request->get('shop_id') : Session::get('admin_user.shop_id');
+        if (!$this->isSystem() && Session::get('admin_user.shop_id') != $request->get('shop_id')) {
+            \App::abort(500);
+        }
 
         DB::beginTransaction();
         $rs = $module->store($params);
@@ -167,12 +179,11 @@ class ManageController extends Controller
             return back();
         }
 
-        $rs = $module->joinShop($rs->id, $request->get('shop_id'));
+        $rs = $module->joinShop($rs->id, $shop_id);
         if (isset($rs['err_code'])) {
             DB::rollBack();
             return back();
         }
-
         DB::commit();
 
         return redirect()->action('Admin\ManageController@getIndex');
