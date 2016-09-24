@@ -40,7 +40,7 @@ class UserModule
                     ->select('id', 'points', 'nick_name', 'avatar')
                     ->find($id);
 
-        if (empty($user_info->avatar)) {
+        if ($user_info && empty($user_info->avatar)) {
             $user_info->avatar = config('wechat.avatar');
         }
 
