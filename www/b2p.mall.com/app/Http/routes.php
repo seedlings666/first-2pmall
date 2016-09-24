@@ -47,19 +47,17 @@ Route::any('/group/order/{type}/{pay_sn}', 'Wap\BuyController@createOrder');
 
 // 管理后台
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'adminLogin'], function () {
+    Route::get('/', function () {
+        return Redirect::to('/admin/goods');
+    });
     //后台商品模块
     Route::controller('/goods', 'GoodsController');
-    Route::get('/', function () {
-        return view('admin.index');
-    });
     Route::controller('/shop', 'ShopController');
     Route::controller('/user', 'UserController');
     Route::controller('/manage', 'ManageController');
     Route::controller('/wx', 'WxController');
     Route::controller('/order', 'OrderController');
-    // Route::get('/order_statistical', function () {
-    //     return view('admin.order_statistical');
-    // });
+    Route::controller('/statistical', 'StatisticalController');
     Route::controller('/permission', 'PermissionController');
 });
 

@@ -95,14 +95,7 @@
                 </table>
 
                 <!-- PAGE CONTENT ENDS -->
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="dataTables_info" role="status" aria-live="polite">
-                            显示 1 - 10 共 2 条数据
-                        </div>
-                    </div>
-                    <div class="col-xs-6">{{ $res_data->appends(request()->all())->render() }}</div>
-                </div>
+                {!! $res_data->render(new \App\PaginateRender($res_data)) !!}
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div>

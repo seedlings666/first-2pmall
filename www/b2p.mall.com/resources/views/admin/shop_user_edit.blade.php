@@ -34,13 +34,13 @@
                             <select disabled="true" name="shop_id">
                             @endif
                             @foreach ($shop_list as $value)
-                                <option value="{{$value->id}}" @if($value->id == $show->manageShopRelation->shop_id) selected="selected" @endif>{{$value->name}}</option>
+                                <option value="{{$value->id}}" @if(!$is_system && $value->id == $show->manageShopRelation->shop_id) selected="selected" @endif>{{$value->name}}</option>
                             @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right" for="goods_name"> 工号 </label>
 
