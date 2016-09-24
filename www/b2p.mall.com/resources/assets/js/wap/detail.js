@@ -5,6 +5,7 @@
  * @version 1.0
  */
 (function($, undefined){
+    'use strict';
     // sku选择
     var tmpArr = [];
     $('.sku_box a').on('click', function(){
@@ -82,7 +83,11 @@
             })
             .done(function(re) {
                 if('err_code' in re){
-                    alert(re.msg);
+                    JOEY.alert({
+                        title: '系统提示',
+                        content: re.msg,
+                        singleBtn: true
+                    });
                 }else{
                     if(type == 'size'){
                         // 添加默认样式
@@ -112,5 +117,16 @@
                 console.log("error", re);
             });
         }
+    });
+
+    // 拼团过期提醒
+    $('[name=group_end]').on('click', function(){
+        JOEY.alert({
+            title: '系统提示',
+            content: '该拼团已结束，是否重新创建拼团？',
+            sure: function () {
+                window.location.href = goodsData.buy_link + '/?goods_id='+ goodsData.goods_id +'&sku_id='+ goodsData.sku_id;
+            }
+        });
     });
 })(jQuery);

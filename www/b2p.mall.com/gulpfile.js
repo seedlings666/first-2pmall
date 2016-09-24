@@ -1,5 +1,5 @@
 var elixir = require('laravel-elixir');
-
+require('laravel-elixir-uglify');
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -10,6 +10,7 @@ var elixir = require('laravel-elixir');
  | file for our application, as well as publishing vendor resources.
  |
  */
+elixir.config.sourcemaps = false;
 
 elixir(function(mix) {
     // 复制js
@@ -101,6 +102,7 @@ elixir(function(mix) {
         .styles('admin/sunburst.css', 'public/css/admin')
         .styles('admin/colorbox.min.css', 'public/css/admin')
 
+
         // 添加版本号
         .version([
             // 公用 js
@@ -191,7 +193,8 @@ elixir(function(mix) {
             'css/admin/font-awesome.min.css',
             'css/admin/sunburst.css',
             'css/admin/colorbox.min.css',
-        ]);
+        ])
+        .uglify();
 
     // 自动刷新页面
     // mix.browserSync({
