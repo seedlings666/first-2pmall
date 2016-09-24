@@ -110,12 +110,13 @@ class ShopController extends Controller
     public function postEdit(ShopModule $module, Request $request)
     {
         $params = [
-            'id'            => $request->get('id'),
-            'address'       => $request->get('address'),
-            'name'          => $request->get('name'),
-            'alias'         => $request->get('alias'),
-            'status'        => $request->get('status'),
-            'shopkeeper_id' => $request->get('shopkeeper_id'),
+            'id'      => $request->get('id'),
+            'address' => $request->get('address'),
+            'name'    => $request->get('name'),
+            'alias'   => $request->get('alias'),
+            'status'  => $request->get('status'),
+            //暂时不做变更店铺店主操作
+            // 'shopkeeper_id' => $request->get('shopkeeper_id'),
         ];
 
         $rs = $module->store($params);

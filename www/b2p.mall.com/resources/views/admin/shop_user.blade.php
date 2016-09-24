@@ -77,9 +77,7 @@
                 </table>
 
                 <!-- PAGE CONTENT ENDS -->
-                <div class="row">
-                    {{$list->links()}}
-                </div>
+                {!! $list->render(new \App\PaginateRender($list)) !!}
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div>

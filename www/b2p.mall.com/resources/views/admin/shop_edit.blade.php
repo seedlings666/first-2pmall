@@ -55,20 +55,20 @@
                     </div>
                 </div>
 
-                @if (!empty($manag_list) && !$manag_list->isEmpty()) 
+                @if (!empty($manag_list) && !$manag_list->isEmpty())
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right" for="market_price"> 店主 </label>
 
                     <div class="col-sm-10">
                         <div class="clearfix">
-                            <select name="shopkeeper_id">
+                            <select disabled="true" name="shopkeeper_id">
                             @foreach ($manag_list as $key => $value)
                                 <option value="{{$key}}" @if ($key == $show->shopkeeper_id) selected="selected" @endif >{{$value}}</option>
                             @endforeach
                             </select>
                         </div>
                     </div>
-                <div>
+                </div>
                 @endif
 
                 <div class="form-group">
@@ -96,6 +96,7 @@
 
                 </div>
             </div>
+
             </form>
         </div><!-- /.row -->
     </div>

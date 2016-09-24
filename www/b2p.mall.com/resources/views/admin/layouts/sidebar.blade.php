@@ -13,9 +13,11 @@
             <i class="ace-icon fa fa-users"></i>
         </a>
 
-        <a href="{{ url('/admin/competence') }}" class="btn btn-danger">
+        @ability('admin,owner', 'view-permission')
+        <a href="{{ url('/admin/permission') }}" class="btn btn-danger">
             <i class="ace-icon fa fa-cogs"></i>
         </a>
+        @endability
 
         <!-- /section:basics/sidebar.layout.shortcuts -->
     </div>
@@ -34,7 +36,7 @@
 <ul class="nav nav-list">
 
     @ability('admin,owner', 'view-goods')
-    <li class="{{ Request::path() == 'admin/goods' ? 'active' : '' }}">
+    <li class="{{ Request::is('admin/goods*') ? 'active' : '' }}">
         <a href="{{ url('/admin/goods') }}">
             <i class="menu-icon fa fa-inbox"></i>
             <span class="menu-text"> 商品管理 </span>
@@ -45,7 +47,7 @@
     @endability
 
     @ability('admin,owner', 'view-order')
-    <li class="{{ Request::path() == 'admin/order' ? 'active' : '' }}">
+    <li class="{{ Request::is('admin/order*') ? 'active' : '' }}">
         <a href="{{ url('/admin/order') }}">
             <i class="menu-icon fa fa-list"></i>
             <span class="menu-text"> 订单管理 </span>
@@ -56,8 +58,8 @@
     @endability
 
     @ability('admin,owner', 'view-statistics')
-    <li class="{{ Request::path() == 'admin/order_statistical' ? 'active' : '' }}">
-        <a href="{{ action('Admin\OrderController@getStatistic') }}">
+    <li class="{{ Request::is('admin/statistical/order*') ? 'active' : '' }}">
+        <a href="{{ action('Admin\StatisticalController@getOrder') }}">
             <i class="menu-icon fa fa-bar-chart-o"></i>
             <span class="menu-text"> 订单统计 </span>
         </a>
@@ -67,7 +69,7 @@
     @endability
 
     @ability('admin,owner', 'view-shop')
-    <li class="{{ Request::path() == 'admin/shop' ? 'active' : '' }}">
+    <li class="{{ Request::is('admin/shop*') ? 'active' : '' }}">
         <a href="{{ url('/admin/shop') }}">
             <i class="menu-icon fa fa-users"></i>
             <span class="menu-text"> 店铺管理 </span>
@@ -78,7 +80,7 @@
     @endability
 
     @ability('admin,owner', 'view-shop-staff')
-    <li class="{{ Request::path() == 'admin/shop_user' ? 'active' : '' }}">
+    <li class="{{ Request::is('admin/manage*') ? 'active' : '' }}">
         <a href="{{ action('Admin\ManageController@getIndex') }}">
             <i class="menu-icon fa fa-users"></i>
             <span class="menu-text"> 店员管理 </span>
@@ -87,9 +89,9 @@
         <b class="arrow"></b>
     </li>
     @endability
-    
+
     @ability('admin,owner', 'view-user')
-    <li class="{{ Request::path() == 'admin/user' ? 'active' : '' }}">
+    <li class="{{ Request::is('admin/user*') ? 'active' : '' }}">
         <a href="{{ url('/admin/user') }}">
             <i class="menu-icon fa fa-users"></i>
             <span class="menu-text"> 用户管理 </span>
@@ -100,7 +102,7 @@
     @endability
 
     @ability('admin,owner', 'view-permission')
-    <li class="{{ Request::path() == 'admin/permission' ? 'active' : '' }}">
+    <li class="{{ Request::is('admin/permission*') ? 'active' : '' }}">
         <a href="{{ url('/admin/permission') }}">
             <i class="menu-icon fa fa-cogs"></i>
             <span class="menu-text"> 权限管理 </span>
