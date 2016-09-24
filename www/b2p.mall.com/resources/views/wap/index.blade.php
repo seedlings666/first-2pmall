@@ -212,16 +212,21 @@
 
         <div class="fix_nav">
             <ul>
+                <!-- <li>
+                    @if (isset($default_sku_info) && isset($default_sku_info->id))
+                        <a href="{{action('Wap\BuyController@getPay')}}/?goods_id={{ $goods_details['id'] }}&sku_id={{ $default_sku_info->id }}{!! $request->get('group_id') ? '&group_id='.$request->get('group_id') : '' !!}">
+                            提交订单
+                        </a>
+                    @else
+                        <a href="javascript:void(0);" name="buy_but">
+                            提交订单
+                        </a>
+                    @endif
+                </li> -->
                 <li>
-                @if (isset($default_sku_info) && isset($default_sku_info->id))
-                    <a href="{{action('Wap\BuyController@getPay')}}/?goods_id={{ $goods_details['id'] }}&sku_id={{ $default_sku_info->id }}{!! $request->get('group_id') ? '&group_id='.$request->get('group_id') : '' !!}">
+                    <a href="javascript:void(0);" name="group_end">
                         提交订单
                     </a>
-                @else
-                    <a href="javascript:void(0);" name="buy_but">
-                        提交订单
-                    </a>
-                @endif
                 </li>
             </ul>
         </div>
@@ -243,15 +248,6 @@
                 buy_link: '{{action('Wap\BuyController@getPay')}}/',
                 is_group: true
             };
-
-            // 拼团过期提醒
-            JOEY.alert({
-                title: 'point',
-                content: 'content',
-                sure: function () {
-                    window.location.href = '{{action('Wap\BuyController@getPay')}}/?goods_id={{ $goods_details['id'] }}&sku_id={{ $default_sku_info->id }}'
-                }
-            });
 
             $(function(){
                 $('#slider_wrapper').swipeSlide({
