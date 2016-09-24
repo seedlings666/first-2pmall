@@ -53,6 +53,9 @@
                     // 订单连接拼接
                     var payUrl = goodsData.buy_link + '?goods_id=' + goodsData.goods_id + '&sku_id=' + re.id + (goodsData.group_id && goodsData.is_group ? '&group_id=' + goodsData.group_id : '');
                     $('[name=buy_but]').attr('href', payUrl);
+
+                    // sku_id 赋值
+                    goodsData.sku_id = re.id;
                 }
             })
             .fail(function(re) {
