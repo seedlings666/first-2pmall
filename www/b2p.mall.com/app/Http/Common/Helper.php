@@ -2,8 +2,9 @@
 
 namespace App\Http\Common;
 
-class Helper{
-    
+class Helper
+{
+
     /**
      * 返回数据
      * @author  jianwei
@@ -11,14 +12,12 @@ class Helper{
      * @param   $msg    string      '消息'
      * @param   $data   array   返回的数据
      */
-    public static function ErrorMessage($code,$msg = '',array $data = [])
+    public static function ErrorMessage($code, $msg = '', array $data = [])
     {
-        $return_arr = array();
+        $return_arr             = array();
         $return_arr['err_code'] = $code;
-        $return_arr['msg'] = $msg;
-        $return_arr['data'] = $data;
-        
+        $return_arr['msg']      = $msg;
+        $return_arr['data']     = $data;
         return $return_arr;
     }
-    
 }

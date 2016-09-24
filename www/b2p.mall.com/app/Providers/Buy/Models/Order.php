@@ -15,6 +15,12 @@ class Order extends Base
         return $this->group_rp == 1;
     }
 
+    //是否新的拼团
+    public function isNewGroup()
+    {
+        return $this->order_status == 1;
+    }
+
     //是否拼团已结束
     public function isGroupEnd()
     {
@@ -25,6 +31,12 @@ class Order extends Base
     public function isExpired()
     {
         return $this->isFirstGroup() && !$this->isGroupEnd() && (strtotime($this->created_at) + 86400) < time();
+    }
+
+    //能否加入拼团
+    public function canJoin()
+    {
+        return $this->isFirstGroup() && $this->isNewGroup() && !$this->isExpired();
     }
 
     //是否已退还优惠金额
