@@ -49,7 +49,11 @@
 
     <body>
         <div class="error_page">
+            @if(array_get($error, 'err_msg'))
+            <p>{{ array_get($error, 'err_code') }}: {{ array_get($error, 'err_msg', array_get($error, 'msg')) }}</p>
+            @else
             <p>抱歉，您访问的页面不存在！</p>
+            @endif
             <a href="javascript:history.back(-1);">返回上一页</a>
         </div>
     </body>

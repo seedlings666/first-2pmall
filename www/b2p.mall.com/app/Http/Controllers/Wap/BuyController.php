@@ -33,7 +33,7 @@ class BuyController extends Controller
         $buyModule = new BuyModule();
         $res       = $buyModule->createPay($input_data);
         if (isset($res['err_code'])) {
-            return $res;
+            return view('wap.error', ['error' => $res]);
         }
         $pay_sn = $res['pay_sn']['pay_sn'];
         //创建微信支付
@@ -46,7 +46,7 @@ class BuyController extends Controller
         $payModule   = new PayModule();
         $biz_package = $payModule->buildPayParams($pay_data);
         if (isset($biz_package['err_code'])) {
-            return $biz_package;
+            return view('wap.error', ['error' => $biz_package]);
         }
         //支付成功跳转页面
         $callback_url = action('Wap\BuyController@groupOrders', [$user_id]);
@@ -134,6 +134,8 @@ class BuyController extends Controller
             $payModule = new PayModule();
             $payModule->refundByOrderId($res['group_id']);
         }
+        $userModule = \App::make('\App\Providers\Wx\UserModule');
+        $userModule->pointsChange($log_data['user_id'], $res['order_amount']);
 
         return $pay_sn;
     }
