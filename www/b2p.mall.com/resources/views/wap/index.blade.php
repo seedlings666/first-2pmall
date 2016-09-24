@@ -240,8 +240,18 @@
             @if($request->get('group_id'))
                 group_id : {{ $request->get('group_id') }},
             @endif
-                buy_link: '{{action('Wap\BuyController@getPay')}}/'
+                buy_link: '{{action('Wap\BuyController@getPay')}}/',
+                is_group: true
             };
+
+            // 拼团过期提醒
+            JOEY.alert({
+                title: 'point',
+                content: 'content',
+                sure: function () {
+                    window.location.href = '{{action('Wap\BuyController@getPay')}}/?goods_id={{ $goods_details['id'] }}&sku_id={{ $default_sku_info->id }}'
+                }
+            });
 
             $(function(){
                 $('#slider_wrapper').swipeSlide({

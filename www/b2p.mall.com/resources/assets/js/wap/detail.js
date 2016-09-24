@@ -50,7 +50,7 @@
                     $('[name=stock]').html('库存：'+ re.sku_number +'件');
 
                     // 订单连接拼接
-                    var payUrl = goodsData.buy_link + '?goods_id=' + goodsData.goods_id + '&sku_id=' + re.id + (goodsData.group_id ? '&group_id=' + goodsData.group_id : '');
+                    var payUrl = goodsData.buy_link + '?goods_id=' + goodsData.goods_id + '&sku_id=' + re.id + (goodsData.group_id && goodsData.is_group ? '&group_id=' + goodsData.group_id : '');
                     $('[name=buy_but]').attr('href', payUrl);
                 }
             })
