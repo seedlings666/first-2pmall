@@ -22,11 +22,13 @@ var order_list = {
         var winHeight = $(window).height();
         // 获取当前加载订单类型
         var orderType = $('#order_tab li.on').data('type');
+        // 下一页数值
+        var nextPage = $('#order_content').data('next-page') || null;
 
         // 监听页面滚动事件
         $(document).scroll(function(){
             // 下一页数值
-            var nextPage = $('#order_content').data('next-page');
+            nextPage = $('#order_content').data('next-page') || null;
             // 获取当前滚动的距离
             var scrollTopVal = $(document).scrollTop();
             // 文档的高度
@@ -75,7 +77,7 @@ var order_list = {
         // 点击加载更多
         $('#load_point').on('click', function(){
             // 下一页数值
-            var nextPage = $('#order_content').data('next-page');
+            nextPage = $('#order_content').data('next-page') || null;
 
             // 当文档高度等于加载距离是进行加载并且判断是否可以进行ajax请求
             if(status && nextPage != null){
