@@ -24,8 +24,14 @@
         border-bottom: 2px solid transparent;
         border-right: 1px solid #dedede;
 
+        a{
+            color: #999;
+        }
+
         &.on{
-            color: #ff5555;
+            a{
+                color: #ff5555;
+            }
             border-bottom: 2px solid #ff5555;
         }
 

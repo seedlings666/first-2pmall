@@ -23,11 +23,19 @@
         <div class="main_warp order_tab_box">
             <ul id="order_tab" data-url="{{action('Wap\BuyController@groupOrders')}}">
             @if(strtolower(request()->get('type')) == 'my_orders')
-                <li class="on" data-type="my_orders">我的订单</li>
-                <li data-type="all_orders">全部订单</li>
+                <li class="on" data-type="my_orders">
+                    <a href="{{ action('Wap\BuyController@groupOrders') }}/?type=my_orders">我的订单</a>
+                </li>
+                <li data-type="all_orders">
+                    <a href="{{ action('Wap\BuyController@groupOrders') }}/?type=all_orders">全部订单</a>
+                </li>
             @else
-                <li data-type="my_orders">我的订单</li>
-                <li class="on" data-type="all_orders">全部订单</li>
+                <li data-type="my_orders">
+                    <a href="{{ action('Wap\BuyController@groupOrders') }}/?type=my_orders">我的订单</a>
+                </li>
+                <li class="on" data-type="all_orders">
+                    <a href="{{ action('Wap\BuyController@groupOrders') }}/?type=all_orders">全部订单</a>
+                </li>
             @endif
             </ul>
         </div>
@@ -65,9 +73,7 @@
                                 <!-- <span>待支付</span> -->
                                 <!-- <a href="" class="go_to_buy">去支付</a> -->
                                 <!-- <a href="">取消订单</a> -->
-                                @if($order['is_share'])
-                                    <a href="" class="share_pt">分享拼团</a>
-                                @endif
+                                <!-- <a href="" class="share_pt">分享拼团</a> -->
                                 @if($order['join_group'])
                                     <a href="{{ $order['join_group'] }}" class="join_pt">加入拼团</a>
                                 @endif

@@ -50,6 +50,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::get('/', function () {
         return Redirect::to('/admin/goods');
     });
+    Route::controller('/404', 'ErrorController');
     //后台商品模块
     Route::controller('/goods', 'GoodsController');
     Route::controller('/shop', 'ShopController');
