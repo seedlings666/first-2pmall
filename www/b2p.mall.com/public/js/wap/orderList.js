@@ -8,43 +8,8 @@
 
 var order_list = {
     init: function(){
-        // tab 切换
-        this.tabSwitch();
-
         // 滚动加载更多
         this.scrollLoadMore();
-    },
-    tabSwitch: function(){
-        var that = this;
-        var ajaxUrl = '';
-        //点击tab事件
-        $('#order_tab li').on('click', function(){
-            var _this = this;
-            // 获取请求地址
-            ajaxUrl = $(this).parents('ul').data('url');
-            // 获取当前请求类型
-            var dataType = $(this).data('type');
-            // 请求数据
-            $.ajax({
-                url: ajaxUrl,
-                type: 'get',
-                dataType: 'json',
-                data: {type: dataType}
-            })
-            .done(function(re){
-                // 拼接列表
-                var h = that._dataPj(re);
-                // 修改下一页页码
-                $('#order_content').data('next-page', re.response_data.next_page);
-                // 修改tab样式
-                $(_this).addClass('on').siblings('li').removeClass('on');
-                // 将拼接的html放到页面容器中
-                $('#order_content').html(h);
-            })
-            .fail(function(){
-                console.log('请求接口失败!');
-            });
-        });
     },
     // 滚动加载更多
     scrollLoadMore: function(){
@@ -53,8 +18,6 @@ var order_list = {
         var status = true;
         // 请求地址
         var ajaxUrl = $('#order_tab').data('url');
-        // 下一页数值
-        var nextPage = $('#order_content').data('next-page');
         // 窗口高度
         var winHeight = $(window).height();
         // 获取当前加载订单类型
@@ -62,6 +25,8 @@ var order_list = {
 
         // 监听页面滚动事件
         $(document).scroll(function(){
+            // 下一页数值
+            var nextPage = $('#order_content').data('next-page');
             // 获取当前滚动的距离
             var scrollTopVal = $(document).scrollTop();
             // 文档的高度
@@ -70,7 +35,7 @@ var order_list = {
             var loadDistance = winHeight + scrollTopVal;
 
             // 当文档高度等于加载距离是进行加载并且判断是否可以进行ajax请求
-            if(loadDistance == docHeight && status && nextPage != ''){
+            if(loadDistance == docHeight && status && nextPage != null){
                 // 将加载状态设置为不可加载，以避免重复请求
                 status = false;
                 // 改变提示文字
@@ -84,6 +49,57 @@ var order_list = {
                 })
                 .done(function(re) {
                     var h = _this._dataPj(re);
+                    // 修改页面下一页的值
+                    $('#order_content').data('next-page', re.response_data.next_page);
+
+                    // 将加载状态设置为可加载
+                    status = true;
+
+                    // 将拼接的html放到页面容器中
+                    $('#order_content').append(h);
+                    console.log("success", re);
+                })
+                .fail(function() {
+                    // 将加载状态设置为可加载
+                    status = true;
+                    // 改变提示文字
+                    $('#load_point').html('加载失败！请刷新页面重新加载！');
+                    console.log("error");
+                });
+            }else{
+                // 改变提示文字
+                $('#load_point').html('没有更多的数据了！');
+            }
+        });
+
+        // 点击加载更多
+        $('#load_point').on('click', function(){
+            // 下一页数值
+            var nextPage = $('#order_content').data('next-page');
+
+            // 当文档高度等于加载距离是进行加载并且判断是否可以进行ajax请求
+            if(status && nextPage != null){
+                // 将加载状态设置为不可加载，以避免重复请求
+                status = false;
+                // 改变提示文字
+                $('#load_point').html('数据加载中……');
+                // ajax请求数据列表
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {type: orderType, page: nextPage},
+                })
+                .done(function(re) {
+                    var h = _this._dataPj(re);
+
+                    // 修改页面下一页的值
+                    $('#order_content').data('next-page', re.response_data.next_page);
+
+                    // 修改文字状态
+                    if(re.response_data.next_page != null){
+                        $('#load_point').html('查看更多数据');
+                    }
 
                     // 将加载状态设置为可加载
                     status = true;
@@ -139,7 +155,7 @@ var order_list = {
                         '<!-- <span>待支付</span> -->'+
                         '<!-- <a href="" class="go_to_buy">去支付</a> -->'+
                         '<!-- <a href="">取消订单</a> -->'+
-                        (this.is_share ? '<a href="" class="share_pt">分享拼团</a>' : '') +
+                        '<!-- <a href="" class="share_pt">分享拼团</a> -->' +
                         (this.join_group ? '<a href="'+ this.join_group + '" class="join_pt">加入拼团</a>' : '')+
                     '</div>'+
                     (this.is_end ? '<div class="is_over">拼团已结束</div>' : '') +
