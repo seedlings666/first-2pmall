@@ -179,7 +179,8 @@ class GoodsController extends Controller
         $goods_info = (new GoodsModule())->getGoodsDetails($goods_id, $shop_id, $is_system);
 
         if (isset($goods_info['err_code'])) {
-            return $goods_info;
+            return view('admin.error.error', ['error' => $goods_info]);
+            // return $goods_info;
         }
 
         //return Response::json($goods_info);
@@ -285,7 +286,8 @@ class GoodsController extends Controller
         $goods_details = (new GoodsModule())->getGoodsDetails($goods_id, $shop_id, $is_system);
 
         if (is_array($goods_details) && isset($goods_details['err_code'])) {
-            return Redirect::back();
+            return view('admin.error.error', ['error' => $goods_details]);
+            // return Redirect::back();
         }
 
         return View::make('admin.edit_goods')->with($goods_details);
