@@ -1268,7 +1268,7 @@ class GoodsModule
      */
     public function getGoodsDetails($goods_id, $shop_id, $is_system)
     {
-        if (!is_numeric($shop_id) || $shop_id < 1 || !is_numeric($goods_id) || $goods_id < 1 || !in_array($is_system, [0, 1])) {
+        if (!is_numeric($shop_id) || !is_numeric($goods_id) || $goods_id < 1 || !in_array($is_system, [0, 1])) {
             return Helper::ErrorMessage(10000, '参数错误!');
         }
 

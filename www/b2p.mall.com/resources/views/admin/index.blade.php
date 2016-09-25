@@ -81,10 +81,11 @@
                                     <a href="{{ action('Admin\GoodsController@getShow', [$lv->id]) }}" class="btn btn-xs btn-success">
                                         <i class="ace-icon fa fa-search bigger-120"></i>
                                     </a>
-
+                                @if(Session::get('admin_user.shop_id') == $lv->shop_id)
                                     <a href="{{ action('Admin\GoodsController@getEdit', [$lv->id]) }}" class="btn btn-xs btn-info">
                                         <i class="ace-icon fa fa-pencil bigger-120"></i>
                                     </a>
+                                @endif
                                 </div>
                             </td>
                         </tr>

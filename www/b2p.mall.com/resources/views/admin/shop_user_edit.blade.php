@@ -113,7 +113,7 @@
                     </button>
 
                     &nbsp; &nbsp; &nbsp;
-                    <a href="{{url('/admin')}}" class="btn" type="reset">
+                    <a href="javascript:history.back(-1);" class="btn" type="reset">
                         <i class="ace-icon fa fa-undo bigger-110"></i>
                         取消
                     </a>

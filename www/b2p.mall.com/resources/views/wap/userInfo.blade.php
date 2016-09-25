@@ -64,7 +64,7 @@
         <div class="main_warp user_tool">
             <ul>
                 <li class="my_order">
-                    <a href="">我的订单</a>
+                    <a href="{!! action('Wap\BuyController@groupOrders') !!}?type=my_orders">我的订单</a>
                 </li>
             </ul>
         </div>

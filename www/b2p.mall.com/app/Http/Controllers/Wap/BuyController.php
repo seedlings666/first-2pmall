@@ -144,12 +144,12 @@ class BuyController extends Controller
     {
         //seesion获取用户id
         $input_data = ['user_id' => \Session::get('user.id', 0)];
-        if (strtolower($type) == 'my_orders') {
+        if (strtolower(request()->get('type', $type)) == 'my_orders') {
             //seesion获取用户id
             $input_data['by_user'] = \Session::get('user.id', 0);
         }
         $buyModule  = new BuyModule();
-        $order_list = $buyModule->getOrderList($input_data, \Request::get('next_page', 0), 15);
+        $order_list = $buyModule->getOrderList($input_data, \Request::get('page', 0), 15);
 
         if (\Request::ajax()) {
             return ['response_data' => $order_list];

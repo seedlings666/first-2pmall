@@ -22,8 +22,13 @@
 
         <div class="main_warp order_tab_box">
             <ul id="order_tab" data-url="{{action('Wap\BuyController@groupOrders')}}">
+            @if(strtolower(request()->get('type')) == 'my_orders')
                 <li class="on" data-type="my_orders">我的订单</li>
                 <li data-type="all_orders">全部订单</li>
+            @else
+                <li data-type="my_orders">我的订单</li>
+                <li class="on" data-type="all_orders">全部订单</li>
+            @endif
             </ul>
         </div>
 
