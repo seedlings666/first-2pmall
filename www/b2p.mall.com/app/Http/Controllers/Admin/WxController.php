@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use EasyWeChat\Foundation\Application;
 use App\Http\Controllers\Controller;
+use EasyWeChat\Foundation\Application;
 
 /**
  * Class WxController
@@ -19,7 +19,7 @@ class WxController extends Controller
      */
     public function getSetMenu(Application $wechat_app)
     {
-        $uri = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=[APPID]&redirect_uri=[redirect]&response_type=code&scope=snsapi_base&state=menu#wechat_redirect';
+        $uri     = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=[APPID]&redirect_uri=[redirect]&response_type=code&scope=snsapi_base&state=menu#wechat_redirect';
         $buttons = [];
 
         //拼团
@@ -34,8 +34,8 @@ class WxController extends Controller
             'name' => '个人中心',
             'type' => 'view',
             'url'  => str_replace(
-                ['[APPID]', '[redirect]'], 
-                [config('wechat.app_id'), urlencode(action('Wap\UserController@getShow'))], 
+                ['[APPID]', '[redirect]'],
+                [config('wechat.app_id'), urlencode(action('Wap\UserController@getShow'))],
                 $uri
             ),
         ];
@@ -45,8 +45,11 @@ class WxController extends Controller
             'name' => '订单详情',
             'type' => 'view',
             'url'  => str_replace(
-                ['[APPID]', '[redirect]'], 
-                [config('wechat.app_id'), urlencode(action('Wap\UserController@getShow'))], 
+                ['[APPID]', '[redirect]'],
+                [
+                    config('wechat.app_id'),
+                    urlencode(action('Wap\BuyController@groupOrders') . '?type=my_orders'),
+                ],
                 $uri
             ),
         ];
