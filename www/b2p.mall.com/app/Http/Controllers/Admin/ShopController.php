@@ -65,18 +65,21 @@ class ShopController extends Controller
         $manage = $manageModule->store($manageData);
         if (isset($manage['err_code'])) {
             DB::rollBack();
-            return back();
+            return view('admin.error.error', ['error' => $manage]);
+            // return back();
         }
         $params['shopkeeper_id'] = $manage->id;
         $shop                    = $module->store($params);
         if (isset($shop['err_code'])) {
             DB::rollBack();
-            return back();
+            return view('admin.error.error', ['error' => $shop]);
+            // return back();
         }
         $relation = $manageModule->joinShop($manage->id, $shop->id);
         if (isset($relation['err_code'])) {
             DB::rollBack();
-            return back();
+            return view('admin.error.error', ['error' => $relation]);
+            // return back();
         }
         \App\Models\Manage::find($manage->id, ['id'])
             ->attachRole(\App\Models\Role::where('name', 'seller')->first(['id']));
@@ -121,7 +124,8 @@ class ShopController extends Controller
 
         $rs = $module->store($params);
         if (isset($rs['err_code'])) {
-            return back();
+            return view('admin.error.error', ['error' => $rs]);
+            // return back();
         }
 
         return redirect(action('Admin\ShopController@getIndex'));

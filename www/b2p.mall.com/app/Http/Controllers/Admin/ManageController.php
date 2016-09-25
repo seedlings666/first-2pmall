@@ -113,7 +113,8 @@ class ManageController extends Controller
         $rs = $module->store($params);
         if (isset($rs['err_code'])) {
             DB::rollBack();
-            return back();
+            return view('admin.error.error', ['error' => $rs]);
+            // return back();
         }
 
         $manage_id = $rs->id;
@@ -121,7 +122,8 @@ class ManageController extends Controller
         $rs        = $module->joinShop($rs->id, $shop_id);
         if (isset($rs['err_code'])) {
             DB::rollBack();
-            return back();
+            return view('admin.error.error', ['error' => $rs]);
+            // return back();
         }
         \App\Models\Manage::find($manage_id, ['id'])
             ->attachRole(\App\Models\Role::where('name', 'shop-staff')->first(['id']));
@@ -176,13 +178,15 @@ class ManageController extends Controller
         $rs = $module->store($params);
         if (isset($rs['err_code'])) {
             DB::rollBack();
-            return back();
+            return view('admin.error.error', ['error' => $rs]);
+            // return back();
         }
 
         $rs = $module->joinShop($rs->id, $shop_id);
         if (isset($rs['err_code'])) {
             DB::rollBack();
-            return back();
+            return view('admin.error.error', ['error' => $rs]);
+            // return back();
         }
         DB::commit();
 
