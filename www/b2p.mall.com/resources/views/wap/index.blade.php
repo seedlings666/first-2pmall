@@ -252,7 +252,7 @@
             @if($group_id)
                 group_id : {{ $group_id }},
             @endif
-                buy_link: '{{action('Wap\BuyController@getPay')}}',
+                buy_link: '{{action('Wap\BuyController@getPay')}}/',
                 is_group: {{ $groupEnd ? 'true' : 'false' }}
             };
 
