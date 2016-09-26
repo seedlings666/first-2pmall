@@ -83,6 +83,10 @@
                             <div class="is_over">
                                 拼团已结束
                             </div>
+                            @elseif($order['is_expire'])
+                            <div class="is_over">
+                                拼团已过期
+                            </div>
                             @endif
                             @if($order['wait_cashback'])
                             <div class="backtrack_money">
