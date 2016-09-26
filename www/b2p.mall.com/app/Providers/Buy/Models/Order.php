@@ -30,7 +30,9 @@ class Order extends Base
     //是否拼团已经过期
     public function isExpired()
     {
-        return $this->isFirstGroup() && $this->isNewGroup() && (strtotime($this->created_at) + 86400) < time();
+        return $this->isFirstGroup()
+        && $this->isNewGroup()
+        && (strtotime($this->created_at) + env('GROUP_EXPIRYVALUE', 86400)) < time();
     }
 
     //能否加入拼团

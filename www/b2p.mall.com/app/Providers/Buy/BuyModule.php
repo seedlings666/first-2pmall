@@ -129,7 +129,7 @@ class BuyModule
             return ['err_code' => '400816', '不能参加自己的拼团!'];
         } elseif ($group_order_res['order_status'] == 2) {
             return ['err_code' => '400812', 'err_msg' => '拼团已结束!'];
-        } elseif (time() > (strtotime($group_order_res['created_at']) + 86400)) {
+        } elseif (time() > (strtotime($group_order_res['created_at']) + env('GROUP_EXPIRYVALUE', 86400))) {
             return ['err_code' => '400813', 'err_msg' => '拼团已过期!'];
         }
 
@@ -697,7 +697,7 @@ class BuyModule
             $is_group_rp1         = $val['group_rp'] == 1;
             $is_order_status2     = $val['order_status'] == 2;
             $is_order_status1     = $val['order_status'] == 1;
-            $is_expired           = (strtotime($val['created_at']) + 86400) < time();
+            $is_expired           = (strtotime($val['created_at']) + env('GROUP_EXPIRYVALUE', 86400)) < time();
 
             //判断是否结束
             if ($is_order_status2) {
@@ -708,7 +708,7 @@ class BuyModule
                 $val['is_share'] = [];
             }
             //判断是否已过期
-            if ($is_group_rp1 && !$is_order_status2 && $is_expired) {
+            if ($is_group_rp1 && $is_order_status1 && $is_expired) {
                 $val['is_expire'] = 1;
             }
             //判断是否等待返回优惠金额
