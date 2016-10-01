@@ -660,6 +660,8 @@ class BuyModule
         $order_res          = DB::table('zo_orders')->whereRaw('`deleted_at` is null');
         if (!empty($input_data['by_user'])) {
             $order_res = $order_res->where('user_id', $input_data['by_user']);
+        } elseif (array_get($input_data, 'type') == 'groups') {
+            $order_res = $order_res->where('group_rp', 1);
         }
         $order_res    = $order_res->orderBy('created_at', 'desc')->orderBy('group_rp', 'asc');
         $order_result = $order_res->take($take)->offset($offset)->get($order_fields);

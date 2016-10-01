@@ -26,10 +26,10 @@
                     title: '这是分享到朋友圈的标题', // 分享标题
                     link: '这是分享到朋友圈的链接', // 分享链接
                     imgUrl: 'xx', // 分享图标
-                    success: function () { 
+                    success: function () {
                         // 用户确认分享后执行的回调函数
                     },
-                    cancel: function () { 
+                    cancel: function () {
                         // 用户取消分享后执行的回调函数
                     }
                 });
@@ -39,11 +39,11 @@
                     desc: '这是分享朋友的描述', // 分享描述
                     link: '这是分享朋友的链接', // 分享链接
                     imgUrl: '这是分享朋友的图片', // 分享图标
-                    success: function () { 
+                    success: function () {
                         // 用户确认分享后执行的回调函数
                         alert('success!');
                     },
-                    cancel: function () { 
+                    cancel: function () {
                         // 用户取消分享后执行的回调函数
                     }
                 });
@@ -64,7 +64,19 @@
         <div class="main_warp user_tool">
             <ul>
                 <li class="my_order">
+                    <a href="{!! action('Wap\BuyController@groupOrders') !!}?type=groups">拼团订单</a>
+                </li>
+                <li class="my_order">
+                    <a href="{!! action('Wap\BuyController@groupOrders') !!}?type=all_orders">全部订单</a>
+                </li>
+                <li class="my_order">
                     <a href="{!! action('Wap\BuyController@groupOrders') !!}?type=my_orders">我的订单</a>
+                </li>
+                <li class="my_order">
+                    <a href="{!! action('Wap\NoticeController@getGroupRule') !!}">拼团规则</a>
+                </li>
+                <li class="my_order">
+                    <a href="{!! action('Wap\NoticeController@getPointsDetailed') !!}">积分明细</a>
                 </li>
             </ul>
         </div>

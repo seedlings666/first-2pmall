@@ -19,10 +19,16 @@ class StatisticalController extends Controller
         $start_time = date('Y-m-d H:i:s', strtotime('-30 day'));
         $select     = DB::raw("count(*) as order_count, sum(order_amount) as
             total_price, DATE_FORMAT(created_at, '%Y%m%d') as date");
-        $list = Order::select($select)->where('created_at', '>', $start_time)
-            ->where('pay_status', 2)
-        //->where('shop_id', Session::get('admin_user.shop_id', 0))
-            ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y%m%d")'))
+
+        $orderObj = Order::select($select)
+            ->where('created_at', '>', $start_time)
+            ->where('pay_status', 2);
+        if (!$this->isSystem()) {
+            $orderObj = $orderObj->whereHas('orderGoods', function ($query) {
+                $query->where('store_id', \Session::get('admin_user.shop_id'));
+            });
+        }
+        $list = $orderObj->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y%m%d")'))
             ->orderBy('id')
             ->get();
 
