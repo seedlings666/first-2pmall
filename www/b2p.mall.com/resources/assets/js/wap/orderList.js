@@ -59,7 +59,6 @@ var order_list = {
 
                     // 将拼接的html放到页面容器中
                     $('#order_content').append(h);
-                    console.log("success", re);
                 })
                 .fail(function() {
                     // 将加载状态设置为可加载
@@ -161,6 +160,7 @@ var order_list = {
                         (this.join_group ? '<a href="'+ this.join_group + '" class="join_pt">加入拼团</a>' : '')+
                     '</div>'+
                     (this.is_end ? '<div class="is_over">拼团已结束</div>' : '') +
+                    (this.is_expire ? '<div class="is_over">拼团已结束</div>' : '') +
                     (this.wait_cashback ? '<div class="backtrack_money">等待返回拼团优惠金</div>' : '') +
                 '</li>';
             });
