@@ -149,6 +149,7 @@ class GoodsController extends Controller
         if ($group_id) {
             $order      = new \App\Providers\Buy\Models\Order();
             $groupOrder = $order->where('id', $group_id)
+                ->where('user_id', '!=', \Session::get('user.id'))
                 ->whereHas('orderGoods', function ($query) use ($goods_id) {
                     $query->where('goods_id', $goods_id);
                 })
