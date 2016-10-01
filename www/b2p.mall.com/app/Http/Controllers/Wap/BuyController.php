@@ -143,8 +143,9 @@ class BuyController extends Controller
     public function groupOrders($type = null)
     {
         //seesion获取用户id
-        $input_data = ['user_id' => \Session::get('user.id', 0)];
-        if (strtolower(request()->get('type', $type)) == 'my_orders') {
+        $input_data         = ['user_id' => \Session::get('user.id', 0)];
+        $input_data['type'] = strtolower(request()->get('type', $type));
+        if ($input_data['type'] == 'my_orders') {
             //seesion获取用户id
             $input_data['by_user'] = \Session::get('user.id', 0);
         }
