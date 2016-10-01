@@ -41,18 +41,18 @@ class WxController extends Controller
         ];
 
         //订单详情
-        $buttons[] = [
-            'name' => '订单详情',
-            'type' => 'view',
-            'url'  => str_replace(
-                ['[APPID]', '[redirect]'],
-                [
-                    config('wechat.app_id'),
-                    urlencode(action('Wap\BuyController@groupOrders') . '?type=my_orders'),
-                ],
-                $uri
-            ),
-        ];
+        // $buttons[] = [
+        //     'name' => '订单详情',
+        //     'type' => 'view',
+        //     'url'  => str_replace(
+        //         ['[APPID]', '[redirect]'],
+        //         [
+        //             config('wechat.app_id'),
+        //             urlencode(action('Wap\BuyController@groupOrders') . '?type=my_orders'),
+        //         ],
+        //         $uri
+        //     ),
+        // ];
 
         $wechat_app->menu->add($buttons);
         return '菜单生成成功';
