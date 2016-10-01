@@ -41,6 +41,8 @@ Route::group($wap_route, function () {
     Route::get('/group/pay', 'BuyController@getPay');
     //所有拼团订单，包含当前用自己的订单
     Route::any('/group/orders/{type?}', 'BuyController@groupOrders');
+    Route::get('/notice/group-rule', 'NoticeController@getGroupRule');
+    Route::get('/notice/points-detailed', 'NoticeController@getPointsDetailed');
 });
 //创建拼团订单,单独出来避免微信回调获取不到
 Route::any('/group/order/{type}/{pay_sn}', 'Wap\BuyController@createOrder');

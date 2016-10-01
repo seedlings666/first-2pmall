@@ -17,7 +17,7 @@ class OrderController extends Controller
             });
         }
 
-        $res_data = $orderObj->orderBy('id', 'desc')->paginate(2);
+        $res_data = $orderObj->orderBy('id', 'desc')->paginate();
         return view('admin.order', compact('res_data'));
     }
 
