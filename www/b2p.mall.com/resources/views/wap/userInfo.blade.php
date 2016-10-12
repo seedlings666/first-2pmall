@@ -19,7 +19,7 @@
 		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
             /*
-			wx.config({!! $js->config(array('onMenuShareTimeline', 'onMenuShareAppMessage')) !!});
+			wx.config({{--!! $js->config(array('onMenuShareTimeline', 'onMenuShareAppMessage')) !!--}});
             wx.ready(function () {
                 //分享到朋友圈
                 wx.onMenuShareTimeline({
@@ -47,8 +47,7 @@
                         // 用户取消分享后执行的回调函数
                     }
                 });
-                */
-            });
+            });*/
 		</script>
     </head>
 
@@ -63,20 +62,35 @@
 
         <div class="main_warp user_tool">
             <ul>
-                <li class="my_order">
-                    <a href="{!! action('Wap\BuyController@groupOrders') !!}?type=groups">拼团订单</a>
+                <li>
+                    <a href="{!! action('Wap\BuyController@groupOrders') !!}?type=groups">
+                        <i class="icon-align-justify"></i>
+                        <span>拼团订单</span>
+                    </a>
                 </li>
-                <li class="my_order">
-                    <a href="{!! action('Wap\BuyController@groupOrders') !!}?type=all_orders">全部订单</a>
+                <!-- <li>
+                    <a href="{!! action('Wap\BuyController@groupOrders') !!}?type=all_orders">
+                        <i class="icon-list2"></i>
+                        <span>全部订单</span>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="{!! action('Wap\BuyController@groupOrders') !!}?type=my_orders">
+                        <i class="icon-file"></i>
+                        <span>我的订单</span>
+                    </a>
                 </li>
-                <li class="my_order">
-                    <a href="{!! action('Wap\BuyController@groupOrders') !!}?type=my_orders">我的订单</a>
+                <li>
+                    <a href="{!! action('Wap\NoticeController@getGroupRule') !!}">
+                        <i class="icon-calendar" style="font-size: 16px;"></i>
+                        <span>拼团规则</span>
+                    </a>
                 </li>
-                <li class="my_order">
-                    <a href="{!! action('Wap\NoticeController@getGroupRule') !!}">拼团规则</a>
-                </li>
-                <li class="my_order">
-                    <a href="{!! action('Wap\NoticeController@getPointsDetailed') !!}">积分明细</a>
+                <li>
+                    <a href="{!! action('Wap\NoticeController@getPointsDetailed') !!}">
+                        <i class="icon-info" style="font-size: 16px;"></i>
+                        <span>积分明细</span>
+                    </a>
                 </li>
             </ul>
         </div>
