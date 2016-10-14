@@ -683,12 +683,19 @@ class BuyModule
         if (array_get($input_data, 'type') == 'groups' || array_get($input_data, 'type') == 'hot') {
             $order_res = $order_res->where('group_rp', 1);
         }
-        $order_res    = $order_res->orderBy('created_at', 'desc')->orderBy('group_rp', 'asc');
-        $order_result = $order_res->take($take)->offset($offset)->get($order_fields);
-        $next_page    = $take + $offset;
+        $next_page = $take + $offset;
         if (!$order_res->take(1)->offset($next_page)->first()) {
             $next_page = null;
         }
+
+        if (array_get($input_data, 'type') == 'hot') {
+            $order_fields[] = DB::Raw(
+                '(select count(*) from `zo_order_goods` where `order_id` = `zo_orders`.`id`) as `hot`'
+            );
+            $order_res = $order_res->orderBy('hot', 'desc');
+        }
+        $order_res    = $order_res->orderBy('id', 'desc')->orderBy('group_rp', 'asc');
+        $order_result = $order_res->take($take)->offset($offset)->get($order_fields);
 
         $order_ids  = [];
         $order_list = [];
