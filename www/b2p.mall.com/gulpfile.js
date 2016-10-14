@@ -86,6 +86,7 @@ elixir(function(mix) {
         .styles('wap/base.css', 'public/css/wap')
         .sass('wap/index.scss', 'public/css/wap')
         .sass('wap/order.scss', 'public/css/wap')
+        .sass('wap/orderDetail.scss', 'public/css/wap')
         .sass('wap/userInfo.scss', 'public/css/wap')
         .sass('wap/orderList.scss', 'public/css/wap')
         .styles('admin/ace.css', 'public/css/admin')
@@ -176,6 +177,7 @@ elixir(function(mix) {
             'css/wap/base.css',
             'css/wap/userInfo.css',
             'css/wap/order.css',
+            'css/wap/orderDetail.css',
             'css/wap/orderList.css',
             'css/wap/index.css',
 

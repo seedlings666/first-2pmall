@@ -46,24 +46,24 @@
                     @foreach($response_data['order_list'] as $order)
                         <li>
                             <div class="order_time">{{ $order['created_at'] }}</div>
-                            <div class="goods_info">
-                                <div class="goods_img">
-                                    <a href="{{ $order['goods_url'] }}">
-                                        <img src="{{ $order['orderGoods'][0]['goods_img_url'] }}" alt="{{ $order['orderGoods'][0]['goods_title'] }}">
-                                    </a>
-                                </div>
+                            <a href="{{ $order['goods_url'] }}">
+                                <div class="goods_info">
+                                    <div class="goods_img">
+                                            <img src="{{ $order['orderGoods'][0]['goods_img_url'] }}" alt="{{ $order['orderGoods'][0]['goods_title'] }}">
+                                    </div>
 
-                                <div class="goods_name" style="width:84%">
-                                    <p>{{ $order['orderGoods'][0]['goods_title'] }} {{ $order['orderGoods'][0]['goods_spec'] }}</p>
-                                    <p>数量：{{ $order['orderGoods'][0]['goods_number'] }}</p>
-                                    <p>&nbsp;<!-- 库存：1000件 --></p>
-                                </div>
+                                    <div class="goods_name">
+                                        <p>{{ $order['orderGoods'][0]['goods_title'] }} {{ $order['orderGoods'][0]['goods_spec'] }}</p>
+                                        <p>数量：{{ $order['orderGoods'][0]['goods_number'] }}</p>
+                                        <p>&nbsp;<!-- 库存：1000件 --></p>
+                                    </div>
 
-                                <div class="goods_price" style="line-height:20px; width:120px;">
-                                    <span>原价:&yen;<big>{{ $order['orderGoods'][0]['sale_price'] }}</big>/件</span>
-                                    <span>团购价:&yen;<big id="goods_price">{{ $order['orderGoods'][0]['buy_price'] }}</big>/件</span>
+                                    <div class="goods_price" style="line-height:20px; width:120px;">
+                                        <span>原价:&yen;<big>{{ $order['orderGoods'][0]['sale_price'] }}</big>/件</span>
+                                        <span>团购价:&yen;<big id="goods_price">{{ $order['orderGoods'][0]['buy_price'] }}</big>/件</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                             <div class="goods_sum">
                                 共1件商品
                                 @if($order['order_status'] == 1 && !$order['is_expire'])

@@ -5,7 +5,9 @@
  * @date    2016-08-21 13:36:35
  * @version 1.0
  */
-
+body{
+    background: #fff;
+}
 .user_info_box{
     height: 200px;
     background: url('../../../images/bg.jpg') no-repeat center center;
@@ -32,17 +34,35 @@
 .user_tool{
     ul{
         background: #fff;
+        overflow: hidden;
     }
+
     li{
-        padding: 10px 0 10px 35px;
+        padding: 10px;
+        // width: 25%;
+        width: 50%;
+        float: left;
+        box-sizing: border-box;
+        border-right: 1px solid #eaeaea;
+        border-bottom: 1px solid #eaeaea;
 
         a{
+            color: #666;
             display: block;
-        }
+            font-size: 14px;
+            text-align: center;
 
-        &.my_order{
-            background: url('../../../images/my_order.png') no-repeat 10px center;
-            background-size: auto 60%;
+            i{
+                color: #a5a5a5;
+                font-size: 18px;
+                // display: block;
+                vertical-align: middle;
+                margin-bottom: 5px;
+            }
+
+            span{
+                vertical-align: middle;
+            }
         }
     }
 }

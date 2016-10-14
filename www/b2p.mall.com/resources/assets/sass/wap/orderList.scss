@@ -69,6 +69,11 @@
         border-bottom: 1px solid #ccc;
     }
 
+    a{
+        color: #666;
+        display: block;
+    }
+
     .goods_info{
         position: relative;
         padding: 10px 75px 10px 75px;
@@ -88,6 +93,7 @@
 
         .goods_name{
             line-height: 16px;
+            padding-right: 40px;
 
             p:first-child{
                 height: 32px;

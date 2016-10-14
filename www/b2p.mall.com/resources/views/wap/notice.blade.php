@@ -26,23 +26,40 @@
                 min-width: 320px;
                 margin: 0 auto;
                 background: #fff;
+                font-family: "SimHei", "Microsoft YaHei";
+            }
+            ul,li{
+                list-style: none;
+            }
+            h1{
+                padding-top: 30px;
+                text-align: center;
+                font-size: 26px;
+                color: #555;
             }
             .error_page{
-                padding-top: 50px;
                 text-align: left;
             }
-            .error_page p{
-                padding-bottom: 20px;
+            .error_page ul{
+                padding: 20px;
                 font-size: 16px;
+                line-height: 24px;
+                color: #666;
+            }
+            .error_page li{
+                margin-bottom: 10px;
             }
             .error_page a{
-                display: inline-block;
+                width: 100px;
+                display: block;
                 padding: 10px;
                 background: #00a6dc;
                 color: #fff;
                 text-decoration: none;
                 font-weight: bold;
                 font-size: 14px;
+                text-align: center;
+                margin: 0 auto;
             }
         </style>
     </head>
@@ -50,7 +67,9 @@
     <body>
         <h1>{!! $notice !!}</h1>
         <div class="error_page">
-            <p>{!! $content !!}</p>
+            <ul>
+                {!! $content !!}
+            </ul>
             <a href="javascript:history.back(-1);">返回上一页</a>
         </div>
     </body>
