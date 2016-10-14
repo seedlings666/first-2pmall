@@ -20,45 +20,50 @@
 
     <body>
         <div class="main_warp row_box order_info">
-            <p><span>订单状态：</span><font>已完成</font></p>
-            <p><span>订单总额：</span><big>95</big>(微信支付)</p>
-            <p><span>收货人：</span>CK</p>
-            <p><span>订单编号：</span>1000000000254265</p>
-            <p><span>下单时间：</span>2016-10-12 23:15:51</p>
+            <p><span>订单状态：</span><font>{{ $res['order_status_label'] }}</font></p>
+            <p><span>订单总额：</span><big>{{ $res['order_amount'] }}</big>(微信支付)</p>
+            <p><span>收货人：</span>{{ $res['userWeixin']['nickname'] }}</p>
+            <p><span>订单编号：</span>{{ $res['order_sn'] }}</p>
+            <p><span>下单时间：</span>{{ $res['created_at'] }}</p>
         </div>
 
         <div class="main_warp row_box goods_box">
             <ul>
                 <li>
                     <div class="goods_info">
+                    <a href="{{ $res['orderGoods']['goods_url'] }}">
                         <div class="goods_img">
-                            <img src="{{asset('images/goods_img.jpg')}}" alt="商品名称">
+                            <img src="{{ $res['orderGoods']['goods_img_url'] }}" alt="{{ $res['goods_title'] }}">
                         </div>
 
                         <div class="goods_name">
-                            <p>商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
-                            <p>数量：1</p>
-                            <p>库存：1000件</p>
+                            <p>{{ $res['orderGoods']['goods_title'] }} {{ $res['orderGoods']['goods_spec'] }}</p>
+                            <p>数量：{{ $res['orderGoods']['goods_number'] }}</p>
+                            <p>&nbsp;</p>
+                            <!-- <p>库存：1000件</p> -->
                         </div>
 
                         <div class="goods_price">
                             <span>
-                                <p>原价：<big id="goods_price">95</big>/件</p>
-                                <p>拼团价：<big id="goods_price">85</big>/件</p>
+                                <p>原价：<big id="goods_price">{{ $res['orderGoods']['sale_price'] }}</big>/件</p>
+                                <p>拼团价：<big id="goods_price">{{ $res['orderGoods']['buy_price'] }}</big>/件</p>
                             </span>
                         </div>
+                    </a>
                     </div>
                 </li>
             </ul>
 
             <div class="goods_count">
-                <p>总价：<big id="count_price">95.00</big>元</p>
+                <p>总价：<big id="count_price">{{ $res['order_amount'] }}</big>元</p>
             </div>
         </div>
 
+        @if($res['join_group'])
         <div class="main_warp btn_group">
-            <a href="###">加入拼团</a>
+            <a href="{{ $res['join_group'] }}">加入拼团</a>
         </div>
+        @endif
 
         <script src="{{ elixir('js/jquery.js') }}"></script>
         <script src="{{ elixir('js/wap/base.js') }}"></script>

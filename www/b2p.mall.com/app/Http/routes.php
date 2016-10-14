@@ -37,13 +37,11 @@ Route::group($wap_route, function () {
     Route::get('/error', function () {
         return view('wap.error');
     });
-    Route::get('/order/detail', function () {
-        return view('wap.orderDetail');
-    });
     //拼团支付
     Route::get('/group/pay', 'BuyController@getPay');
     //所有拼团订单，包含当前用自己的订单
     Route::any('/group/orders/{type?}', 'BuyController@groupOrders');
+    Route::get('/order/{id}', 'BuyController@getOrder');
     Route::get('/notice/group-rule', 'NoticeController@getGroupRule');
     Route::get('/notice/points-detailed', 'NoticeController@getPointsDetailed');
 });

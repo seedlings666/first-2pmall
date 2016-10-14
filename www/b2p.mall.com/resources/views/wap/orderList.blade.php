@@ -30,6 +30,10 @@
                 <li class="on" data-type="groups">
                     <a href="{{ action('Wap\BuyController@groupOrders') }}/?type=groups">拼团订单</a>
                 </li>
+            @elseif(strtolower(request()->get('type')) == 'hot')
+                <li class="on" data-type="groups">
+                    <a href="{{ action('Wap\BuyController@groupOrders') }}/?type=hot">热门拼团</a>
+                </li>
             @else
                 <li class="on" data-type="all_orders">
                     <a href="{{ action('Wap\BuyController@groupOrders') }}/?type=all_orders">全部订单</a>
