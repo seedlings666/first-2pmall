@@ -654,21 +654,48 @@ class BuyModule
      */
     public function getOrderList(array $input_data, $offset = 0, $take = 15)
     {
-        $user_id            = $input_data['user_id'];
-        $order_fields       = ['id', 'user_id', 'group_id', 'group_rp', 'order_amount', 'order_status', 'pay_status', 'created_at'];
-        $order_goods_fields = ['id', 'goods_id', 'order_id', 'goods_title', 'goods_spec', 'sale_price', 'buy_price', 'goods_number', 'goods_img'];
-        $order_res          = DB::table('zo_orders')->whereRaw('`deleted_at` is null');
-        if (!empty($input_data['by_user'])) {
+        $user_id      = $input_data['user_id'];
+        $order_fields = [
+            'id',
+            'user_id',
+            'group_id',
+            'group_rp',
+            'order_amount',
+            'order_status',
+            'pay_status',
+            'created_at',
+        ];
+        $order_goods_fields = [
+            'id',
+            'goods_id',
+            'order_id',
+            'goods_title',
+            'goods_spec',
+            'sale_price',
+            'buy_price',
+            'goods_number',
+            'goods_img',
+        ];
+        $order_res = DB::table('zo_orders')->whereRaw('`deleted_at` is null');
+        if (!empty($input_data['by_user']) || array_get($input_data, 'type') == 'groups') {
             $order_res = $order_res->where('user_id', $input_data['by_user']);
-        } elseif (array_get($input_data, 'type') == 'groups') {
+        }
+        if (array_get($input_data, 'type') == 'groups' || array_get($input_data, 'type') == 'hot') {
             $order_res = $order_res->where('group_rp', 1);
         }
-        $order_res    = $order_res->orderBy('created_at', 'desc')->orderBy('group_rp', 'asc');
-        $order_result = $order_res->take($take)->offset($offset)->get($order_fields);
-        $next_page    = $take + $offset;
+        $next_page = $take + $offset;
         if (!$order_res->take(1)->offset($next_page)->first()) {
             $next_page = null;
         }
+
+        if (array_get($input_data, 'type') == 'hot') {
+            $order_fields[] = DB::Raw(
+                '(select count(*) from `zo_order_goods` where `order_id` = `zo_orders`.`id`) as `hot`'
+            );
+            $order_res = $order_res->orderBy('hot', 'desc');
+        }
+        $order_res    = $order_res->orderBy('id', 'desc')->orderBy('group_rp', 'asc');
+        $order_result = $order_res->take($take)->offset($offset)->get($order_fields);
 
         $order_ids  = [];
         $order_list = [];
@@ -689,7 +716,8 @@ class BuyModule
                 unset($order_list[$key]);
                 continue;
             }
-            $val['orderGoods'] = $order_goods_list[$val['id']];
+            $val['orderGoods']       = $order_goods_list[$val['id']];
+            $val['order_detail_url'] = action('Wap\BuyController@getOrder', [$val['id']]);
 
             $val['is_share']      = [];
             $val['join_group']    = '';
@@ -726,8 +754,10 @@ class BuyModule
                 // if (true) {
                 $val['join_group'] = action('Wap\GoodsController@getShow', $params) . '?group_id=' . $val['group_id'];
             }
-            $val['goods_url'] = action('Wap\GoodsController@getShow', $params)
-                . ($is_group_rp1 ? '?group_id=' . $val['group_id'] : '');
+            // $val['goods_url'] = action('Wap\GoodsController@getShow', $params)
+            //     . ($is_group_rp1 ? '?group_id=' . $val['group_id'] : '');
+            //使用goods_url变量名称做为订单列表点击地址，避免修改js
+            $val['goods_url'] = action('Wap\BuyController@getOrder', [$val['id']]);
         }
 
         return ['order_list' => $order_list, 'next_page' => $next_page];
