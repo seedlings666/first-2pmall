@@ -29,6 +29,17 @@ class WxController extends Controller
             'key'  => 'menu_scancode_push',
         ];
 
+        //热门订单
+        $buttons[] = [
+            'name' => '热门订单',
+            'type' => 'view',
+            'url'  => str_replace(
+                ['[APPID]', '[redirect]'],
+                [config('wechat.app_id'), urlencode(action('Wap\BuyController@groupOrders') . '?type=hot')],
+                $uri
+            ),
+        ];
+
         //个人中心
         $buttons[] = [
             'name' => '个人中心',
