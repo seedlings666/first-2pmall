@@ -678,7 +678,7 @@ class BuyModule
         ];
         $order_res = DB::table('zo_orders')->whereRaw('`deleted_at` is null');
         if (!empty($input_data['by_user']) || array_get($input_data, 'type') == 'groups') {
-            $order_res = $order_res->where('user_id', $input_data['by_user']);
+            $order_res = $order_res->where('user_id', $user_id);
         }
         if (array_get($input_data, 'type') == 'groups' || array_get($input_data, 'type') == 'hot') {
             $order_res = $order_res->where('group_rp', 1);
