@@ -131,23 +131,23 @@ var order_list = {
             $.each(re.response_data.order_list, function() {
                 h += '<li>'+
                     '<div class="order_time">'+ this.created_at + '</div>'+
-                    '<div class="goods_info">'+
-                        '<div class="goods_img">'+
-                            '<a href="'+ this.goods_url + '">'+
+                    '<a href="'+ this.goods_url +'">'+
+                        '<div class="goods_info">'+
+                            '<div class="goods_img">'+
                                 '<img src="'+ this.orderGoods[0].goods_img_url +'" alt="'+ this.orderGoods[0].goods_title +'">'+
-                            '</a>'+
-                        '</div>'+
+                            '</div>'+
 
-                        '<div class="goods_name">'+
-                            '<p>'+ this.orderGoods[0].goods_title + ' '+ this.orderGoods[0].goods_spec + '</p>'+
-                            '<p>数量：'+ this.orderGoods[0].goods_number + '</p>'+
-                            '<p>&nbsp;<!-- 库存：1000件 --></p>'+
-                        '</div>'+
+                            '<div class="goods_name">'+
+                                '<p>'+ this.orderGoods[0].goods_title + ' '+ this.orderGoods[0].goods_spec + '</p>'+
+                                '<p>数量：'+ this.orderGoods[0].goods_number + '</p>'+
+                                '<p>&nbsp;<!-- 库存：1000件 --></p>'+
+                            '</div>'+
 
-                        '<div class="goods_price">'+
-                            '<span>&yen;<big id="goods_price">'+ this.orderGoods[0].buy_price + '</big>/件</span>'+
+                            '<div class="goods_price">'+
+                                '<span>&yen;<big id="goods_price">'+ this.orderGoods[0].buy_price + '</big>/件</span>'+
+                            '</div>'+
                         '</div>'+
-                    '</div>'+
+                    '</a>'+
                     '<div class="goods_sum">'+
                         '共1件商品'+
                         '<span>实付：<big id="pay_price">&yen;'+ this.order_amount + '</big></span>'+
