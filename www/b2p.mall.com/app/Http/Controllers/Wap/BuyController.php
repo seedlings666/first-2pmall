@@ -142,12 +142,13 @@ class BuyController extends Controller
 
     public function groupOrders($type = null)
     {
+        $user_id = \Session::get('user.id', 0);
         //seesion获取用户id
-        $input_data         = ['user_id' => \Session::get('user.id', 0)];
+        $input_data         = ['user_id' => $user_id];
         $input_data['type'] = strtolower(request()->get('type', $type));
         if ($input_data['type'] == 'my_orders') {
             //seesion获取用户id
-            $input_data['by_user'] = \Session::get('user.id', 0);
+            $input_data['by_user'] = $user_id;
         }
         $buyModule  = new BuyModule();
         $order_list = $buyModule->getOrderList($input_data, \Request::get('page', 0), 15);
