@@ -142,12 +142,13 @@ class BuyController extends Controller
 
     public function groupOrders($type = null)
     {
+        $user_id = \Session::get('user.id', 0);
         //seesion获取用户id
-        $input_data         = ['user_id' => \Session::get('user.id', 0)];
+        $input_data         = ['user_id' => $user_id];
         $input_data['type'] = strtolower(request()->get('type', $type));
         if ($input_data['type'] == 'my_orders') {
             //seesion获取用户id
-            $input_data['by_user'] = \Session::get('user.id', 0);
+            $input_data['by_user'] = $user_id;
         }
         $buyModule  = new BuyModule();
         $order_list = $buyModule->getOrderList($input_data, \Request::get('page', 0), 15);
@@ -156,5 +157,20 @@ class BuyController extends Controller
             return ['response_data' => $order_list];
         }
         return view('wap.orderList', ['response_data' => $order_list]);
+    }
+
+    public function getOrder($id)
+    {
+        $order = \App\Providers\Buy\Models\Order::with(['orderGoods', 'userWeixin'])->find($id);
+        if (!$order) {
+            return view('wap.error', ['error' => []]);
+        }
+        $order->join_group                = $order->canJoin(\Session::get('user.id', 0));
+        $order->orderGoods->goods_img_url = asset($order->orderGoods->goods_img);
+        $order->orderGoods->goods_url     = action(
+            'Wap\GoodsController@getShow',
+            ['id' => $order->orderGoods->goods_id]
+        ) . ($order->isFirstGroup() ? '?group_id=' . $order->group_id : '');
+        return view('wap.orderDetail', ['res' => $order]);
     }
 }

@@ -36,9 +36,12 @@ class Order extends Base
     }
 
     //能否加入拼团
-    public function canJoin()
+    public function canJoin($user_id = 0)
     {
-        return $this->isFirstGroup() && $this->isNewGroup() && !$this->isExpired();
+        return $this->isFirstGroup()
+        && $this->isNewGroup()
+        && !$this->isExpired()
+            && ($user_id ? $user_id != $this->user_id : true);
     }
 
     //是否已退还优惠金额

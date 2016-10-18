@@ -44,16 +44,16 @@ class StatisticalController extends Controller
                 $value->total_price,
             ];
         }
-        for ($i = 1; $i < 10; $i++) {
-            $sales[] = [
-                (time() + 3600 * 12 * $i) . '000',
-                123 + $i * 10,
-            ];
-            $count[] = [
-                (time() + 3600 * 12 * $i) . '000',
-                232 + $i * 10,
-            ];
-        }
+        // for ($i = 1; $i < 10; $i++) {
+        //     $sales[] = [
+        //         (time() + 3600 * 12 * $i) . '000',
+        //         123 + $i * 10,
+        //     ];
+        //     $count[] = [
+        //         (time() + 3600 * 12 * $i) . '000',
+        //         232 + $i * 10,
+        //     ];
+        // }
 
         return view('admin.order_statistical')->with(compact('sales', 'count'));
     }
