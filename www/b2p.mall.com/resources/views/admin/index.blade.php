@@ -78,14 +78,18 @@
 
                             <td class="center">
                                 <div class="hidden-sm hidden-xs btn-group">
-                                    <a href="{{ action('Admin\GoodsController@getShow', [$lv->id]) }}" class="btn btn-xs btn-success">
+                                    <a href="{{ action('Admin\GoodsController@getShow', [$lv->id]) }}" class="btn btn-xs btn-success" title="查看商品详情">
                                         <i class="ace-icon fa fa-search bigger-120"></i>
                                     </a>
-                                @if(Session::get('admin_user.shop_id') == $lv->shop_id)
-                                    <a href="{{ action('Admin\GoodsController@getEdit', [$lv->id]) }}" class="btn btn-xs btn-info">
-                                        <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                    @if(Session::get('admin_user.shop_id') == $lv->shop_id)
+                                        <a href="{{ action('Admin\GoodsController@getEdit', [$lv->id]) }}" class="btn btn-xs btn-info" title="编辑商品详情">
+                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                        </a>
+                                    @endif
+
+                                    <a href="javascript:void(0);" class="btn btn-xs btn-danger" title="生成二维码" name="create-qr-code">
+                                        <i class="ace-icon glyphicon glyphicon-qrcode bigger-120"></i>
                                     </a>
-                                @endif
                                 </div>
                             </td>
                         </tr>
@@ -100,33 +104,32 @@
         </div><!-- /.row -->
     </div>
 </div><!-- /.page-content -->
+
+<!-- Modal -->
+<div class="modal fade" id="QRModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title" id="myModalLabel">二维码下载</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <a href="###" class="btn btn-success btn-sm">下载二维码</a>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('footer-script')
 <script>
 $(function(){
-    var active_class = 'active';
-    $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
-        var th_checked = this.checked;//checkbox inside "TH" table header
-
-        $(this).closest('table').find('tbody > tr').each(function(){
-            var row = this;
-            if(th_checked) {
-                $(row).addClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', true);
-            } else {
-                $(row).removeClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', false);
-            }
-        });
-    });
-
-    //select/deselect a row when the checkbox is checked/unchecked
-    $('#simple-table').on('click', 'td input[type=checkbox]' , function(){
-        var $row = $(this).closest('tr');
-        if(this.checked) {
-            $row.addClass(active_class);
-        } else {
-            $row.removeClass(active_class);
-        }
+    $('[name=create-qr-code]').on('click', function(){
+        $('#QRModal').modal('show');
     });
 });
 </script>
