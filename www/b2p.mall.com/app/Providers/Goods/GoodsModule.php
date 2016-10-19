@@ -6,8 +6,10 @@ use App\Goods;
 use App\Http\Common\Helper;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
@@ -1394,5 +1396,50 @@ class GoodsModule
      */
     public function delGoodsImages($image_id)
     {
+    }
+    
+    
+    /**
+     * 生成二维码
+     * @author  jianwei
+     */
+    public function getGoodsQrcode($goods_id,array $condition = array())
+    {
+        $goods_id = (int)$goods_id;
+    
+        $size = isset($condition['size']) && is_numeric($condition['size']) ? $condition['size'] : 300;
+        
+        $margin = isset($condition['margin']) && is_numeric($condition['margin']) ? $condition['margin'] : 1;
+        
+        $goods_links = URL::to('/goods/show',$goods_id);
+    
+        //$qrcode = new ();
+        
+        $qrcode = QrCode::format('png');
+        
+        $qrcode->margin($margin);
+    
+        $qrcode->size($size);
+        
+        if(isset($condition['download']) && $condition['download'] == 'true'){
+            //文件路径
+            $file_path = public_path('qrcodes/goods_qrcode_'.$goods_id.'.png');
+            
+            if(file_exists($file_path)){
+                $qrcode->generate($goods_links);
+            }else{
+                $dir_path = dirname($file_path);
+    
+                if(!file_exists($dir_path)){
+                    @mkdir($dir_path);
+                }
+                $response = $qrcode->generate($goods_links,$file_path);
+            }
+            
+            $response = $file_path;
+        }else {
+            $response = $qrcode->generate($goods_links);
+        }
+        return $response;
     }
 }
