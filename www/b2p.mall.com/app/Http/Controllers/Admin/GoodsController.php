@@ -340,7 +340,7 @@ return View::make('admin.edit_goods')->with($goods_details);
     
         $sb = $GoodsModules->getGoodsQrcode($goods_id,$condition);
         
-        if(isset($condition['download']) && $condition['download'] == 1){
+        if(isset($condition['download']) && $condition['download'] == 'true'){
             
             return response::download($sb);
         }else {

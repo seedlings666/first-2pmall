@@ -1421,7 +1421,7 @@ class GoodsModule
     
         $qrcode->size($size);
         
-        if(isset($condition['download']) && $condition['download'] == 1){
+        if(isset($condition['download']) && $condition['download'] == 'true'){
             //文件路径
             $file_path = public_path('qrcodes/goods_qrcode_'.$goods_id.'.png');
             
