@@ -87,7 +87,7 @@
                                         </a>
                                     @endif
 
-                                    <a href="javascript:void(0);" class="btn btn-xs btn-danger" title="生成二维码" name="create-qr-code">
+                                    <a href="javascript:void(0);" class="btn btn-xs btn-danger" title="生成二维码" name="create-qr-code" data-goods-id="{{ $lv->id }}">
                                         <i class="ace-icon glyphicon glyphicon-qrcode bigger-120"></i>
                                     </a>
                                 </div>
@@ -113,8 +113,8 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
                 <h4 class="modal-title" id="myModalLabel">二维码下载</h4>
             </div>
-            <div class="modal-body">
-                ...
+            <div class="modal-body" style="text-align: center;">
+                <img src="">
             </div>
             <div class="modal-footer">
                 <a href="###" class="btn btn-success btn-sm">下载二维码</a>
@@ -127,10 +127,18 @@
 
 @section('footer-script')
 <script>
-$(function(){
-    $('[name=create-qr-code]').on('click', function(){
-        $('#QRModal').modal('show');
+    $(function(){
+        $('[name=create-qr-code]').on('click', function(){
+            // 商品id
+            var goods_id = $(this).data('goods-id');
+
+            // 显示二维码弹框
+            $('#QRModal').modal('show');
+
+            // 将二维码显示
+            $('#QRModal').find('.modal-body img').attr('src', '{{ action('Admin\GoodsController@anyGoodsQrcode') }}?goods_id=' + goods_id);
+            $('#QRModal').find('.modal-footer a').attr('href', '{{ action('Admin\GoodsController@anyGoodsQrcode') }}?goods_id=' + goods_id + '&download=true');
+        });
     });
-});
 </script>
 @stop
