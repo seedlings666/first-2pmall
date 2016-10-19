@@ -49,7 +49,8 @@ Route::group($wap_route, function () {
 Route::any('/group/order/{type}/{pay_sn}', 'Wap\BuyController@createOrder');
 
 // 管理后台
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'adminLogin'], function () {
+//Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'adminLogin'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', ], function () {
     Route::get('/', function () {
         return Redirect::to('/admin/goods');
     });

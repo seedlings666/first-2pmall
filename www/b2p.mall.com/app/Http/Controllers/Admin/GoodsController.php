@@ -6,14 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Providers\Goods\GoodsModule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class GoodsController extends Controller
 {
-
+    
+    /**
+     * 测试路由
+     * @author  jianwei
+     */
+    public function anyTest()
+    {
+        $data = Input::get();
+        
+        return Response::json($data);
+    }
+    
     /**
      * 后台商品列表页
      * @author  jianwei
@@ -313,4 +324,31 @@ return Redirect::back();
 return View::make('admin.edit_goods')->with($goods_details);
 }
  */
+    
+    
+    /**
+     * 商品二维码展示
+     * @author  jianwei
+     */
+    public function anyGoodsQrcode()
+    {
+        $goods_id = Input::get('goods_id',0);
+        
+        $condition = Input::get();
+
+        $GoodsModules = new GoodsModule();
+    
+        $sb = $GoodsModules->getGoodsQrcode($goods_id,$condition);
+        
+        if(isset($condition['download']) && $condition['download'] == 1){
+            
+            return response::download($sb);
+        }else {
+            return response($sb, 200, [
+                'Content-Type' => 'image/png',
+            ]);
+        }
+    }
+    
+    
 }

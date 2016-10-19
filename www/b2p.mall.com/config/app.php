@@ -164,6 +164,9 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         //角色权限
         Zizaco\Entrust\EntrustServiceProvider::class,
+        
+        //二维码
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
 
     ],
 
@@ -215,6 +218,9 @@ return [
         'Wechat' => Overtrue\LaravelWechat\Facade::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        
+        //二维码
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ],
 
 ];
